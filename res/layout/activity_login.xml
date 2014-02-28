@@ -39,15 +39,39 @@
         android:textSize="20sp"
         android:text="Password: "
         />
-    
+
     <EditText
         android:id="@+id/userfield"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/signupmessage"
-        android:layout_alignTop="@id/username"
+        android:layout_alignBaseline="@+id/username"
+        android:layout_alignBottom="@+id/username"
+        android:layout_toRightOf="@+id/username"
+        android:ems="10"
         android:hint="Enter Username"
-        android:textSize="20sp"
-        android:layout_toRightOf="@id/username" />
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/passfield"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/password"
+        android:layout_alignBottom="@+id/password"
+        android:layout_toRightOf="@+id/username"
+        android:ems="10"
+        android:hint="Enter Password"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/password"
+        android:layout_alignRight="@+id/passfield"
+        android:layout_below="@+id/passfield"
+        android:layout_marginTop="38dp"
+        android:layout_centerHorizontal="true"
+        android:onClick="signup"
+        android:text="Sign Up!" />
 
 </RelativeLayout>
