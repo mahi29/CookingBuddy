@@ -44,7 +44,10 @@
         android:id="@+id/userfield"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/signupmessage"
+        android:layout_alignTop="@id/username"
+        android:hint="Enter Username"
+        android:textSize="20sp"
         android:layout_toRightOf="@id/username" />
-        
 
 </RelativeLayout>
