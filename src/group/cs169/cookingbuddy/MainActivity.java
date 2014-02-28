@@ -11,7 +11,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		//Testing comment
 	}
 
 	@Override
@@ -21,11 +20,11 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	/** Called when the 'Sign Up' button is clicked from Home Screen
-	 */
+	/** Called when the 'Sign Up' button is clicked from Home Screen */
 	public void signUp(View v) {
 		
 	}
+	
 	/** Called when the 'Log In' button is clicked from the Home Screen*/
 	public void logIn(View v) {
 		

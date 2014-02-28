@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/welcomeText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Welcome User"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:textSize="20sp" />
+
+    <GridView
+        android:id="@+id/suggestionGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:columnWidth="90dp"
+        android:gravity="center"
+        android:horizontalSpacing="20dp"
+        android:numColumns="2"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp" >
+    </GridView>
+
+    <Button
+        android:id="@+id/kitchenButton"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="7dp"
+        android:onClick="kitchenButton"
+        android:layout_marginRight="7dp"
+        android:text="My Kitchen" />
+    <Button
+        android:id="@+id/recipeButton"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"        
+        android:layout_marginTop="20dp"
+        android:onClick="recipeButton"
+        android:text="Completed Recipes" />
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:onClick="logOut"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp" 
+        android:layout_marginBottom="7dp"       
+        android:layout_marginTop="20dp"
+        android:text="Log Out" />        
+</LinearLayout>
