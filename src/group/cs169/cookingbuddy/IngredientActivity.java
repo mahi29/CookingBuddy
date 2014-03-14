@@ -9,12 +9,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -23,6 +28,9 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 	HTTPTask task;
 	ListView ingredientList;
 	ArrayList<Ingredient> ingredientData;
+	String user;
+	final Context ctx = this;
+	IngredientAdapter adapter;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -30,18 +38,18 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ingredient);
 		Intent i = getIntent();
-		String username = i.getStringExtra(Constants.JSON_USERNAME);
+		user = i.getStringExtra(Constants.JSON_USERNAME);
 		ingredientList = (ListView) findViewById(R.id.ingredientList);
 		ingredientData = new ArrayList<Ingredient>();
         ArrayList<Object> container = new ArrayList<Object>();
 		JSONObject param = new JSONObject();
 		try {
-			param.put("username", username);
+			param.put(Constants.JSON_USERNAME, user);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		container.add(param);
-		container.add(Constants.SEARCH_URL);
+		container.add(Constants.INGREDIENT_LIST_URL);
 		task = new HTTPTask();
 		task.caller = this;
 		task.execute(container);		
@@ -92,9 +100,55 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		ArrayList<Ingredient> data = ingredientData;
-		IngredientAdapter adapter = new IngredientAdapter(this,data);
+		//ArrayList<Ingredient> data = ingredientData;
+		adapter = new IngredientAdapter(this,ingredientData);
 		ingredientList.setAdapter(adapter);
+	}
+	
+	public void addIngredient(View v) {
+		LayoutInflater li = LayoutInflater.from(this);
+		View ingredientPrompt = li.inflate(R.layout.ingredient_prompt, null);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setView(ingredientPrompt);
+		final EditText nameField = (EditText) ingredientPrompt.findViewById(R.id.prompt_name);
+		final EditText amtField = (EditText) ingredientPrompt.findViewById(R.id.prompt_amt);
+		
+		builder.setCancelable(true);
+		builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String ingName = nameField.getText().toString().trim();
+				String amt = amtField.getText().toString().trim();
+				Ingredient tmp = new Ingredient(ingName,Double.parseDouble(amt),"oz","3/24/2014");
+				ingredientData.add(tmp);
+				adapter.notifyDataSetChanged();
+				/*
+				try {
+					JSONObject param = new JSONObject();
+					param.put(Constants.JSON_USERNAME,user);
+					param.put(Constants.INGREDIENT_NAME,ingName);
+					param.put(Constants.QUANTITY, amt);
+					param.put(Constants.UNIT,"oz");
+					param.put(Constants.EXPIRATION,"3/27/14");
+					ArrayList<Object> container = new ArrayList<Object>();
+					container.add(param);
+					container.add(Constants.ADD_INGREDIENT_URL);
+					task = new HTTPTask();
+					task.caller = ctx;
+					task.execute(container);
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				*/
+			}
+		});
+		AlertDialog alertDialog = builder.create(); 
+		alertDialog.show();
+		
+
 	}
 	protected class Ingredient {
 		String name;
