@@ -13,7 +13,7 @@ import android.widget.GridView;
 
 public class HomeActivity extends Activity implements AsyncResponse {
 
-	ArrayList<Suggestion> suggestions;
+	ArrayList<Recipe> suggestions;
 	HTTPTask httpTask;
 	
 	@Override
@@ -48,22 +48,11 @@ public class HomeActivity extends Activity implements AsyncResponse {
 	
 	/** Populates the suggestions ArrayList with data for the suggestion GridView*/
 	private void populateData() {
-		suggestions = new ArrayList<Suggestion>();
+		suggestions = new ArrayList<Recipe>();
 		
 		
 	}
-	protected class Suggestion {
-		String name;
-		Bitmap img;
-		int rating;
-		
-		protected Suggestion(String name, Bitmap image, int rating) {
-			this.name = name;
-			this.rating = rating;
-			this.img = image;
-		}
-		
-	}
+
 	@Override
 	public void processFinish(String output, String callingMethod) {
 		

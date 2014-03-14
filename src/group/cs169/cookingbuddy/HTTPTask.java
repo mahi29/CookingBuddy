@@ -30,6 +30,9 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 	protected String doInBackground(ArrayList<Object>... container) {
 		HttpURLConnection urlConn = null;
 		String result = "-100";
+		/*The input must have the ArrayList formatted in a proper manner
+		 *The JSONObject MUST be inserted BEFORE the path name. 
+		 */
 		ArrayList<Object> holder = container[0];
 		JSONObject param = (JSONObject) holder.get(0);
 		String path = (String) holder.get(1);
