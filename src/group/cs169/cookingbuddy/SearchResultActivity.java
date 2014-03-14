@@ -13,6 +13,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,7 +93,6 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 			task = new HTTPTask();
 			task.caller = this;
 			task.execute(container);
-			//Send out back-end call
         }
  
     }
@@ -115,6 +115,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 				JSONArray imageArray = images.getJSONArray(i);
 				String image = imageArray.getString(0);
 				Recipe temp = new Recipe(name, image, Constants.DEFAULT_RATING, this);
+				Log.d("SearchResults","Name: " + name + "URL: " + image);
 				listData.add(temp);
 			}
 		} catch (JSONException e) {

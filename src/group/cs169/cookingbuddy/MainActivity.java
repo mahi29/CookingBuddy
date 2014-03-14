@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements AsyncResponse {
 		setContentView(R.layout.activity_main);
 		userField = (EditText) findViewById(R.id.userText);
 		passField = (EditText) findViewById(R.id.passwordText);
-		getActionBar().hide();
+		//getActionBar().hide();
 		
 		
 	}
