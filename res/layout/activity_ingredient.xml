@@ -3,13 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
+    <TextView
+        android:id="@+id/kitchenwelcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome to your Kitchen!"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_marginTop="10sp"
+        />
+
     <ListView
         android:id="@+id/ingredientList"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="12"
         android:divider="#b5b5b5"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="1dp" >
+    </ListView>
+    
+    <Button
+        android:id="@+id/addbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Ingredient"
+        android:textSize="20sp"
+        android:gravity="center"
+        />
 
 </LinearLayout>
