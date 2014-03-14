@@ -32,7 +32,7 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 		method = path;
 		try {
 			URL url;
-			String address = Constants.BASE_URL+path;
+			String address = Constants.ADD_INGREDIENT_URL+path;
 			url = new URL (address);
 			//Create the connection
 			urlConn = (HttpURLConnection) url.openConnection();

@@ -23,7 +23,7 @@ public class HomeActivity extends Activity implements AsyncResponse {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		Intent i = getIntent();
-		username = i.getStringExtra("username");
+		username = i.getStringExtra(Constants.JSON_USERNAME);
 		httpTask = new HTTPTask();
 		httpTask.caller = this;
 		GridView gridView = (GridView) findViewById(R.id.suggestionGrid);
@@ -39,12 +39,14 @@ public class HomeActivity extends Activity implements AsyncResponse {
 	}
 	/**Called when 'My Kitchen' button is pressed*/
 	public void kitchenButton(View view) {
-		
+		Intent intent = new Intent(this, IngredientActivity.class);
+		intent.putExtra(Constants.JSON_USERNAME, username);
+		startActivity(intent);
 	}
 	/**Called when 'Completed Recipes' button is clicked*/
 	public void recipeButton(View view) {
 		Intent intent = new Intent(this, HistoryActivity.class);
-		intent.putExtra("username", username);
+		intent.putExtra(Constants.JSON_USERNAME, username);
 		startActivity(intent);
 		
 	}

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements AsyncResponse {
 	
@@ -60,6 +61,11 @@ public class MainActivity extends Activity implements AsyncResponse {
             // search action
         	onSearchRequested();
             return true;
+        case android.R.id.home:
+        	Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -94,13 +100,13 @@ public class MainActivity extends Activity implements AsyncResponse {
 		JSONObject out;
 		try {
 			out = new JSONObject(output);
-			int errCode = Integer.parseInt(out.getString("errCode"));
-			if (errCode == 1) {
+			String errCode = out.getString(Constants.JSON_STANDARD_RESPONSE);
+			if (errCode.equals(Constants.SUCCESS)) {
 				Intent i = new Intent(this, HomeActivity.class);
 				i.putExtra(USERNAME, username);
 				startActivity(i);
 			} else {
-				//INCORRECT CREDENTIALS
+				Toast.makeText(this, "Invalid username and password", Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 				e.printStackTrace();
@@ -108,20 +114,7 @@ public class MainActivity extends Activity implements AsyncResponse {
 	}
 
 	private void signUpCallback(String output) {
-		JSONObject out;
-		try {
-			out = new JSONObject(output);
-			int errCode = Integer.parseInt(out.getString("errCode"));
-			if (errCode == 1) {
-				Intent i = new Intent(this, HomeActivity.class);
-				i.putExtra(USERNAME, username);
-				startActivity(i);
-			} else {
-				//ERROR SIGNING UP???
-			}
-		} catch (JSONException e) {
-				e.printStackTrace();
-		} 
+
 	}
 	@Override
 	public void processFinish(String output, String callingMethod) {

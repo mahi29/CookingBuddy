@@ -17,6 +17,9 @@ public class Constants {
 	public static final String JSON_USERNAME = "user";
 	public static final String JSON_PASSWORD = "password";
 	public static final String JSON_STANDARD_RESPONSE = "errCode";
+	public static final String SUCCESS = "SUCCESS";
+	public static final int DEFAULT_RATING = 3;
+	public static final int DEFAULT_PICTURE = R.drawable.stockimage;
 	
 	//Ingredient List
 	public static final String INGREDIENT_KEY = "items"; 
@@ -26,11 +29,11 @@ public class Constants {
 	public static final String UNIT = "unit";
 	public static final String NEW_QUANTITY = "new_quantity";
 	
+	//Search
+	public static final String SEARCH_KEYWORD = "q";
+
 	//History
 	public static final String COMPLETED_USER_RECIPES = "userHistory";
-	
-	
-	
 	
 	public Constants() {
 		
