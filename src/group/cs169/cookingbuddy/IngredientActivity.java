@@ -29,8 +29,6 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ingredient);
-		task = new HTTPTask();
-		task.caller = this;
 		Intent i = getIntent();
 		String username = i.getStringExtra(Constants.JSON_USERNAME);
 		ingredientList = (ListView) findViewById(R.id.ingredientList);
@@ -44,6 +42,8 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		}
 		container.add(param);
 		container.add(Constants.SEARCH_URL);
+		task = new HTTPTask();
+		task.caller = this;
 		task.execute(container);		
 	}
 	

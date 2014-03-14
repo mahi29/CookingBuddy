@@ -15,7 +15,6 @@ import android.widget.GridView;
 public class HomeActivity extends Activity implements AsyncResponse {
 
 	ArrayList<Recipe> suggestions;
-	HTTPTask httpTask;
 	String username;
 	
 	@Override
@@ -24,8 +23,6 @@ public class HomeActivity extends Activity implements AsyncResponse {
 		setContentView(R.layout.activity_home);
 		Intent i = getIntent();
 		username = i.getStringExtra(Constants.JSON_USERNAME);
-		httpTask = new HTTPTask();
-		httpTask.caller = this;
 		GridView gridView = (GridView) findViewById(R.id.suggestionGrid);
 		populateData();
 		gridView.setAdapter(new SuggestionAdapter(this, suggestions));
@@ -52,7 +49,9 @@ public class HomeActivity extends Activity implements AsyncResponse {
 	}
 	/**Called when 'Log Out' button is clicked*/
 	public void logOut(View view) {
-		
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.putExtra(Constants.JSON_USERNAME, username);
+		startActivity(intent);
 	}
 	
 	/** Populates the suggestions ArrayList with data for the suggestion GridView*/

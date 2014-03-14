@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 	
@@ -32,7 +33,7 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 		method = path;
 		try {
 			URL url;
-			String address = Constants.ADD_INGREDIENT_URL+path;
+			String address = Constants.BASE_URL+path;
 			url = new URL (address);
 			//Create the connection
 			urlConn = (HttpURLConnection) url.openConnection();
@@ -44,6 +45,7 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 			urlConn.setRequestProperty("Content-Type","application/json");   
 			urlConn.connect();  
 			//Send the POST request to the back-end
+			Log.d("HTTPTask",param.toString());
 			byte[] outputBytes = param.toString().getBytes("UTF-8");
 			OutputStream os = urlConn.getOutputStream();
 			os.write(outputBytes);
@@ -57,12 +59,14 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 	        while ((line = reader.readLine()) != null) {
 	            builder.append(line);
 	        }
+	        is.close();
 	        result = builder.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}  finally {
 			if(urlConn !=null)  urlConn.disconnect(); 
 		}
+		Log.d("HTTPTask","Result: " + result.toString());
 		return result;	
 	}
 

@@ -33,7 +33,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 	public void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_results);
-		task.caller = this;
+		
         getActionBar().setDisplayHomeAsUpEnabled(true);
         txtQuery = (TextView) findViewById(R.id.searchQuery);
         searchResults = (ListView) findViewById(R.id.searchList);
@@ -89,6 +89,8 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 			}
 			container.add(param);
 			container.add(Constants.SEARCH_URL);
+			task = new HTTPTask();
+			task.caller = this;
 			task.execute(container);
 			//Send out back-end call
         }

@@ -35,8 +35,9 @@ public class MainActivity extends Activity implements AsyncResponse {
 		setContentView(R.layout.activity_main);
 		userField = (EditText) findViewById(R.id.userText);
 		passField = (EditText) findViewById(R.id.passwordText);
-		httpTask = new HTTPTask();
-		httpTask.caller = this;
+		getActionBar().hide();
+		
+		
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class MainActivity extends Activity implements AsyncResponse {
 	@SuppressWarnings("unchecked")
 	public void logIn(View v) {
 		username = userField.getText().toString().trim();
-		password = userField.getText().toString().trim();
+		password = passField.getText().toString().trim();
 		JSONObject json = new JSONObject();
 		try {
 			json.put(Constants.JSON_USERNAME,username);
@@ -90,6 +91,8 @@ public class MainActivity extends Activity implements AsyncResponse {
 			//The JSONObject and path must be added in this order! JSONObject first, path second
 			container.add(json);
 			container.add(Constants.LOGIN_USER_URL);
+			httpTask = new HTTPTask();
+			httpTask.caller = this;
 			httpTask.execute(container);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -113,16 +116,9 @@ public class MainActivity extends Activity implements AsyncResponse {
 		} 
 	}
 
-	private void signUpCallback(String output) {
-
-	}
 	@Override
 	public void processFinish(String output, String callingMethod) {
-		if (callingMethod.equals(Constants.LOGIN_USER_URL)) {
-			logInCallback(output);
-		} else if(callingMethod.equals(Constants.ADD_USER_URL)) {
-			signUpCallback(output);
-		}
+		logInCallback(output);
 	}
 
 }

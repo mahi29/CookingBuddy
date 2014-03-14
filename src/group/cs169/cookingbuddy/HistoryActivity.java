@@ -24,10 +24,7 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_history);
-		
-		httpTask = new HTTPTask();
-		httpTask.caller = this;
-		
+		strings = new ArrayList<String>();
 		Intent i = getIntent();
 		String username = i.getStringExtra("username");
 		
@@ -42,6 +39,8 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 		//The JSONObject and path must be added in this order! JSONObject first, path second
 		container.add(json);
 		container.add(Constants.HISTORY_URL);
+		httpTask = new HTTPTask();
+		httpTask.caller = this;
 		httpTask.execute(container);
 		
 		//Call the DB with the username as a key to get the completed list of recipes
@@ -68,27 +67,18 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 	@Override
 	public void processFinish(String output, String callingMethod) {
 		// TODO Parse the incoming JSON object that represents the recipes the user has made
-		
 		try {
-			
-			
-		JSONObject jsonObject = new JSONObject(output);
-		JSONArray jsonArray = jsonObject.getJSONArray(Constants.COMPLETED_USER_RECIPES);
-
-		int arrayLength = jsonArray.length();
-		
-		strings = new ArrayList<String>();
-		
-		for (int i = 0; i < arrayLength; i++){
-			strings.add(jsonArray.getString(i));
-		}
-		
+			JSONObject jsonObject = new JSONObject(output);
+			JSONArray jsonArray = jsonObject.getJSONArray(Constants.COMPLETED_USER_RECIPES);
+			int arrayLength = jsonArray.length();
+			strings = new ArrayList<String>();
+			for (int i = 0; i < arrayLength; i++){
+				strings.add(jsonArray.getString(i));
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	
 	}
 
 }

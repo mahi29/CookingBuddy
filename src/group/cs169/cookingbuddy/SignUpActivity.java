@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SignUpActivity extends Activity implements AsyncResponse{
 	
@@ -20,8 +21,7 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 	public EditText mPass1;
 	public EditText mPass2;
 	private HTTPTask httpTask;
-	protected final static String USERNAME = "user";
-	protected final static String PASSWORD = "password";
+	private String username;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,7 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 		mPass1 = (EditText) findViewById(R.id.passfield);
 		mPass2 = (EditText) findViewById(R.id.reenterpassfield);
 		
-		httpTask = new HTTPTask();
-		httpTask.caller = this;
+
 
 	
 	}
@@ -48,7 +47,7 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 	@SuppressWarnings("unchecked")
 	public void signup(View view){
 		
-		String username = mUser.getText().toString().trim();
+		username = mUser.getText().toString().trim();
 		String password = mPass1.getText().toString().trim();
 		String password2 = mPass2.getText().toString().trim();
 		
@@ -61,12 +60,14 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 			
 			JSONObject json = new JSONObject();
 			try {
-				json.put(USERNAME,username);
-				json.put(PASSWORD,password);
+				json.put(Constants.JSON_USERNAME,username);
+				json.put(Constants.JSON_PASSWORD,password);
 				ArrayList<Object> container = new ArrayList<Object>();
 				//The JSONObject and path must be added in this order! JSONObject first, path second
 				container.add(json);
 				container.add(Constants.ADD_USER_URL);
+				httpTask = new HTTPTask();
+				httpTask.caller = this;
 				httpTask.execute(container);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -79,11 +80,21 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 	@Override
 	public void processFinish(String output, String callingMethod) {
 		//What is the errorCode that is being sent back from the backend? Is it output?
-		if (output == "1"){
-			Intent i = new Intent(this, HomeActivity.class);
-	         startActivity(i);
+		String errCode;
+		try {
+			JSONObject out = new JSONObject(output);
+			errCode = out.getString(Constants.JSON_STANDARD_RESPONSE);
+			if (errCode.equals(Constants.SUCCESS)) {
+				Intent i = new Intent(this, HomeActivity.class);
+				i.putExtra(Constants.JSON_USERNAME, username);
+				startActivity(i);
+			} else {
+				Toast.makeText(this, "Invalid username and password", Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		// TODO Auto-generated method stub
 		
 	}
 
