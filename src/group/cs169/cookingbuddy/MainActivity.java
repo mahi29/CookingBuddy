@@ -71,12 +71,12 @@ public class MainActivity extends Activity implements AsyncResponse {
 		password = userField.getText().toString().trim();
 		JSONObject json = new JSONObject();
 		try {
-			json.put(USERNAME,username);
-			json.put(PASSWORD,password);
+			json.put(Constants.JSON_USERNAME,username);
+			json.put(Constants.JSON_PASSWORD,password);
 			ArrayList<Object> container = new ArrayList<Object>();
 			//The JSONObject and path must be added in this order! JSONObject first, path second
 			container.add(json);
-			container.add(HTTPTask.ADD_USER);
+			container.add(Constants.ADD_USER_URL);
 			httpTask.execute(container);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -90,12 +90,12 @@ public class MainActivity extends Activity implements AsyncResponse {
 		password = userField.getText().toString().trim();
 		JSONObject json = new JSONObject();
 		try {
-			json.put(USERNAME,username);
-			json.put(PASSWORD,password);
+			json.put(Constants.JSON_USERNAME,username);
+			json.put(Constants.JSON_PASSWORD,password);
 			ArrayList<Object> container = new ArrayList<Object>();
 			//The JSONObject and path must be added in this order! JSONObject first, path second
 			container.add(json);
-			container.add(HTTPTask.LOGIN_USER);
+			container.add(Constants.LOGIN_USER_URL);
 			httpTask.execute(container);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -137,9 +137,9 @@ public class MainActivity extends Activity implements AsyncResponse {
 	}
 	@Override
 	public void processFinish(String output, String callingMethod) {
-		if (callingMethod.equals(HTTPTask.LOGIN_USER)) {
+		if (callingMethod.equals(Constants.LOGIN_USER_URL)) {
 			logInCallback(output);
-		} else if(callingMethod.equals(HTTPTask.ADD_USER)) {
+		} else if(callingMethod.equals(Constants.ADD_USER_URL)) {
 			signUpCallback(output);
 		}
 	}

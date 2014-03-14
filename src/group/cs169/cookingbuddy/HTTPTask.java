@@ -15,14 +15,7 @@ import android.os.AsyncTask;
 
 public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 	
-	private static final String BASE_URL = "http://rocky-escarpment-7553.herokuapp.com";
-	public static final String LOGIN_USER = "/users/login";
-	public static final String ADD_USER = "/users/signup";
-	public static final String ADD_INGREDIENT = "/ingredients/add";
-	public static final String REMOVE_INGREDIENT = "/ingredients/remove";
-	public static final String SEARCH = "/recipes/search";
-	public static final String MAKE_RECIPE = "/recipes/make";
-	
+
 	public AsyncResponse caller = null;
 	public String method;
 	
@@ -39,7 +32,7 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 		method = path;
 		try {
 			URL url;
-			String address = BASE_URL+path;
+			String address = Constants.BASE_URL+path;
 			url = new URL (address);
 			//Create the connection
 			urlConn = (HttpURLConnection) url.openConnection();

@@ -55,7 +55,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 				e.printStackTrace();
 			}
 			container.add(param);
-			container.add(HTTPTask.SEARCH);
+			container.add(Constants.SEARCH_URL);
 			task.execute(container);
 			//Send out back-end call
         }
