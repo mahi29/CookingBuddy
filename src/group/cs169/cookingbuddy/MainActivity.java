@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements AsyncResponse {
 	
@@ -60,6 +61,11 @@ public class MainActivity extends Activity implements AsyncResponse {
             // search action
         	onSearchRequested();
             return true;
+        case android.R.id.home:
+        	Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -100,7 +106,7 @@ public class MainActivity extends Activity implements AsyncResponse {
 				i.putExtra(USERNAME, username);
 				startActivity(i);
 			} else {
-				//INCORRECT CREDENTIALS
+				Toast.makeText(this, "Invalid username and password", Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 				e.printStackTrace();

@@ -32,6 +32,24 @@
             android:label="@string/app_name" >
         </activity>
         
+        <!-- History Activity -->
+        <activity
+            android:name="group.cs169.cookingbuddy.HistoryActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <!-- Ingredient Activity -->
+        <activity
+            android:name="group.cs169.cookingbuddy.IngredientActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <!-- Sign Up Activity -->
+        <activity
+            android:name="group.cs169.cookingbuddy.SignUpActivity"
+            android:label="@string/app_name" >
+        </activity>        
+        
         <!-- Search results activity -->
         <activity 
             android:launchMode="singleTop"
