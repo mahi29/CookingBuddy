@@ -1,5 +1,7 @@
 package group.cs169.cookingbuddy;
 
+import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
+
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -9,13 +11,17 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.GridView;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends Activity implements AsyncResponse {
 
 	ArrayList<Suggestion> suggestions;
+	HTTPTask httpTask;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		httpTask = new HTTPTask();
+		httpTask.caller = this;
 		GridView gridView = (GridView) findViewById(R.id.suggestionGrid);
 		populateData();
 		gridView.setAdapter(new SuggestionAdapter(this, suggestions));
@@ -44,6 +50,7 @@ public class HomeActivity extends Activity {
 	private void populateData() {
 		suggestions = new ArrayList<Suggestion>();
 		
+		
 	}
 	protected class Suggestion {
 		String name;
@@ -55,6 +62,10 @@ public class HomeActivity extends Activity {
 			this.rating = rating;
 			this.img = image;
 		}
+		
+	}
+	@Override
+	public void processFinish(String output, String callingMethod) {
 		
 	}
 }
