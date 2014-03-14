@@ -5,6 +5,7 @@ import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
@@ -39,6 +40,8 @@ public class HomeActivity extends Activity implements AsyncResponse {
 	}
 	/**Called when 'Completed Recipes' button is clicked*/
 	public void recipeButton(View view) {
+		Intent intent = new Intent(this, HistoryActivity.class);
+		startActivity(intent);
 		
 	}
 	/**Called when 'Log Out' button is clicked*/

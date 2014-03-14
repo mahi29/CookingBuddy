@@ -67,20 +67,9 @@ public class MainActivity extends Activity implements AsyncResponse {
 	/** Called when the 'Sign Up' button is clicked from Home Screen */
 	@SuppressWarnings("unchecked")
 	public void signUp(View v) {
-		username = userField.getText().toString().trim();
-		password = userField.getText().toString().trim();
-		JSONObject json = new JSONObject();
-		try {
-			json.put(USERNAME,username);
-			json.put(PASSWORD,password);
-			ArrayList<Object> container = new ArrayList<Object>();
-			//The JSONObject and path must be added in this order! JSONObject first, path second
-			container.add(json);
-			container.add(HTTPTask.ADD_USER);
-			httpTask.execute(container);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+         Intent i = new Intent(this,SignUpActivity.class);
+         startActivity(i);
+		
 	}
 	
 	/** Called when the 'Log In' button is clicked from the Home Screen*/

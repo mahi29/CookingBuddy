@@ -80,7 +80,7 @@
         android:textSize="12sp" />
 
     <EditText
-        android:id="@+id/EditText01"
+        android:id="@+id/reenterpassfield"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/reenterpassword"
