@@ -56,6 +56,7 @@
         android:layout_alignBottom="@+id/password"
         android:layout_toRightOf="@+id/username"
         android:ems="10"
+        android:password="true"
         android:hint="Enter Password"
         android:textSize="20sp" />
 
@@ -88,6 +89,7 @@
         android:layout_alignRight="@+id/passfield"
         android:layout_toRightOf="@+id/reenterpassword"
         android:hint="Re-Enter Password"
+        android:password="true"
         android:textSize="12sp" />
 
 </RelativeLayout>
