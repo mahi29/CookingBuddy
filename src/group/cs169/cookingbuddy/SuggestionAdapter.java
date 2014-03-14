@@ -1,6 +1,6 @@
 package group.cs169.cookingbuddy;
 
-import group.cs169.cookingbuddy.HomeActivity.Suggestion;
+import group.cs169.cookingbuddy.Recipe;
 
 import java.util.ArrayList;
 
@@ -15,10 +15,10 @@ import android.widget.TextView;
 public class SuggestionAdapter extends BaseAdapter {
 
 	Context context;
-	ArrayList<Suggestion> suggestions;
+	ArrayList<Recipe> suggestions;
 	LayoutInflater inflater;
 	
-	public SuggestionAdapter(Context con, ArrayList<Suggestion> suggestions) {
+	public SuggestionAdapter(Context con, ArrayList<Recipe> suggestions) {
 		context = con;
 		this.suggestions = suggestions;
 	}
@@ -44,14 +44,14 @@ public class SuggestionAdapter extends BaseAdapter {
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.suggestion_grid, null);
-			Suggestion item = suggestions.get(position);
-			TextView name = (TextView) convertView.findViewById(R.id.recipe_name);
-			ImageView rating = (ImageView) convertView.findViewById(R.id.recipe_rating);
-			ImageView image = (ImageView) convertView.findViewById(R.id.recipe_image);
-			name.setText(item.name);
-			rating.setImageResource(item.rating);
-			image.setImageBitmap(item.img);
 		}
+		Recipe item = suggestions.get(position);
+		TextView name = (TextView) convertView.findViewById(R.id.recipe_name);
+		ImageView rating = (ImageView) convertView.findViewById(R.id.recipe_rating);
+		ImageView image = (ImageView) convertView.findViewById(R.id.recipe_image);
+		name.setText(item.name);
+		rating.setImageResource(item.rating);
+		image.setImageBitmap(item.img);
 		return convertView;
 	}
 

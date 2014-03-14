@@ -66,7 +66,7 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 				ArrayList<Object> container = new ArrayList<Object>();
 				//The JSONObject and path must be added in this order! JSONObject first, path second
 				container.add(json);
-				container.add(HTTPTask.ADD_USER);
+				container.add(Constants.ADD_USER_URL);
 				httpTask.execute(container);
 			} catch (JSONException e) {
 				e.printStackTrace();
