@@ -5,6 +5,7 @@ import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,11 +16,14 @@ public class HomeActivity extends Activity implements AsyncResponse {
 
 	ArrayList<Recipe> suggestions;
 	HTTPTask httpTask;
+	String username;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		Intent i = getIntent();
+		username = i.getStringExtra("username");
 		httpTask = new HTTPTask();
 		httpTask.caller = this;
 		GridView gridView = (GridView) findViewById(R.id.suggestionGrid);
@@ -39,6 +43,9 @@ public class HomeActivity extends Activity implements AsyncResponse {
 	}
 	/**Called when 'Completed Recipes' button is clicked*/
 	public void recipeButton(View view) {
+		Intent intent = new Intent(this, HistoryActivity.class);
+		intent.putExtra("username", username);
+		startActivity(intent);
 		
 	}
 	/**Called when 'Log Out' button is clicked*/

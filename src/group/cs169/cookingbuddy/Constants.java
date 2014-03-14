@@ -3,7 +3,7 @@ package group.cs169.cookingbuddy;
 public class Constants {
 	
 	//URLS
-	public static final String BASE_URL = "http://rocky-escarpment-7553.herokuapp.com";
+	public static final String BASE_URL = "	";
 	public static final String LOGIN_USER_URL = "/users/login";
 	public static final String ADD_USER_URL = "/users/signup";
 	public static final String ADD_INGREDIENT_URL = "/ingredients/add";
@@ -31,9 +31,9 @@ public class Constants {
 	
 	//Search
 	public static final String SEARCH_KEYWORD = "q";
-	
-	
-	
+
+	//History
+	public static final String COMPLETED_USER_RECIPES = "userHistory";
 	
 	public Constants() {
 		
