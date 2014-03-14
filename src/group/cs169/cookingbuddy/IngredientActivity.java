@@ -24,7 +24,7 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		task = new HTTPTask();
 		task.caller = this;
 		Intent i = getIntent();
-		String username = i.getStringExtra("username");
+		String username = i.getStringExtra(Constants.JSON_USERNAME);
 		ingredientList = (ListView) findViewById(R.id.ingredientList);
         ArrayList<Object> container = new ArrayList<Object>();
 		JSONObject param = new JSONObject();

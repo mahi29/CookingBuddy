@@ -4,6 +4,7 @@ import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +23,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 	private TextView txtQuery;
 	public HTTPTask task;
 	ListView searchResults;
+	public ArrayList<Recipe> listData;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) { 
@@ -50,7 +52,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
             ArrayList<Object> container = new ArrayList<Object>();
             JSONObject param = new JSONObject();
             try {
-				param.put("q", query);
+				param.put(Constants.SEARCH_KEYWORD, query);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -66,7 +68,26 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 	public void processFinish(String output, String callingMethod) {
 		//Handle displaying of search results here
 		//TODO: Replace with objects from the back-end
-		final ArrayList<Recipe> data = null; 
+		JSONObject result;
+		JSONArray names = null;
+		JSONArray images = null;
+		listData = new ArrayList<Recipe>();
+		
+		try {
+			result = new JSONObject(output);
+			names = result.getJSONArray("recipe_name");
+			images = result.getJSONArray("smallImageUrls");
+			for (int i = 0; i < names.length(); i++) {
+				String name = names.getString(i);
+				JSONArray imageArray = images.getJSONArray(i);
+				String image = imageArray.getString(0);
+				Recipe temp = new Recipe(name, image, Constants.DEFAULT_RATING, this);
+				listData.add(temp);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}	
+		final ArrayList<Recipe> data = listData;
 		SearchAdapter adapter = new SearchAdapter(this,data);
 		searchResults.setAdapter(adapter);
 		searchResults.setOnItemClickListener(new OnItemClickListener() {
@@ -80,6 +101,4 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 			
 		});
 	}
-
-
 }
