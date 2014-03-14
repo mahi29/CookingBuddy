@@ -22,23 +22,20 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/signupmessage"
         android:layout_below="@+id/signupmessage"
         android:layout_marginTop="20sp"
-        android:textSize="20sp"
         android:text="Username"
-         />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/username"
+        android:layout_alignLeft="@+id/reenterpassword"
         android:layout_below="@+id/username"
         android:layout_marginTop="20sp"
-        android:textSize="20sp"
         android:text="Password: "
-        />
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/userfield"
@@ -69,9 +66,28 @@
         android:layout_alignLeft="@+id/password"
         android:layout_alignRight="@+id/passfield"
         android:layout_below="@+id/passfield"
-        android:layout_marginTop="38dp"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp"
         android:onClick="signup"
         android:text="Sign Up!" />
+
+    <TextView
+        android:id="@+id/reenterpassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:layout_marginTop="20sp"
+        android:text="Re-Enter Password"
+        android:textSize="12sp" />
+
+    <EditText
+        android:id="@+id/EditText01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/reenterpassword"
+        android:layout_alignBottom="@+id/reenterpassword"
+        android:layout_alignRight="@+id/passfield"
+        android:layout_toRightOf="@+id/reenterpassword"
+        android:hint="Re-Enter Password"
+        android:textSize="12sp" />
 
 </RelativeLayout>
