@@ -8,13 +8,13 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 public class HomeActivity extends Activity implements AsyncResponse {
 
@@ -27,6 +27,8 @@ public class HomeActivity extends Activity implements AsyncResponse {
 		setContentView(R.layout.activity_home);
 		Intent i = getIntent();
 		username = i.getStringExtra(Constants.JSON_USERNAME);
+		TextView welcome = (TextView) findViewById(R.id.welcomeText);
+		welcome.setText("Welcome " + username);
 		GridView gridView = (GridView) findViewById(R.id.suggestionGrid);
 		populateData();
 		gridView.setAdapter(new SuggestionAdapter(this, suggestions));
@@ -60,6 +62,8 @@ public class HomeActivity extends Activity implements AsyncResponse {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             return true;
+        case R.id.logout:
+        	logout();
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -77,8 +81,9 @@ public class HomeActivity extends Activity implements AsyncResponse {
 		startActivity(intent);
 		
 	}
+	
 	/**Called when 'Log Out' button is clicked*/
-	public void logOut(View view) {
+	private void logout() {
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.putExtra(Constants.JSON_USERNAME, username);
 		startActivity(intent);

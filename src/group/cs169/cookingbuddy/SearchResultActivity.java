@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 public class SearchResultActivity extends Activity implements AsyncResponse {
 	
-	private TextView txtQuery;
+	private TextView searchQuery;
 	public HTTPTask task;
 	ListView searchResults;
 	public ArrayList<Recipe> listData;
@@ -36,7 +36,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 		setContentView(R.layout.activity_search_results);
 		
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        txtQuery = (TextView) findViewById(R.id.searchQuery);
+        searchQuery = (TextView) findViewById(R.id.searchQuery);
         searchResults = (ListView) findViewById(R.id.searchList);
         handleIntent(getIntent());
 	} 
@@ -105,7 +105,8 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 		JSONArray names = null;
 		JSONArray images = null;
 		listData = new ArrayList<Recipe>();
-		
+		SearchAdapter adapter = new SearchAdapter(this,listData);
+		searchResults.setAdapter(adapter);
 		try {
 			result = new JSONObject(output);
 			names = result.getJSONArray("recipe_name");
@@ -115,15 +116,14 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 				JSONArray imageArray = images.getJSONArray(i);
 				String image = imageArray.getString(0);
 				Recipe temp = new Recipe(name, image, Constants.DEFAULT_RATING, this);
-				Log.d("SearchResults","Name: " + name + "URL: " + image);
 				listData.add(temp);
+				adapter.notifyDataSetChanged();
+
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}	
 		final ArrayList<Recipe> data = listData;
-		SearchAdapter adapter = new SearchAdapter(this,data);
-		searchResults.setAdapter(adapter);
 		searchResults.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override

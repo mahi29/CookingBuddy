@@ -27,14 +27,9 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		
 		mUser = (EditText) findViewById(R.id.userfield);
-		mPass1 = (EditText) findViewById(R.id.passfield);
+		mPass1 = (EditText) findViewById(R.id.passwordField);
 		mPass2 = (EditText) findViewById(R.id.reenterpassfield);
-		
-
-
-	
 	}
 
 	@Override

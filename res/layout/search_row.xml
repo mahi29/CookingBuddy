@@ -7,21 +7,27 @@
    <ImageView
        android:id="@+id/search_image"
        android:layout_width="50dip"
+       android:scaleType="centerCrop"
        android:layout_height="50dip" />
 
    <TextView
        android:id="@+id/search_name"
-       android:layout_width="wrap_content"
+       style="?android:textAppearanceMedium"
+       android:layout_width="fill_parent"
        android:layout_height="wrap_content"
+       android:fontFamily="sans-serif-condensed"
+       android:textStyle="bold"
        android:gravity="center"
+       android:layout_gravity="center"
        android:layout_marginLeft="20dp"
-       android:text="Recipe Name"
-       android:textSize="12sp" />
+       android:text="Recipe Name" />
+   <!-- 
    <ImageView
        android:id="@+id/search_rating"
        android:layout_width="50dip"
        android:layout_marginLeft="20dp"
        android:layout_alignParentRight="true"
        android:layout_height="50dip" />
+       -->
 
 </LinearLayout>

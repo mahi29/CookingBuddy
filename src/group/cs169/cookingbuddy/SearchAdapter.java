@@ -42,10 +42,10 @@ public class SearchAdapter extends BaseAdapter {
 		Recipe recipe = data.get(position);
 		ImageView img = (ImageView) convertView.findViewById(R.id.search_image);
 		TextView name = (TextView) convertView.findViewById(R.id.search_name);
-		ImageView rating = (ImageView) convertView.findViewById(R.id.search_rating);
+		//ImageView rating = (ImageView) convertView.findViewById(R.id.search_rating);
 		img.setImageBitmap(recipe.img);
 		name.setText(recipe.name);
-		rating.setImageResource(recipe.rating);
+		//rating.setImageResource(recipe.rating);
 		return convertView;
 	}
 
