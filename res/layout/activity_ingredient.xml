@@ -34,6 +34,8 @@
         android:onClick="addIngredient"
         android:textSize="20sp"
         android:gravity="center"
+        style="?android:textAppearanceLarge"        
+        android:background="@drawable/button_state"
         />
 
 </LinearLayout>
