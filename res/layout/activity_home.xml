@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/background"
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
@@ -14,18 +15,13 @@
         android:layout_marginTop="40dp"
         android:textSize="20sp" />
 
-    <GridView
+	<ImageView
         android:id="@+id/suggestionGrid"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:columnWidth="90dp"
-        android:gravity="center"
-        android:horizontalSpacing="20dp"
-        android:numColumns="2"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" >
-    </GridView>
+        android:src="@drawable/logo">
+    </ImageView>
 
     <Button
         android:id="@+id/kitchenButton"
@@ -36,6 +32,8 @@
         android:layout_marginLeft="7dp"
         android:onClick="kitchenButton"
         android:layout_marginRight="7dp"
+        style="?android:textAppearanceLarge"        
+        android:background="@drawable/button_state"
         android:text="My Kitchen" />
     <Button
         android:id="@+id/recipeButton"
@@ -46,6 +44,8 @@
         android:layout_marginRight="7dp"        
         android:layout_marginTop="20dp"
         android:layout_marginBottom="7dp"
+        style="?android:textAppearanceLarge"        
+        android:background="@drawable/button_state"
         android:onClick="recipeButton"
         android:text="Completed Recipes" />
         
