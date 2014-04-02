@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -93,6 +94,7 @@ public class MainActivity extends Activity implements AsyncResponse {
 			container.add(Constants.LOGIN_USER_URL);
 			httpTask = new HTTPTask();
 			httpTask.caller = this;
+			httpTask.dialog = new ProgressDialog(this);
 			httpTask.execute(container);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -118,7 +120,12 @@ public class MainActivity extends Activity implements AsyncResponse {
 
 	@Override
 	public void processFinish(String output, String callingMethod) {
-		logInCallback(output);
+		if (output.equals(Constants.ERROR_CODE)){
+			String iomsg = "Could not connect to the Internet";
+			Toast.makeText(this,iomsg,Toast.LENGTH_SHORT).show();
+		} else {
+			logInCallback(output);
+		}
 	}
 
 }

@@ -12,6 +12,7 @@ public class Constants {
 	public static final String MAKE_RECIPE_URL = "/recipes/make";
 	public static final String INGREDIENT_LIST_URL = "/ingredients/get";
 	public static final String HISTORY_URL = "/history";
+	public static final String CHANGE_PASSWORD = "/users/changePassword";
 	
 	//Standard codes
 	public static final String JSON_USERNAME = "user";
@@ -20,6 +21,7 @@ public class Constants {
 	public static final String SUCCESS = "SUCCESS";
 	public static final int DEFAULT_RATING = 3;
 	public static final int DEFAULT_PICTURE = R.drawable.stockimage;
+	public static final String ERROR_CODE = "-100";
 	
 	//Ingredient List
 	public static final String INGREDIENT_KEY = "items"; 

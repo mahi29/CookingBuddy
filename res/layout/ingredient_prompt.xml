@@ -5,27 +5,51 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="10dp" >
-	
-	<TextView
+
+    <TextView
         android:id="@+id/prompt_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add your Ingredient: "
-        android:textAppearance="?android:attr/textAppearanceMedium" />    
- 
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/prompt_name"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:hint="Name" >
+            <requestFocus />
+        </EditText>
+        <EditText
+            android:id="@+id/prompt_amt"
+            android:layout_width="0dp"
+            android:layout_weight="1"            
+            android:layout_height="wrap_content"
+            android:hint="Amt"
+            android:inputType="numberDecimal" >
+        </EditText>
+        <EditText
+            android:id="@+id/prompt_unit"
+            android:layout_width="0dp"
+            android:layout_weight="1"            
+            android:layout_height="wrap_content"
+            android:hint="Unit" >
+        </EditText>
+    </LinearLayout>
+
     <EditText
-        android:id="@+id/prompt_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Ingredient Name">
-        <requestFocus />
+        android:id="@+id/prompt_exp"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="Unit" >
     </EditText>
- 
-    <EditText
-        android:id="@+id/prompt_amt"
-        android:layout_width="match_parent"
-        android:inputType="numberDecimal"
-        android:layout_height="wrap_content" > 
-    </EditText>
- 
+
 </LinearLayout>

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -19,11 +20,12 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 
 	public AsyncResponse caller = null;
 	public String method;
+	public ProgressDialog dialog;
 	
 	@Override
 	protected String doInBackground(ArrayList<Object>... container) {
 		HttpURLConnection urlConn = null;
-		String result = "-100";
+		String result = Constants.ERROR_CODE;
 		/*The input must have the ArrayList formatted in a proper manner
 		 *The JSONObject MUST be inserted BEFORE the path name. 
 		 */
@@ -71,7 +73,16 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 	}
 
 	protected void onPostExecute(String result) {
-		 caller.processFinish(result,method);
+		if(dialog != null && dialog.isShowing()) dialog.dismiss(); 
+		caller.processFinish(result,method);
+	}
+	
+	@Override
+	protected void onPreExecute() {
+		if (dialog != null) {
+			dialog.setMessage("Logging In. Please wait...");
+			dialog.show();
+		}
 	}
 	
 	public interface AsyncResponse {

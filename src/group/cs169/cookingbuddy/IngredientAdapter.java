@@ -40,13 +40,15 @@ public class IngredientAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) convertView = inflater.inflate(R.layout.ingredient_row, null);
+		if (convertView == null) convertView = inflater.inflate(R.layout.ingredient_row, parent, false);
 		Ingredient item = data.get(position);
 		TextView name = (TextView) convertView.findViewById(R.id.ingredientName);
 		TextView amount = (TextView) convertView.findViewById(R.id.ingredientAmount);
-		
+		TextView exp = (TextView) convertView.findViewById(R.id.expirationDate);
+		String amtText = item.amount;
 		name.setText(item.name);
-		amount.setText(item.amount);
+		amount.setText(amtText);
+		exp.setText(item.expDate);
 		return convertView;
 	}
 

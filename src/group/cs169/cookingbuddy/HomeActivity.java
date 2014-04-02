@@ -29,9 +29,6 @@ public class HomeActivity extends Activity implements AsyncResponse {
 		username = i.getStringExtra(Constants.JSON_USERNAME);
 		TextView welcome = (TextView) findViewById(R.id.welcomeText);
 		welcome.setText("Welcome " + username);
-		//GridView gridView = (GridView) findViewById(R.id.suggestionGrid);
-		//populateData();
-		//gridView.setAdapter(new SuggestionAdapter(this, suggestions));
 	}
 
 

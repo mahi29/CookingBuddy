@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 public class IngredientActivity extends Activity implements AsyncResponse {
 	
@@ -81,11 +82,9 @@ public class IngredientActivity extends Activity implements AsyncResponse {
             return super.onOptionsItemSelected(item);
         }
     }
-	
-	@Override
-	public void processFinish(String output, String callingMethod) {
-		
-		try {
+    
+    private void populateList(String output) {
+    	try {
 			JSONObject result = new JSONObject(output);
 			JSONArray ingArray = result.getJSONArray(Constants.INGREDIENT_KEY);
 			for (int i = 0; i < ingArray.length(); i++) {
@@ -103,6 +102,15 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		//ArrayList<Ingredient> data = ingredientData;
 		adapter = new IngredientAdapter(this,ingredientData);
 		ingredientList.setAdapter(adapter);
+    }
+	
+	@Override
+	public void processFinish(String output, String callingMethod) {
+		if (callingMethod.equals(Constants.INGREDIENT_LIST_URL)) {
+			populateList(output);
+		}  else {
+			Toast.makeText(this, "Ingredient Successfully Added", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	public void addIngredient(View v) {
@@ -112,6 +120,8 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		builder.setView(ingredientPrompt);
 		final EditText nameField = (EditText) ingredientPrompt.findViewById(R.id.prompt_name);
 		final EditText amtField = (EditText) ingredientPrompt.findViewById(R.id.prompt_amt);
+		final EditText unitField = (EditText) ingredientPrompt.findViewById(R.id.prompt_unit);
+		final EditText expField = (EditText) ingredientPrompt.findViewById(R.id.prompt_exp);
 		
 		builder.setCancelable(true);
 		builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
@@ -121,28 +131,30 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 			public void onClick(DialogInterface dialog, int which) {
 				String ingName = nameField.getText().toString().trim();
 				String amt = amtField.getText().toString().trim();
-				Ingredient tmp = new Ingredient(ingName,Double.parseDouble(amt),"oz","3/24/2014");
+				String unit = unitField.getText().toString().trim();
+				String exp = expField.getText().toString().trim();
+				Ingredient tmp = new Ingredient(ingName,Double.parseDouble(amt),unit,exp);
 				ingredientData.add(tmp);
 				adapter.notifyDataSetChanged();
-				/*
+				
 				try {
 					JSONObject param = new JSONObject();
 					param.put(Constants.JSON_USERNAME,user);
 					param.put(Constants.INGREDIENT_NAME,ingName);
 					param.put(Constants.QUANTITY, amt);
-					param.put(Constants.UNIT,"oz");
-					param.put(Constants.EXPIRATION,"3/27/14");
+					param.put(Constants.UNIT,unit);
+					param.put(Constants.EXPIRATION,exp);
 					ArrayList<Object> container = new ArrayList<Object>();
 					container.add(param);
 					container.add(Constants.ADD_INGREDIENT_URL);
 					task = new HTTPTask();
-					task.caller = ctx;
+					task.caller = (AsyncResponse) ctx;
 					task.execute(container);
 					
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				*/
+			
 			}
 		});
 		AlertDialog alertDialog = builder.create(); 
