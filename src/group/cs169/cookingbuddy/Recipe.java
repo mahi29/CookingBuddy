@@ -6,10 +6,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
-public class Recipe {
+public class Recipe implements Parcelable {
 	String name;
+	String imgUrl;
 	Bitmap img;
 	int rating;
 	Context context;
@@ -22,14 +25,28 @@ public class Recipe {
 	public Recipe(String name, String imageUrl, int rating, Context ctx) {
 		this.name = name;
 		this.context = ctx;
-		//this.rating = rating;
-		this.rating = R.drawable.rating;
+		this.imgUrl = imageUrl;
+		this.rating = rating;
+		//this.rating = R.drawable.rating;
 		if (imageUrl == null || imageUrl.equals("")) {
 			img  = BitmapFactory.decodeResource(context.getResources(), Constants.DEFAULT_PICTURE);
 		} else {
 			DownloadTask task = new DownloadTask(this);
 			task.execute(imageUrl);
 		}
+	}
+	
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	private class DownloadTask extends AsyncTask<String, Void, Bitmap> {

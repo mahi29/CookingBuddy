@@ -13,7 +13,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +28,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 	public HTTPTask task;
 	ListView searchResults;
 	public ArrayList<Recipe> listData;
+	public Context ctx;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) { 
@@ -38,6 +38,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         searchQuery = (TextView) findViewById(R.id.searchQuery);
         searchResults = (ListView) findViewById(R.id.searchList);
+        ctx = this;
         handleIntent(getIntent());
 	} 
 	@Override
@@ -130,7 +131,10 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long id) {
 				Recipe recipe = data.get(position);
-				//TODO: Launch intent from here to RecipeInstruction.class;
+				Intent intent = new Intent(ctx, RecipeInstructionActivity.class);
+				intent.putExtra("name",recipe.name);
+				intent.putExtra("rating", recipe.rating);
+				intent.putExtra("image", recipe.imgUrl);
 			}
 			
 		});
