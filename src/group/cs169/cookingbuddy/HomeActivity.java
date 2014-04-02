@@ -60,7 +60,9 @@ public class HomeActivity extends Activity implements AsyncResponse {
             startActivity(intent);
             return true;
         case R.id.logout:
-        	logout();
+        	HomeActivity.logout(this);
+        case R.id.account:
+        	goToAccount();
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -80,10 +82,10 @@ public class HomeActivity extends Activity implements AsyncResponse {
 	}
 	
 	/**Called when 'Log Out' button is clicked*/
-	private void logout() {
-		Intent intent = new Intent(this, MainActivity.class);
-		intent.putExtra(Constants.JSON_USERNAME, username);
-		startActivity(intent);
+	public static void logout(Context ctx) {
+		Intent intent = new Intent(ctx, MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		ctx.startActivity(intent);
 	}
 	
 	/** Populates the suggestions ArrayList with data for the suggestion GridView*/
@@ -91,6 +93,12 @@ public class HomeActivity extends Activity implements AsyncResponse {
 		suggestions = new ArrayList<Recipe>();
 		
 		
+	}
+	/** Called when 'Account' button is clicked in the menu*/
+	public void goToAccount() {
+		Intent intent = new Intent(this, AccountActivity.class);
+		intent.putExtra(Constants.JSON_USERNAME, username);
+		startActivity(intent);
 	}
 
 	@Override

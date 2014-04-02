@@ -63,6 +63,8 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
             // search action
         	onSearchRequested();
             return true;
+        case R.id.logout:
+        	HomeActivity.logout(this);            
         default:
             return super.onOptionsItemSelected(item);
         }

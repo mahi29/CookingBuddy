@@ -57,7 +57,13 @@
         <activity
             android:name="group.cs169.cookingbuddy.SignUpActivity"
             android:label="@string/app_name" >
-        </activity>        
+        </activity>    
+        
+        <!-- Account Activity -->
+        <activity
+            android:name="group.cs169.cookingbuddy.AccountActivity"
+            android:label="@string/app_name" >
+        </activity>   
         
         <!-- Search results activity -->
         <activity 

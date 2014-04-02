@@ -32,6 +32,7 @@
         android:layout_weight="2"
         android:text="Add Ingredient"
         android:onClick="addIngredient"
+        android:layout_marginBottom="15dp"
         android:textSize="20sp"
         android:gravity="center"
         style="?android:textAppearanceLarge"        
