@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollview1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+     >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal" >
+
+        <TextView
+            android:id="@+id/recipename"
+            style="?android:textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="Recipe Name"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/recipeimage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"
+            android:layout_marginTop="5dp"
+            android:layout_weight="4" /> 
+
+        <TextView
+            android:id="@+id/recipeinstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Instructions go here!"
+            android:layout_marginTop="5dp"
+            android:layout_weight="3" />
+    
+        <Button
+            android:id="@+id/makerecipebutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:textAppearanceLarge"        
+       		android:background="@drawable/button_state"
+            android:text="Make Recipe!"
+            android:layout_weight="1"
+            android:onClick="makeRecipe"/>
+            
+    </LinearLayout>
+
+</ScrollView>
