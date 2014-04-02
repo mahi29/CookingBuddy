@@ -3,8 +3,7 @@
     android:id="@+id/scrollview1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/background"
-     >
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -16,7 +15,7 @@
             android:id="@+id/recipename"
             style="?android:textAppearanceLarge"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:text="Recipe Name"
@@ -25,24 +24,46 @@
         <ImageView
             android:id="@+id/recipeimage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:src="@drawable/logo"
             android:layout_marginTop="5dp"
-            android:layout_weight="4" /> 
+            android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/recipeinstructions"
+            android:id="@+id/estimatedpreptime"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Instructions go here!"
+            android:layout_height="0dp"
             android:layout_marginTop="5dp"
-            android:layout_weight="3" />
+            android:layout_weight="1"
+            android:text="Estimated Prep Time" />
+        
+        <TextView
+            android:id="@+id/yield"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:text="Yield"
+            android:layout_weight="1"/>
+        
+        <ListView
+            android:id="@+id/ingredientlist"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_weight="3"/>
+        
+        <TextView
+            android:id="@+id/instructionurl"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:text="URL Goes Here"
+            android:layout_weight="1"/>
     
         <Button
             android:id="@+id/makerecipebutton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             style="?android:textAppearanceLarge"        
        		android:background="@drawable/button_state"
             android:text="Make Recipe!"

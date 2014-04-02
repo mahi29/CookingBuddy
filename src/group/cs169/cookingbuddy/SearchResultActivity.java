@@ -23,68 +23,68 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 public class SearchResultActivity extends Activity implements AsyncResponse {
-	
+
 	private TextView searchQuery;
 	public HTTPTask task;
 	ListView searchResults;
 	public ArrayList<Recipe> listData;
 	public Context ctx;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_results);
-		
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        searchQuery = (TextView) findViewById(R.id.searchQuery);
-        searchResults = (ListView) findViewById(R.id.searchList);
-        ctx = this;
-        handleIntent(getIntent());
+
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		searchQuery = (TextView) findViewById(R.id.searchQuery);
+		searchResults = (ListView) findViewById(R.id.searchList);
+		ctx = this;
+		handleIntent(getIntent());
 	} 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-                .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
-        return super.onCreateOptionsMenu(menu);
+		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+				.getActionView();
+		searchView.setSearchableInfo(searchManager
+				.getSearchableInfo(getComponentName()));
+		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	/**
-     * On selecting action bar icons
-     * */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Take appropriate action for each action item click
-        switch (item.getItemId()) {
-        case R.id.action_search:
-            // search action
-        	onSearchRequested();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
-	
+	 * On selecting action bar icons
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Take appropriate action for each action item click
+		switch (item.getItemId()) {
+		case R.id.action_search:
+			// search action
+			onSearchRequested();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		setIntent(intent);
 		handleIntent(intent);
 	}
-	
-    /**
-     * Handling intent data
-     */
-    @SuppressWarnings("unchecked")
+
+	/**
+	 * Handling intent data
+	 */
+	@SuppressWarnings("unchecked")
 	private void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            ArrayList<Object> container = new ArrayList<Object>();
-            JSONObject param = new JSONObject();
-            try {
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			ArrayList<Object> container = new ArrayList<Object>();
+			JSONObject param = new JSONObject();
+			try {
 				param.put(Constants.SEARCH_KEYWORD, query);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -94,14 +94,14 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 			task = new HTTPTask();
 			task.caller = this;
 			task.execute(container);
-        }
- 
-    }
+		}
+
+	}
 
 	@Override
 	public void processFinish(String output, String callingMethod) {
+
 		//Handle displaying of search results here
-		//TODO: Replace with objects from the back-end
 		JSONObject result;
 		JSONArray names = null;
 		JSONArray images = null;
@@ -130,13 +130,15 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long id) {
+				
+
 				Recipe recipe = data.get(position);
 				Intent intent = new Intent(ctx, RecipeInstructionActivity.class);
 				intent.putExtra("name",recipe.name);
 				intent.putExtra("rating", recipe.rating);
 				intent.putExtra("image", recipe.imgUrl);
 			}
-			
+
 		});
 	}
 }
