@@ -8,6 +8,7 @@ public class Constants {
 	public static final String ADD_USER_URL = "/users/signup";
 	public static final String ADD_INGREDIENT_URL = "/ingredients/add";
 	public static final String REMOVE_INGREDIENT_URL = "/ingredients/remove";
+	public static final String UPDATE_INGREDIENT_URL = "/ingredients/update";
 	public static final String SEARCH_URL = "/recipes/search";
 	public static final String MAKE_RECIPE_URL = "/recipes/make";
 	public static final String INGREDIENT_LIST_URL = "/ingredients/get";
@@ -17,6 +18,7 @@ public class Constants {
 	//Standard codes
 	public static final String JSON_USERNAME = "user";
 	public static final String JSON_PASSWORD = "password";
+	public static final String JSON_NEW_PASSWORD = "newPassword";
 	public static final String JSON_STANDARD_RESPONSE = "errCode";
 	public static final String SUCCESS = "SUCCESS";
 	public static final int DEFAULT_RATING = 3;

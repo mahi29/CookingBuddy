@@ -45,7 +45,7 @@ public class IngredientAdapter extends BaseAdapter {
 		TextView name = (TextView) convertView.findViewById(R.id.ingredientName);
 		TextView amount = (TextView) convertView.findViewById(R.id.ingredientAmount);
 		TextView exp = (TextView) convertView.findViewById(R.id.expirationDate);
-		String amtText = item.amount;
+		String amtText = item.amountUnit;
 		name.setText(item.name);
 		amount.setText(amtText);
 		exp.setText(item.expDate);

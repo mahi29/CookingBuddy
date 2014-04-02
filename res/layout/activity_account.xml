@@ -1,34 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
-
-    <TextView
-        android:id="@+id/signupmessage"
-       	style="?android:textAppearanceLarge"
-       	android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Create an Account" />
+    android:orientation="vertical" >
     
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/acctName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:layout_gravity="center"
+        style="?android:textAppearanceLarge"
+        android:fontFamily="sans-serif-condensed" />
+    <TextView
+        android:id="@+id/acctOldPass"
         style="?android:textAppearanceSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
-        android:text="Username"
+        android:text="Old Password"
         android:textAllCaps="true" />
     <EditText
-        android:id="@+id/userfield"
+        android:id="@+id/acctOldPassText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_state"
@@ -36,15 +30,16 @@
         android:inputType="text" />
 
     <TextView
-        android:id="@+id/password"
+        android:id="@+id/acctNewPass"
         style="?android:textAppearanceSmall"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
-        android:text="Password"
+        android:text="New Password"
         android:textAllCaps="true" />
+
     <EditText
-        android:id="@+id/passwordField"
+        android:id="@+id/acctNewPassText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_state"
@@ -52,33 +47,33 @@
         android:inputType="textPassword" />
     
     <TextView
-        android:id="@+id/reenterpassword"
+        android:id="@+id/acctconfirmPass"
         style="?android:textAppearanceSmall"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
-        android:text="Re-Enter Password"
+        android:text="Confirm Password"
         android:textAllCaps="true" />
     <EditText
-        android:id="@+id/reenterpassfield"
+        android:id="@+id/acctconfirmPassText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_state"
         android:padding="7dp"        
         android:inputType="textPassword" />
-
-
-    <Button
-        android:id="@+id/button1"
+ 	<Button
+        android:id="@+id/acctButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:padding="15dp"
-        android:onClick="signup"
+        android:onClick="changePassword"
         android:textAllCaps="true"
-        style="?android:textAppearanceLarge"        
+        style="?android:textAppearanceSmall"        
         android:background="@drawable/button_state"
-        android:text="Sign Up!" />
+        android:text="Change Password" />    
+    
+
 </LinearLayout>

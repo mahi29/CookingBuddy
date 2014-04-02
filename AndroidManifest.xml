@@ -59,6 +59,13 @@
             android:label="@string/app_name" >
         </activity>    
         
+
+        <!-- Account Activity -->
+        <activity
+            android:name="group.cs169.cookingbuddy.AccountActivity"
+            android:label="@string/app_name" >
+        </activity>   
+
         <!-- Recipe Instruction Activity -->
         <activity
             android:name="group.cs169.cookingbuddy.RecipeInstructionActivity"

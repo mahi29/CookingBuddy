@@ -89,6 +89,8 @@ public class HistoryActivity extends Activity implements AsyncResponse {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             return true;
+        case R.id.logout:
+        	HomeActivity.logout(this);            
         default:
             return super.onOptionsItemSelected(item);
         }

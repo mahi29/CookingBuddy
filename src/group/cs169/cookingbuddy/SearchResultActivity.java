@@ -54,21 +54,24 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 	}
 
 	/**
-	 * On selecting action bar icons
-	 * */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Take appropriate action for each action item click
-		switch (item.getItemId()) {
-		case R.id.action_search:
-			// search action
-			onSearchRequested();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 
+     * On selecting action bar icons
+     * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Take appropriate action for each action item click
+        switch (item.getItemId()) {
+        case R.id.action_search:
+            // search action
+        	onSearchRequested();
+            return true;
+        case R.id.logout:
+        	HomeActivity.logout(this);            
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+	
 	@Override
 	protected void onNewIntent(Intent intent) {
 		setIntent(intent);
@@ -137,6 +140,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 				intent.putExtra("name",recipe.name);
 				intent.putExtra("rating", recipe.rating);
 				intent.putExtra("image", recipe.imgUrl);
+				startActivity(intent);
 			}
 
 		});

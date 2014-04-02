@@ -44,7 +44,7 @@
         android:layout_marginLeft="7dp"
         android:layout_marginRight="7dp"        
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="15dp"
         style="?android:textAppearanceLarge"        
         android:background="@drawable/button_state"
         android:onClick="recipeButton"
