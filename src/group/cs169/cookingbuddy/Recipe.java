@@ -47,7 +47,7 @@ public class Recipe {
 			try {
 				InputStream in = new java.net.URL(urldisplay).openStream();
 				image = BitmapFactory.decodeStream(in);
-				roundedImage = ImageRounder.getRoundedCornerBitmap(image,5);
+				roundedImage = ImageRounder.getRoundedCornerBitmap(image,15);
 				//TODO round the image corners here
 				
 			} catch (Exception e) {
