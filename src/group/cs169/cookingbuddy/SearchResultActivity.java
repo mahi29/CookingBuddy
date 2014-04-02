@@ -137,6 +137,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 				intent.putExtra("name",recipe.name);
 				intent.putExtra("rating", recipe.rating);
 				intent.putExtra("image", recipe.imgUrl);
+				startActivity(intent);
 			}
 			
 		});

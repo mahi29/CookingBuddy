@@ -17,6 +17,7 @@ public class Constants {
 	//Standard codes
 	public static final String JSON_USERNAME = "user";
 	public static final String JSON_PASSWORD = "password";
+	public static final String JSON_NEW_PASSWORD = "newPassword";
 	public static final String JSON_STANDARD_RESPONSE = "errCode";
 	public static final String SUCCESS = "SUCCESS";
 	public static final int DEFAULT_RATING = 3;

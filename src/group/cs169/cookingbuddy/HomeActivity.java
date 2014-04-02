@@ -61,8 +61,10 @@ public class HomeActivity extends Activity implements AsyncResponse {
             return true;
         case R.id.logout:
         	HomeActivity.logout(this);
+        	return true;
         case R.id.account:
         	goToAccount();
+        	return true;
         default:
             return super.onOptionsItemSelected(item);
         }

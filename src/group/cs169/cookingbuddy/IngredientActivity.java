@@ -15,10 +15,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -104,6 +107,16 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		//ArrayList<Ingredient> data = ingredientData;
 		adapter = new IngredientAdapter(this,ingredientData);
 		ingredientList.setAdapter(adapter);
+		
+		ingredientList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				Ingredient ing = ingredientData.get(position);
+				Log.d("IngredientActivity","Name: " + ing.name);
+			}
+		});
     }
 	
 	@Override
