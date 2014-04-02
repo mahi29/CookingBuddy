@@ -43,14 +43,18 @@ public class Recipe {
 		protected Bitmap doInBackground(String... urls) {
 			String urldisplay = urls[0];
 			Bitmap image = null;
+			Bitmap roundedImage = null;
 			try {
 				InputStream in = new java.net.URL(urldisplay).openStream();
 				image = BitmapFactory.decodeStream(in);
+				roundedImage = ImageRounder.getRoundedCornerBitmap(image,5);
+				//TODO round the image corners here
+				
 			} catch (Exception e) {
 				Log.e("Error", e.getMessage());
 				e.printStackTrace();
 			}
-			return image;
+			return roundedImage;
 		}
 		
 		@Override

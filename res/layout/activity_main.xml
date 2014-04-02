@@ -68,27 +68,30 @@
 	    android:onClick="logIn"
 	    android:background="@drawable/button_state"
 	    android:layout_below="@id/passwordString"
+	    style="?android:textAppearanceLarge" 
 	    android:layout_centerHorizontal="true" />
+
 	<TextView
 	    android:id="@+id/newUserString"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_below="@id/loginButton"
-	    android:layout_marginTop="85dp"
-	    android:layout_alignLeft="@id/loginButton"
+	    android:layout_below="@+id/loginButton"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginTop="43dp"
 	    android:text="New User?"
 	    android:textSize="15sp" />
 
 	<Button
 	    android:id="@+id/newUserButton"
+	    style="?android:textAppearanceLarge"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignBaseline="@+id/newUserString"
-	    android:layout_alignBottom="@+id/newUserString"
-	    android:layout_alignLeft="@+id/userText"
-	    android:layout_toRightOf="@id/newUserString"
-	    android:textSize="15sp"
+	    android:layout_below="@+id/newUserString"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginTop="12dp"
+	    android:background="@drawable/button_state"
 	    android:onClick="signUp"
-	    android:text="Sign Up" />
+	    android:text="Sign Up"
+	    android:textSize="15sp" />
 
 </RelativeLayout>
