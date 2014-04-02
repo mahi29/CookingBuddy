@@ -8,6 +8,7 @@ public class Constants {
 	public static final String ADD_USER_URL = "/users/signup";
 	public static final String ADD_INGREDIENT_URL = "/ingredients/add";
 	public static final String REMOVE_INGREDIENT_URL = "/ingredients/remove";
+	public static final String UPDATE_INGREDIENT_URL = "/ingredients/update";
 	public static final String SEARCH_URL = "/recipes/search";
 	public static final String MAKE_RECIPE_URL = "/recipes/make";
 	public static final String INGREDIENT_LIST_URL = "/ingredients/get";

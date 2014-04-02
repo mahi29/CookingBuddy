@@ -16,12 +16,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -34,7 +36,10 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 	ArrayList<Ingredient> ingredientData;
 	String user;
 	final Context ctx = this;
+	final Activity act = this;
 	IngredientAdapter adapter;
+	Object mActionMode;
+	Ingredient selectedIngredient;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -108,24 +113,153 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		adapter = new IngredientAdapter(this,ingredientData);
 		ingredientList.setAdapter(adapter);
 		
-		ingredientList.setOnItemClickListener(new OnItemClickListener() {
+		ingredientList.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				Ingredient ing = ingredientData.get(position);
-				Log.d("IngredientActivity","Name: " + ing.name);
+				selectedIngredient = ingredientData.get(position);
+				Log.d("IngredientActivity","Name: " + selectedIngredient.name);
+				if (mActionMode != null) return false;
+				mActionMode = act.startActionMode(mActionModeCallback);
+				return true;
 			}
 		});
     }
+    /** Deletes an item from the Ingredient List and updates the database appropriately*/
+    @SuppressWarnings("unchecked")
+	private void deleteItem() {
+    	Log.d("IngredientActivity","Delete clicked");
+		if(ingredientData.remove(selectedIngredient)) {
+			adapter.notifyDataSetChanged();	
+		}
+		try {
+			JSONObject param = new JSONObject();
+			param.put(Constants.JSON_USERNAME,user);
+			param.put(Constants.INGREDIENT_NAME,selectedIngredient.name);
+			param.put(Constants.EXPIRATION,selectedIngredient.expDate);
+			ArrayList<Object> container = new ArrayList<Object>();
+			container.add(param);
+			container.add(Constants.REMOVE_INGREDIENT_URL);
+			task = new HTTPTask();
+			task.caller = (AsyncResponse) ctx;
+			task.execute(container);
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+    }
+    /** Updates an the quantity of an ingredient and updates the database appropriately*/
+    private void updateItem() {
+    	Log.d("IngredientActivity","Update clicked");
+    	LayoutInflater li = LayoutInflater.from(this);
+		View ingredientPrompt = li.inflate(R.layout.update_prompt, null);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final EditText newQuantity = (EditText) ingredientPrompt.findViewById(R.id.update_quant);
+		builder.setView(ingredientPrompt);
+		builder.setCancelable(true);
+		builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String q = newQuantity.getText().toString().trim();
+				double newQ = Double.parseDouble(q);
+				ingredientData.remove(selectedIngredient);
+				selectedIngredient.setQuantity(newQ);
+				ingredientData.add(selectedIngredient);
+				adapter.notifyDataSetChanged();
+				try {
+					JSONObject param = new JSONObject();
+					param.put(Constants.JSON_USERNAME,user);
+					param.put(Constants.INGREDIENT_NAME,selectedIngredient.name);
+					param.put(Constants.QUANTITY, newQ);
+					param.put(Constants.UNIT,selectedIngredient.unit);
+					param.put(Constants.EXPIRATION,selectedIngredient.expDate);
+					ArrayList<Object> container = new ArrayList<Object>();
+					container.add(param);
+					container.add(Constants.UPDATE_INGREDIENT_URL);
+					task = new HTTPTask();
+					task.caller = (AsyncResponse) ctx;
+					task.execute(container);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		AlertDialog alertDialog = builder.create(); 
+		alertDialog.show();
+    }
+    
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+				case R.id.cont_delete:
+					deleteItem();
+					mode.finish();
+					return true;
+				case R.id.cont_update:
+					updateItem();
+					mode.finish();
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			// TODO Auto-generated method stub
+			MenuInflater inflater = mode.getMenuInflater();
+	        inflater.inflate(R.menu.contextual, menu);
+	        return true;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			mActionMode = null;
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+    	
+    };
 	
 	@Override
-	public void processFinish(String output, String callingMethod) {
-		if (callingMethod.equals(Constants.INGREDIENT_LIST_URL)) {
-			populateList(output);
-		}  else {
-			Toast.makeText(this, "Ingredient Successfully Added", Toast.LENGTH_SHORT).show();
+	public void processFinish(String output, String callingMethod) { 
+		String errCode = Constants.ERROR_CODE;
+		try {
+			JSONObject out = new JSONObject(output);
+			errCode = out.getString(Constants.JSON_STANDARD_RESPONSE);
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
+		if (callingMethod.equals(Constants.INGREDIENT_LIST_URL)) {
+			Log.d("IngredientActivity","Return from Ingredient Population");
+			populateList(output);
+			return;
+		}
+		if (callingMethod.equals(Constants.REMOVE_INGREDIENT_URL)) {
+			if (errCode.equals(Constants.SUCCESS)) {
+				Toast.makeText(this, "Ingredient Successfully Deleted", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(this, "Sorry, there was some error!", Toast.LENGTH_SHORT).show();
+			}
+			return;
+		} 
+		if (callingMethod.equals(Constants.UPDATE_INGREDIENT_URL)) {
+			if (errCode.equals(Constants.SUCCESS)) {
+				Toast.makeText(this, "Ingredient Quantity Successfully Updated", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(this, "Sorry, there was some error!", Toast.LENGTH_SHORT).show();
+			}
+			return;
+		}
+		Toast.makeText(this, "Ingredient Successfully Added", Toast.LENGTH_SHORT).show();
 	}
 	
 	public void addIngredient(View v) {
@@ -180,14 +314,21 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 	protected class Ingredient {
 		String name;
 		String unit;
-		String amount;
+		String amountUnit;
+		double quantity;
 		String expDate;
 		
 		public Ingredient(String name, double amount, String unit, String date) {
 			this.name = name;
-			this.amount = amount + " " + unit;
+			this.amountUnit = amount + " " + unit;
 			this.unit = unit;
+			this.quantity = amount;
 			this.expDate = date;
+		}
+		
+		public void setQuantity(double amount) {
+			this.quantity = amount;
+			this.amountUnit = amount + " " + unit;
 		}
 	}
 }
