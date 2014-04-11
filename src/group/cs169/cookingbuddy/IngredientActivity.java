@@ -16,12 +16,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
@@ -61,7 +63,92 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		container.add(Constants.INGREDIENT_LIST_URL);
 		task = new HTTPTask();
 		task.caller = this;
-		task.execute(container);		
+		task.execute(container);	
+		//AKHIL: Setting the Adapter
+		adapter = new IngredientAdapter(this,ingredientData);
+		ingredientList.setMultiChoiceModeListener(new MultiChoiceModeListener() {
+			 
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode,
+                    int position, long id, boolean checked) {
+                // Capture total checked items
+            	/*
+                final int checkedCount = list.getCheckedItemCount();
+                // Set the CAB title according to total checked items
+                mode.setTitle(checkedCount + " Selected");
+                // Calls toggleSelection method from ListViewAdapter Class
+                listviewadapter.toggleSelection(position);
+                */
+            	int checkedCount = ingredientList.getCheckedItemCount();
+            	mode.setTitle(checkedCount + " Selected");
+            	Log.d("position passed in:","is"+position);
+            	adapter.toggleSelection(position);
+            	
+            }
+ 
+            @Override
+    		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            	/*
+            	 * Here we will need to handle the multiple delete case, if we
+            	 * have more than one update item selected at a time, we 
+            	 * must limit it so that we can only update one at a time.
+            	 */
+    			switch (item.getItemId()) {
+    				/*
+    				case R.id.cont_delete:
+    					deleteItem();
+    					mode.finish();
+    					return true;
+    				case R.id.cont_update:
+    					updateItem();
+    					mode.finish();
+    					return true;
+    				default:
+    					return false;
+    					
+    				AKHIL: These are the old single cases
+    				*/
+    				
+    				case R.id.cont_delete:
+    					deleteItems();
+    					mode.finish();
+    					return true;
+	    			case R.id.cont_update:
+	    				SparseBooleanArray selected = adapter.getSelectedIds();
+	    				if (selected.size() == 1){
+	    					updateItem();
+							mode.finish();
+	    				}
+	    				else{
+	    					onlyOneUpdate();	    					
+	    				}
+						return true;
+					default:
+						return false;
+						
+    			}
+    		}
+
+    		@Override
+    		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+    			// TODO Auto-generated method stub
+    			MenuInflater inflater = mode.getMenuInflater();
+    	        inflater.inflate(R.menu.contextual, menu);
+    	        return true;
+    		}
+
+    		@Override
+    		public void onDestroyActionMode(ActionMode mode) {
+    			adapter.removeSelection();
+    			mActionMode = null;
+    		}
+
+    		@Override
+    		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+    			return false;
+    		}
+        });
+		
 	}
 	
 	@Override
@@ -111,6 +198,9 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		}
 		//ArrayList<Ingredient> data = ingredientData;
 		adapter = new IngredientAdapter(this,ingredientData);
+		//AKHIL: Setting the choice mode to multiple
+		ingredientList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		//
 		ingredientList.setAdapter(adapter);
 		
 		ingredientList.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -118,14 +208,57 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
 					long id) {
+				//adapter.resetBooleanArray();
 				selectedIngredient = ingredientData.get(position);
 				Log.d("IngredientActivity","Name: " + selectedIngredient.name);
 				if (mActionMode != null) return false;
-				mActionMode = act.startActionMode(mActionModeCallback);
+				//mActionMode = act.startActionMode(mActionModeCallback);
 				return true;
 			}
 		});
     }
+    
+    private void deleteItems() {
+    	//selectedIngredient = ingredientData.get(position);
+    	Log.d("IngredientActivity","Delete Items Clicked");
+    	SparseBooleanArray selected = adapter.getSelectedIds();
+    	selectedIngredient = null;
+        // Captures all selected ids with a loop
+    	
+        for (int i = (selected.size() - 1); i >= 0; i--) {
+        	Log.d("Hww many items are selected","i:"+i);
+            if (selected.valueAt(i)) {
+            	Log.d("Value at "+i,"Boolean :"+selected.valueAt(i));
+            	Log.d("The position of the item","Position :"+selected.keyAt(i));
+            	selectedIngredient = (Ingredient) adapter.getItem(selected.keyAt(i));
+                //WorldPopulation selecteditem = listviewadapter.getItem(selected.keyAt(i));
+                // Remove selected items following the ids
+                //adapter.remove(selectedIngredient);                
+                if(ingredientData.remove(selectedIngredient)) {
+        			adapter.notifyDataSetChanged();	
+        		}
+        		try {
+        			JSONObject param = new JSONObject();
+        			param.put(Constants.JSON_USERNAME,user);
+        			param.put(Constants.INGREDIENT_NAME,selectedIngredient.name);
+        			param.put(Constants.EXPIRATION,selectedIngredient.expDate);
+        			ArrayList<Object> container = new ArrayList<Object>();
+        			container.add(param);
+        			container.add(Constants.REMOVE_INGREDIENT_URL);
+        			task = new HTTPTask();
+        			task.caller = (AsyncResponse) ctx;
+        			task.execute(container);
+        			
+        		} catch (JSONException e) {
+        			e.printStackTrace();
+        		}                                                
+            }
+        }
+		
+    }
+
+
+    
     /** Deletes an item from the Ingredient List and updates the database appropriately*/
     @SuppressWarnings("unchecked")
 	private void deleteItem() {
@@ -151,6 +284,14 @@ public class IngredientActivity extends Activity implements AsyncResponse {
     }
     /** Updates an the quantity of an ingredient and updates the database appropriately*/
     private void updateItem() {
+    	//AKHIL: New part added so that we can have multiple items
+    	SparseBooleanArray selected = adapter.getSelectedIds();
+    	selectedIngredient = null;
+    	int i = selected.size() - 1;
+    	selectedIngredient = (Ingredient) adapter.getItem(selected.keyAt(i));
+    	
+    	
+    	
     	Log.d("IngredientActivity","Update clicked");
     	LayoutInflater li = LayoutInflater.from(this);
 		View ingredientPrompt = li.inflate(R.layout.update_prompt, null);
@@ -190,9 +331,12 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		AlertDialog alertDialog = builder.create(); 
 		alertDialog.show();
     }
-    
+    /*
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
+    	
+    	//AKHIL:
+    	//here we will handle the case where the item is selectded
+    	
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			switch (item.getItemId()) {
@@ -228,7 +372,8 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		}
     	
     };
-	
+	*/
+    
 	@Override
 	public void processFinish(String output, String callingMethod) { 
 		String errCode = Constants.ERROR_CODE;
@@ -259,7 +404,19 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 			}
 			return;
 		}
-		Toast.makeText(this, "Ingredient Successfully Added", Toast.LENGTH_SHORT).show();
+		// AKHIL: Adding the Remove all case
+		if (callingMethod.equals(Constants.REMOVE_ALL)) {
+			if (errCode.equals(Constants.SUCCESS)){
+				Toast.makeText(this, "All Ingredients Removed", Toast.LENGTH_SHORT).show();
+			}
+			else {
+				Toast.makeText(this, "Sorry, there was some error!", Toast.LENGTH_SHORT).show();
+			}
+		}
+		//
+		else{
+			Toast.makeText(this, "Ingredient Successfully Added", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	public void addIngredient(View v) {
@@ -311,6 +468,50 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		
 
 	}
+	
+	//this is the remove all view
+	//AKHIL:
+	public void removeAll(View v) {
+		//LayoutInflater li = LayoutInflater.from(this);
+		//View ingredientPrompt = li.inflate(R.layout.ingredient_prompt, null);
+		//AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		//builder.setView(ingredientPrompt);
+		/*
+		final EditText nameField = (EditText) ingredientPrompt.findViewById(R.id.prompt_name);
+		final EditText amtField = (EditText) ingredientPrompt.findViewById(R.id.prompt_amt);
+		final EditText unitField = (EditText) ingredientPrompt.findViewById(R.id.prompt_unit);
+		final EditText expField = (EditText) ingredientPrompt.findViewById(R.id.prompt_exp);
+		*/
+				ingredientData.clear();
+				adapter.notifyDataSetChanged();
+				
+				try {
+					JSONObject param = new JSONObject();
+					param.put(Constants.JSON_USERNAME,user);
+					/*
+					param.put(Constants.INGREDIENT_NAME,ingName);
+					param.put(Constants.QUANTITY, amt);
+					param.put(Constants.UNIT,unit);
+					param.put(Constants.EXPIRATION,exp);
+					*/
+					ArrayList<Object> container = new ArrayList<Object>();
+					container.add(param);
+					container.add(Constants.REMOVE_ALL);
+					task = new HTTPTask();
+					task.caller = (AsyncResponse) ctx;
+					task.execute(container);
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+	}
+	
+	private void onlyOneUpdate(){
+		Toast.makeText(this, "Can only update one ingredient at a time", Toast.LENGTH_SHORT).show();
+	}
+	
+	
+	
 	protected class Ingredient {
 		String name;
 		String unit;

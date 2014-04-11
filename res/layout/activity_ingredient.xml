@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -25,18 +24,33 @@
         android:dividerHeight="1dp" >
     </ListView>
     
-    <Button
-        android:id="@+id/addbutton"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:text="Add Ingredient"
-        android:onClick="addIngredient"
-        android:layout_margin="15dp"
-        android:textSize="20sp"
-        android:gravity="center"
-        style="?android:textAppearanceLarge"        
-        android:background="@drawable/button_state"
-        />
+    <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp">
+                  	<Button
+                        android:id="@+id/btn_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Add Ingredient"
+                        android:onClick="addIngredient"
+                        android:background="@drawable/button_state"
+                         />
+
+                    <Button
+                        android:id="@+id/btn_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Remove All" 
+                        android:onClick="removeAll"
+                        android:background="@drawable/button_state"
+                        android:layout_marginLeft="10sp"
+                        />
+    </LinearLayout>
+    
+
 
 </LinearLayout>

@@ -14,6 +14,7 @@ public class Constants {
 	public static final String INGREDIENT_LIST_URL = "/ingredients/get";
 	public static final String HISTORY_URL = "/history";
 	public static final String CHANGE_PASSWORD = "/users/changePassword";
+	public static final String REMOVE_ALL = "/ingredients/removeAll";
 	
 	//Standard codes
 	public static final String JSON_USERNAME = "user";
