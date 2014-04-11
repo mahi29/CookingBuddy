@@ -29,6 +29,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class IngredientActivity extends Activity implements AsyncResponse {
@@ -425,7 +426,7 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setView(ingredientPrompt);
 		final EditText nameField = (EditText) ingredientPrompt.findViewById(R.id.prompt_name);
-		final EditText amtField = (EditText) ingredientPrompt.findViewById(R.id.prompt_amt);
+		final Spinner amtField = (Spinner) ingredientPrompt.findViewById(R.id.prompt_amt);
 		final EditText unitField = (EditText) ingredientPrompt.findViewById(R.id.prompt_unit);
 		final EditText expField = (EditText) ingredientPrompt.findViewById(R.id.prompt_exp);
 		
@@ -436,7 +437,7 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String ingName = nameField.getText().toString().trim();
-				String amt = amtField.getText().toString().trim();
+				String amt = String.valueOf(amtField.getSelectedItem());
 				String unit = unitField.getText().toString().trim();
 				String exp = expField.getText().toString().trim();
 				Ingredient tmp = new Ingredient(ingName,Double.parseDouble(amt),unit,exp);

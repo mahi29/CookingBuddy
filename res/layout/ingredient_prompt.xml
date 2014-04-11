@@ -27,14 +27,15 @@
             android:hint="Name" >
             <requestFocus />
         </EditText>
-        <EditText
+        
+        <Spinner
             android:id="@+id/prompt_amt"
-            android:layout_width="0dp"
-            android:layout_weight="1"            
+            android:layout_width="48dp"
             android:layout_height="wrap_content"
-            android:hint="Amt"
-            android:inputType="numberDecimal" >
-        </EditText>
+            android:layout_weight="0.16"
+            android:entries="@array/ingredient_arrays"
+            android:prompt="@string/ingredient_prompt" />
+        
         <EditText
             android:id="@+id/prompt_unit"
             android:layout_width="0dp"
