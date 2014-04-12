@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -63,6 +64,8 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 				container.add(Constants.ADD_USER_URL);
 				httpTask = new HTTPTask();
 				httpTask.caller = this;
+				httpTask.dialog = new ProgressDialog(this);
+				httpTask.callingActivity = Constants.SIGNUP_ACTIVITY;
 				httpTask.execute(container);
 			} catch (JSONException e) {
 				e.printStackTrace();

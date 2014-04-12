@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -96,6 +97,8 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 			container.add(Constants.SEARCH_URL);
 			task = new HTTPTask();
 			task.caller = this;
+			task.dialog = new ProgressDialog(this);
+			task.callingActivity = Constants.SEARCH_ACTIVITY;
 			task.execute(container);
 		}
 

@@ -21,6 +21,7 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 	public AsyncResponse caller = null;
 	public String method;
 	public ProgressDialog dialog;
+	public String callingActivity;
 	
 	@Override
 	protected String doInBackground(ArrayList<Object>... container) {
@@ -80,7 +81,15 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 	@Override
 	protected void onPreExecute() {
 		if (dialog != null) {
-			dialog.setMessage("Logging In. Please wait...");
+			String message = "Please wait...";
+			if (callingActivity.equals(Constants.SIGNUP_ACTIVITY)) {
+				message = "You are being created. Please wait...";
+			} else if (callingActivity.equals(Constants.MAIN_ACTIVITY)) {
+				message = "Granting permission. Please wait...";
+			} else if (callingActivity.equals(Constants.SEARCH_ACTIVITY)) {
+				message = "Searching the world for you. Please wait...";
+			}
+			dialog.setMessage(message);
 			dialog.show();
 		}
 	}

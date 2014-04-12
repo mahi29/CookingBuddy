@@ -70,6 +70,9 @@ public class AccountActivity extends Activity implements AsyncResponse{
 			Toast.makeText(this, "Error! Sorry, something broke...",Toast.LENGTH_LONG).show();
 		} else {
 			Toast.makeText(this, "Password successfully changed",Toast.LENGTH_LONG).show();
+			Intent i = new Intent(this, HomeActivity.class);
+			i.putExtra(Constants.JSON_USERNAME, username);
+			startActivity(i);
 		}
 		
 	}

@@ -15,6 +15,7 @@ public class Recipe implements Parcelable {
 	String imgUrl;
 	Bitmap img;
 	int rating;
+	int userRating;
 	Context context;
 	/**
 	 * 

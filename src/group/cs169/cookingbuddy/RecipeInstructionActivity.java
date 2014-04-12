@@ -3,17 +3,22 @@ package group.cs169.cookingbuddy;
 import java.io.InputStream;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -81,6 +86,25 @@ public class RecipeInstructionActivity extends Activity {
 		}
 	}
 	
+	/*
+	 * Triggered when the 'Make Recipe' button is clicked on Recipe Screen
+	 */
+	public void makeRecipe (View v) {
+		LayoutInflater li = LayoutInflater.from(this);
+		View recipePrompt = li.inflate(R.layout.recipe_prompt, null);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setView(recipePrompt);
+		RatingBar rating = (RatingBar) recipePrompt.findViewById(R.id.recipe_rating);
+		builder.setCancelable(true);
+		builder.setPositiveButton("Finish!", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				// TODO Auto-generated method stub
+			}
+		});
+		AlertDialog alertDialog = builder.create(); 
+		alertDialog.show();
+	}
 	private class DownloadTask extends AsyncTask<String, Void, Bitmap> {
 
 		Bitmap map;

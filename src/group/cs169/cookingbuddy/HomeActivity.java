@@ -9,10 +9,10 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -25,6 +25,7 @@ public class HomeActivity extends Activity implements AsyncResponse {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		Log.d("HomeActivity","onCreate");
 		Intent i = getIntent();
 		username = i.getStringExtra(Constants.JSON_USERNAME);
 		TextView welcome = (TextView) findViewById(R.id.welcomeText);

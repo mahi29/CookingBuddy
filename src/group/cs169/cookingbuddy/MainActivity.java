@@ -94,6 +94,7 @@ public class MainActivity extends Activity implements AsyncResponse {
 			container.add(Constants.LOGIN_USER_URL);
 			httpTask = new HTTPTask();
 			httpTask.caller = this;
+			httpTask.callingActivity = Constants.MAIN_ACTIVITY;
 			httpTask.dialog = new ProgressDialog(this);
 			httpTask.execute(container);
 		} catch (JSONException e) {

@@ -40,6 +40,11 @@ public class Constants {
 	//History
 	public static final String COMPLETED_USER_RECIPES = "userHistory";
 	
+	//Activity Names
+	public static final String SIGNUP_ACTIVITY = "SignUpActivity";
+	public static final String MAIN_ACTIVITY = "MainActivity";
+	public static final String SEARCH_ACTIVITY = "SearchResultActivity";
+	
 	public Constants() {
 		
 	}
