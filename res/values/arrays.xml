@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  	<array name="sort_options">
+  	    <item>Sort By</item>
+        <item>Prep Time</item>
+        <item>Rating</item>
+    </array>     
+</resources>

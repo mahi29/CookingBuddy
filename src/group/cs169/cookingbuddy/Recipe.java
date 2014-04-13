@@ -1,53 +1,69 @@
 package group.cs169.cookingbuddy;
 
+import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
+
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
-public class Recipe implements Parcelable {
+public class Recipe implements AsyncResponse {
 	String name;
 	String imgUrl;
 	Bitmap img;
-	int rating;
+	String rating;
 	int userRating;
 	Context context;
+	String id;
+	HTTPTask task;
+	String yield;
+	String prepTime; //in seconds	
 	/**
 	 * 
 	 * @param name - Recipe name
+	 * @param id - recipe id
 	 * @param imageUrl - URL of the image; can be null
 	 * @param rating - Recipe rating
+	 * @param ctx - Context of calling class
 	 */
-	public Recipe(String name, String imageUrl, int rating, Context ctx) {
+	public Recipe(String name, String id, String imageUrl, Context ctx) {
 		this.name = name;
 		this.context = ctx;
+		this.id = id;
 		this.imgUrl = imageUrl;
-		this.rating = rating;
-		//this.rating = R.drawable.rating;
 		if (imageUrl == null || imageUrl.equals("")) {
 			img  = BitmapFactory.decodeResource(context.getResources(), Constants.DEFAULT_PICTURE);
 		} else {
 			DownloadTask task = new DownloadTask(this);
 			task.execute(imageUrl);
 		}
+		
+
 	}
 	
-
-	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
-		
+	@SuppressWarnings("unchecked")
+	private void getRecipeData() {
+		ArrayList<Object> container = new ArrayList<Object>();
+		JSONObject param = new JSONObject();
+		try {
+			param.put(Constants.RECIPE_ID, id);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		container.add(param);
+		container.add(Constants.RECIPE_DATA);
+		task = new HTTPTask();
+		task.caller = this;
+		task.callingActivity = Constants.RECIPE_CLASS;
+		task.execute(container);
 	}
 	
 	private class DownloadTask extends AsyncTask<String, Void, Bitmap> {
@@ -66,7 +82,6 @@ public class Recipe implements Parcelable {
 				InputStream in = new java.net.URL(urldisplay).openStream();
 				image = BitmapFactory.decodeStream(in);
 				roundedImage = ImageRounder.getRoundedCornerBitmap(image,15);
-				//TODO round the image corners here
 				
 			} catch (Exception e) {
 				Log.e("Error", e.getMessage());
@@ -78,6 +93,30 @@ public class Recipe implements Parcelable {
 		@Override
 		protected void onPostExecute (Bitmap result) {
 			recipeInstance.img = result;
+			getRecipeData();
 		}
 	}
+
+
+
+
+	@Override
+	public void processFinish(String output, String callingMethod) {
+		try {
+			JSONObject result = new JSONObject(output);
+			yield = (String) result.getString("yield");
+			prepTime = (String) result.getString("totalTimeInSeconds");
+			rating = (String) result.getString("rating");
+			if (rating.equals("null")) rating = "0";
+			if (prepTime.equals("null")) prepTime = "0";
+			Log.d("RecipeFinish","Name: "+name+"\nYield: "+yield+"\nPrep Time: "+prepTime+"\nRating: "+rating);
+			SearchResultActivity sra = (SearchResultActivity) context;
+			sra.listData.add(this);
+			sra.adapter.notifyDataSetChanged();
+		} catch(JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+
 }

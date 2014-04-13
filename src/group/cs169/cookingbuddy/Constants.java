@@ -15,6 +15,7 @@ public class Constants {
 	public static final String HISTORY_URL = "/history";
 	public static final String CHANGE_PASSWORD = "/users/changePassword";
 	public static final String REMOVE_ALL = "/ingredients/removeAll";
+	public static final String RECIPE_DATA = "/recipes/getRecipeData";
 	
 	//Standard codes
 	public static final String JSON_USERNAME = "user";
@@ -36,6 +37,7 @@ public class Constants {
 	
 	//Search
 	public static final String SEARCH_KEYWORD = "q";
+	public static final String RECIPE_ID = "recipe_id";
 
 	//History
 	public static final String COMPLETED_USER_RECIPES = "userHistory";
@@ -44,6 +46,8 @@ public class Constants {
 	public static final String SIGNUP_ACTIVITY = "SignUpActivity";
 	public static final String MAIN_ACTIVITY = "MainActivity";
 	public static final String SEARCH_ACTIVITY = "SearchResultActivity";
+	public static final String RECIPE_CLASS = "recipe";
+	public static final String INGREDIENT_ACTIVITY = "IngredientActivity";
 	
 	public Constants() {
 		

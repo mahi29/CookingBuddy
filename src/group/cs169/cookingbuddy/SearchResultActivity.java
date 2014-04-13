@@ -3,6 +3,8 @@ package group.cs169.cookingbuddy;
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,17 +21,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.Spinner;
 
-public class SearchResultActivity extends Activity implements AsyncResponse {
+public class SearchResultActivity extends Activity implements AsyncResponse, OnItemSelectedListener {
 
-	private TextView searchQuery;
+	private Spinner searchSort;
 	public HTTPTask task;
 	ListView searchResults;
 	public ArrayList<Recipe> listData;
 	public Context ctx;
+	public SearchAdapter adapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) { 
@@ -37,7 +41,8 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 		setContentView(R.layout.activity_search_results);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		searchQuery = (TextView) findViewById(R.id.searchQuery);
+		searchSort = (Spinner) findViewById(R.id.search_sort);
+		searchSort.setOnItemSelectedListener(this);
 		searchResults = (ListView) findViewById(R.id.searchList);
 		ctx = this;
 		handleIntent(getIntent());
@@ -111,25 +116,29 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 		JSONObject result;
 		JSONArray names = null;
 		JSONArray images = null;
+		JSONArray ids = null;
 		listData = new ArrayList<Recipe>();
-		SearchAdapter adapter = new SearchAdapter(this,listData);
+		adapter = new SearchAdapter(this,listData);
 		searchResults.setAdapter(adapter);
+		ProgressDialog recipePD = new ProgressDialog(this);
+		recipePD.setMessage("Showing the Recipes. Please Wait...");
+		recipePD.show();
 		try {
 			result = new JSONObject(output);
+			ids = result.getJSONArray("recipe_id");
 			names = result.getJSONArray("recipe_name");
 			images = result.getJSONArray("smallImageUrls");
 			for (int i = 0; i < names.length(); i++) {
 				String name = names.getString(i);
+				String id = ids.getString(i);
 				JSONArray imageArray = images.getJSONArray(i);
 				String image = imageArray.getString(0);
-				Recipe temp = new Recipe(name, image, Constants.DEFAULT_RATING, this);
-				listData.add(temp);
-				adapter.notifyDataSetChanged();
-
+				new Recipe(name, id, image, this);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}	
+		recipePD.dismiss();
 		final ArrayList<Recipe> data = listData;
 		searchResults.setOnItemClickListener(new OnItemClickListener() {
 
@@ -137,7 +146,6 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long id) {
 				
-
 				Recipe recipe = data.get(position);
 				Intent intent = new Intent(ctx, RecipeInstructionActivity.class);
 				intent.putExtra("name",recipe.name);
@@ -148,4 +156,50 @@ public class SearchResultActivity extends Activity implements AsyncResponse {
 
 		});
 	}
+	
+	private void sortByPrep() {
+		Collections.sort(listData,new PrepSort());
+		adapter.notifyDataSetChanged();
+	}
+	
+	private void sortByTime() {
+		Collections.sort(listData,new RatingSort());
+		adapter.notifyDataSetChanged();
+	}
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		//Prep
+		if (arg2 == 1) {
+			sortByPrep();
+		} else if (arg2 == 2) { //Rating
+			sortByTime();
+		}
+	}
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public class RatingSort implements Comparator<Recipe> {
+		@Override
+		public int compare(Recipe r1, Recipe r2) {
+			int rating1 = Integer.parseInt(r1.rating);
+			int rating2 = Integer.parseInt(r2.rating);
+			return rating2 - rating1; 
+			// Sorts by descending order - i.e 5,4,3,2,1.
+			// If you want ascend sort => return rating1 - rating2 
+			// Sort of a  hacky solution. 
+		}
+	}
+	
+	public class PrepSort implements Comparator<Recipe> {
+		@Override
+		public int compare(Recipe r1, Recipe r2) {
+			int time1 = Integer.parseInt(r1.prepTime);
+			int time2 = Integer.parseInt(r2.prepTime);
+			return time1 - time2;
+		}
+	}		
 }

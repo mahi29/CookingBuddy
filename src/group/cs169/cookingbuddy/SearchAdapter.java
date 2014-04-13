@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class SearchAdapter extends BaseAdapter {
@@ -41,10 +42,12 @@ public class SearchAdapter extends BaseAdapter {
 		if (convertView == null) convertView = inflater.inflate(R.layout.search_row, null);
 		Recipe recipe = data.get(position);
 		ImageView img = (ImageView) convertView.findViewById(R.id.search_image);
+		RatingBar rating = (RatingBar) convertView.findViewById(R.id.search_rating);
 		TextView name = (TextView) convertView.findViewById(R.id.search_name);
-		//ImageView rating = (ImageView) convertView.findViewById(R.id.search_rating);
 		img.setImageBitmap(recipe.img);
 		name.setText(recipe.name);
+		float rate = Float.parseFloat(recipe.rating);
+		rating.setRating(rate);
 		//rating.setImageResource(recipe.rating);
 		return convertView;
 	}

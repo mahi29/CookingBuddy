@@ -4,14 +4,17 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent" >
-
-    <TextView
-        android:id="@+id/searchQuery"
+    
+    <Spinner
+        android:id="@+id/search_sort"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
         android:layout_gravity="center"
-        android:text="Search Param"
-        android:textSize="20sp" />
+        android:spinnerMode="dropdown"
+        android:entries="@array/sort_options" />
+        
 
     <ListView
         android:id="@+id/searchList"

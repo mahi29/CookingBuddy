@@ -88,6 +88,8 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 				message = "Granting permission. Please wait...";
 			} else if (callingActivity.equals(Constants.SEARCH_ACTIVITY)) {
 				message = "Searching the world for you. Please wait...";
+			} else if (callingActivity.equals(Constants.INGREDIENT_ACTIVITY)) {
+				message = "Pulling your Ingredient List now. Please wait...";
 			}
 			dialog.setMessage(message);
 			dialog.show();

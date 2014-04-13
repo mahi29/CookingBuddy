@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -64,6 +65,8 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		container.add(Constants.INGREDIENT_LIST_URL);
 		task = new HTTPTask();
 		task.caller = this;
+		task.dialog = new ProgressDialog(this);
+		task.callingActivity = Constants.INGREDIENT_ACTIVITY;
 		task.execute(container);	
 		//AKHIL: Setting the Adapter
 		adapter = new IngredientAdapter(this,ingredientData);
@@ -95,20 +98,6 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 				 * must limit it so that we can only update one at a time.
 				 */
 				switch (item.getItemId()) {
-				/*
-    				case R.id.cont_delete:
-    					deleteItem();
-    					mode.finish();
-    					return true;
-    				case R.id.cont_update:
-    					updateItem();
-    					mode.finish();
-    					return true;
-    				default:
-    					return false;
-
-    				AKHIL: These are the old single cases
-				 */
 
 				case R.id.cont_delete:
 					deleteItems();
@@ -121,8 +110,11 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 						mode.finish();
 					}
 					else{
-						onlyOneUpdate();	    					
+						Toast.makeText(ctx, "Can only update one ingredient at a time", Toast.LENGTH_SHORT).show();  					
 					}
+					return true;
+				case R.id.cont_selectAll:
+					selectAll();
 					return true;
 				default:
 					return false;
@@ -178,6 +170,13 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 			HomeActivity.logout(this);            
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	private void selectAll() {
+		//Trying to highlight all ingredients here...
+		for (int i =  0; i < ingredientData.size();i++) {
+			
 		}
 	}
 
@@ -291,9 +290,6 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		selectedIngredient = null;
 		int i = selected.size() - 1;
 		selectedIngredient = (Ingredient) adapter.getItem(selected.keyAt(i));
-
-
-
 		Log.d("IngredientActivity","Update clicked");
 		LayoutInflater li = LayoutInflater.from(this);
 		View ingredientPrompt = li.inflate(R.layout.update_prompt, null);
@@ -508,9 +504,6 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		}
 	}
 
-	private void onlyOneUpdate(){
-		Toast.makeText(this, "Can only update one ingredient at a time", Toast.LENGTH_SHORT).show();
-	}
 
 
 

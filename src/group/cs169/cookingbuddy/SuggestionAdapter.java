@@ -50,7 +50,7 @@ public class SuggestionAdapter extends BaseAdapter {
 		ImageView rating = (ImageView) convertView.findViewById(R.id.recipe_rating);
 		ImageView image = (ImageView) convertView.findViewById(R.id.recipe_image);
 		name.setText(item.name);
-		rating.setImageResource(item.rating);
+		//rating.setImageResource(item.rating);
 		image.setImageBitmap(item.img);
 		return convertView;
 	}

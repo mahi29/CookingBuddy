@@ -10,7 +10,9 @@
     <string name="action_account">Account</string>
     <string name="action_update">Update</string>
     <string name="action_delete">Delete</string>
-    <string name="ingredient_prompt">Choose a country</string>
+    <string name="action_selectAll">Select All</string>
+    <string name="ingredient_prompt">Choose a count</string>
+    <string name="sort_prompt">Sort By</string>
  
     <string-array name="ingredient_arrays">
         <item>1</item>
@@ -32,5 +34,7 @@
         <item>17</item>
         <item>18</item>
     </string-array>
+    
+ 
 
 </resources>
