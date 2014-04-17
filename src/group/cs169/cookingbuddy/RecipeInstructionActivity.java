@@ -18,6 +18,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +38,7 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 	String name;
 	Bitmap img;
 	Recipe recipe;
-	int rating;
+	String rating;
 	Context ctx;
 	String username;
 	HTTPTask task;
@@ -48,8 +50,9 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 		Intent intent = getIntent();
 		imgUrl = intent.getStringExtra("image");
 		name = intent.getStringExtra("name");
-		rating = intent.getIntExtra("rating", 1);
+		rating = intent.getStringExtra("rating");
 		recipe = (Recipe) intent.getSerializableExtra("recipe");
+		
 		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 		username = prefs.getString(Constants.JSON_USERNAME, "username");
 		//Log.d("RecipeInstructionActivity", "Username: " + username);
@@ -58,19 +61,19 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 		if (imgUrl == null || imgUrl.equals("")) {
 			img  = BitmapFactory.decodeResource(this.getResources(), Constants.DEFAULT_PICTURE);
 		} else {
-			DownloadTask task = new DownloadTask(img);
+			DownloadTask task = new DownloadTask();
+			//Log.d("RecipeInstructionActivity", "About to call execute() with URL " + imgUrl);
 			task.execute(imgUrl);
 		}
 		
 		TextView recipeName = (TextView) findViewById(R.id.recipename);
 		recipeName.setText(name);
+		
 		ImageView image = (ImageView) findViewById(R.id.recipeimage);
-		if (image == null){
-			Log.d("HERE","IMAGE WAS NULL!!!!!!!!!!!");
-		}
-		//Log.d("Checkpoint 1","Should always display this message");
-		Log.d("Image URL",imgUrl);
-		image.setImageBitmap(img);
+		Log.d("RecipeInstructionActivity","Image URL is " + imgUrl);
+		Drawable drawable = new BitmapDrawable(ctx.getResources(),img);
+		image.setImageDrawable(drawable);
+		
 
 	}
 
@@ -108,6 +111,7 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 	/*
 	 * Triggered when the 'Make Recipe' button is clicked on Recipe Screen
 	 */
+	
 	public void makeRecipe (View v) {
 		LayoutInflater li = LayoutInflater.from(this);
 		View recipePrompt = li.inflate(R.layout.recipe_prompt, null);
@@ -117,6 +121,7 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 		builder.setCancelable(true);
 		final float ratingValue = rating.getRating();
 		builder.setPositiveButton("Finish!", new DialogInterface.OnClickListener() {
+			
 			@SuppressWarnings("unchecked")
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
@@ -157,33 +162,35 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 	}
 	private class DownloadTask extends AsyncTask<String, Void, Bitmap> {
 
-		Bitmap map;
+	
 		
-		public DownloadTask(Bitmap bmap) {
-			this.map = bmap;
-		}
 		@Override
 		protected Bitmap doInBackground(String... urls) {
 			String urldisplay = urls[0];
+			Log.d("Inside RecInstAct doInBack", "URL is " + urldisplay);
 			Bitmap image = null;
-			Bitmap roundedImage = null;
+			//Bitmap roundedImage = null;
 			try {
 				InputStream in = new java.net.URL(urldisplay).openStream();
 				image = BitmapFactory.decodeStream(in);
-				roundedImage = ImageRounder.getRoundedCornerBitmap(image,15);
-				
+				//roundedImage = ImageRounder.getRoundedCornerBitmap(image,15);
 			} catch (Exception e) {
 				Log.e("Error", e.getMessage());
 				e.printStackTrace();
 			}
-			return roundedImage;
+			
+			//map = image;
+			return image;
 		}
 		
 		@Override
 		protected void onPostExecute (Bitmap result) {
-			map = result;
+			Log.d("Inside Download Task", "Fuck my life");
+			//return result
+			
 		}
 	}
+	
 	@Override
 	public void processFinish(String output, String callingMethod) {
 		

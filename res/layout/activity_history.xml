@@ -13,13 +13,50 @@
         android:layout_centerHorizontal="true"
         android:text="Completed Recipes"
         android:textSize="20sp" />
+    
+   <LinearLayout
+       android:id="@+id/historylabels"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:layout_below="@id/textView1">
+       
+       <TextView
+           android:id="@+id/recipelabel"
+           android:layout_width="10sp"
+           android:layout_height="wrap_content"
+           android:textSize="15sp"
+           android:gravity="center"
+           android:layout_weight="3"
+           android:layout_marginLeft="6sp"
+           android:text="Recipes"/>
+       
+       <TextView
+           android:id="@+id/datelabel"
+           android:layout_width="14sp"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:textSize="15sp"
+           android:layout_weight="2"
+           android:text="Date Created"/>
+       
+       <TextView
+           android:id="@+id/ratinglabel"
+           android:layout_width="5sp"
+           android:layout_height="wrap_content"
+           android:textSize="15sp"
+           android:gravity="center"
+           android:layout_weight="1"
+           android:text="Rating"/>
+       
+   </LinearLayout>
 
-    <ListView
+   <ListView
         android:id="@+id/history_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1" >
+        android:layout_below="@+id/historylabels" >
     </ListView>
 
 </RelativeLayout>

@@ -50,7 +50,7 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 			urlConn.connect();  
 			
 			//Send the POST request to the back-end
-			Log.d("HTTPTask","The POST request being sent to the backend is " + param.toString());
+			//Log.d("HTTPTask","The POST request being sent to the backend is " + param.toString());
 			byte[] outputBytes = param.toString().getBytes("UTF-8");
 			OutputStream os = urlConn.getOutputStream();
 			os.write(outputBytes);
@@ -72,7 +72,7 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 		}  finally {
 			if(urlConn !=null)  urlConn.disconnect(); 
 		}
-		Log.d("HTTPTask","Result: " + result.toString());
+		//Log.d("HTTPTask","Result: " + result.toString());
 		
 		return result;	
 	}
