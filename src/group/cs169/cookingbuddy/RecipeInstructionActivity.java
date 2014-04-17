@@ -69,6 +69,12 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 		TextView recipeName = (TextView) findViewById(R.id.recipename);
 		recipeName.setText(name);
 		
+		TextView estimatedPrepTime = (TextView) findViewById(R.id.estimatedpreptime);
+		estimatedPrepTime.setText(recipe.prepTime);
+		
+		TextView yield = (TextView) findViewById(R.id.yield);
+		yield.setText(recipe.yield);		
+		
 		ImageView image = (ImageView) findViewById(R.id.recipeimage);
 		Log.d("RecipeInstructionActivity","Image URL is " + imgUrl);
 		Drawable drawable = new BitmapDrawable(ctx.getResources(),img);
