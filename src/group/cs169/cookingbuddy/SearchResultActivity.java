@@ -32,7 +32,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 	public HTTPTask task;
 	ListView searchResults;
 	public ArrayList<Recipe> listData;
-	public Context ctx;
+	public transient Context ctx;
 	public SearchAdapter adapter;
 
 	@Override
@@ -89,6 +89,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 	 */
 	@SuppressWarnings("unchecked")
 	private void handleIntent(Intent intent) {
+		
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			ArrayList<Object> container = new ArrayList<Object>();
@@ -146,11 +147,12 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long id) {
 				
-				Recipe recipe = data.get(position);
+				final Recipe recipe = data.get(position);
 				Intent intent = new Intent(ctx, RecipeInstructionActivity.class);
 				intent.putExtra("name",recipe.name);
 				intent.putExtra("rating", recipe.rating);
 				intent.putExtra("image", recipe.imgUrl);
+				intent.putExtra("recipe", recipe);
 				startActivity(intent);
 			}
 

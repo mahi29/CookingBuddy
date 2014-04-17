@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +31,8 @@ public class HomeActivity extends Activity implements AsyncResponse {
 		username = i.getStringExtra(Constants.JSON_USERNAME);
 		TextView welcome = (TextView) findViewById(R.id.welcomeText);
 		welcome.setText("Welcome " + username);
+		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+		prefs.edit().putString(Constants.JSON_USERNAME, username).commit();
 	}
 
 

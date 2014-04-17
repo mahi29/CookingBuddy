@@ -12,7 +12,7 @@ public class Constants {
 	public static final String SEARCH_URL = "/recipes/search";
 	public static final String MAKE_RECIPE_URL = "/recipes/make";
 	public static final String INGREDIENT_LIST_URL = "/ingredients/get";
-	public static final String HISTORY_URL = "/history";
+	public static final String HISTORY_URL = "/recipes/history";
 	public static final String CHANGE_PASSWORD = "/users/changePassword";
 	public static final String REMOVE_ALL = "/ingredients/removeAll";
 	public static final String RECIPE_DATA = "/recipes/getRecipeData";
@@ -26,6 +26,7 @@ public class Constants {
 	public static final int DEFAULT_RATING = 3;
 	public static final int DEFAULT_PICTURE = R.drawable.stockimage;
 	public static final String ERROR_CODE = "-100";
+	public static final String SHARED_PREFS_USERNAME = "blah";
 	
 	//Ingredient List
 	public static final String INGREDIENT_KEY = "items"; 
@@ -40,7 +41,10 @@ public class Constants {
 	public static final String RECIPE_ID = "recipe_id";
 
 	//History
-	public static final String COMPLETED_USER_RECIPES = "userHistory";
+	public static final String COMPLETED_USER_RECIPES = "history";
+	public static final String RECIPE_NAME = "recipe_name";
+	public static final String CURRENT_DATE = "current_date";
+	public static final String RATING = "rating";
 	
 	//Activity Names
 	public static final String SIGNUP_ACTIVITY = "SignUpActivity";

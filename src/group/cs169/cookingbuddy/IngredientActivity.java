@@ -227,7 +227,7 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		// Captures all selected ids with a loop
 
 		for (int i = (selected.size() - 1); i >= 0; i--) {
-			Log.d("Hww many items are selected","i:"+i);
+			Log.d("How many items are selected","i:"+i);
 			if (selected.valueAt(i)) {
 				Log.d("Value at "+i,"Boolean :"+selected.valueAt(i));
 				Log.d("The position of the item","Position :"+selected.keyAt(i));

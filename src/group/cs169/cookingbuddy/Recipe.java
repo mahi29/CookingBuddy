@@ -3,8 +3,8 @@ package group.cs169.cookingbuddy;
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,15 +15,16 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class Recipe implements AsyncResponse {
+public class Recipe implements AsyncResponse, Serializable {
+	
 	String name;
 	String imgUrl;
-	Bitmap img;
+	transient Bitmap img;
 	String rating;
 	int userRating;
-	Context context;
+	transient Context context;
 	String id;
-	HTTPTask task;
+	transient HTTPTask task;
 	String yield;
 	String prepTime; //in seconds	
 	/**
