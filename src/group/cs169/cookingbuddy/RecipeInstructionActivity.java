@@ -36,7 +36,7 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 	
 	String imgUrl;
 	String name;
-	Bitmap img;
+	Bitmap imgBitmap;
 	Recipe recipe;
 	String rating;
 	Context ctx;
@@ -55,14 +55,13 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 		
 		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 		username = prefs.getString(Constants.JSON_USERNAME, "username");
-		//Log.d("RecipeInstructionActivity", "Username: " + username);
 		ctx = this;
 		
 		if (imgUrl == null || imgUrl.equals("")) {
-			img  = BitmapFactory.decodeResource(this.getResources(), Constants.DEFAULT_PICTURE);
+			imgBitmap  = BitmapFactory.decodeResource(this.getResources(), Constants.DEFAULT_PICTURE);
 		} else {
-			DownloadTask task = new DownloadTask();
-			//Log.d("RecipeInstructionActivity", "About to call execute() with URL " + imgUrl);
+			modifyURL();
+			DownloadTask task = new DownloadTask(this);
 			task.execute(imgUrl);
 		}
 		
@@ -76,13 +75,19 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 		yield.setText(recipe.yield);		
 		
 		ImageView image = (ImageView) findViewById(R.id.recipeimage);
-		Log.d("RecipeInstructionActivity","Image URL is " + imgUrl);
-		Drawable drawable = new BitmapDrawable(ctx.getResources(),img);
-		image.setImageDrawable(drawable);
+		image.setImageBitmap(imgBitmap);
 		
 
 	}
-
+	/**
+	 * Takes in the URL and makes it a larger image URL
+	 * Does so by removing *s=90 and replacing it to s=270
+	 */
+	private void modifyURL() {
+		String tempURL = imgUrl.substring(0,imgUrl.length()-2);
+		tempURL += "9999";
+		imgUrl = tempURL;
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -143,13 +148,9 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 				Calendar c = Calendar.getInstance();
 				try {
 					param.put(Constants.JSON_USERNAME, username);
-					//Log.d("Filling in the JSON", "Username is " + username);
 					param.put(Constants.RECIPE_NAME, recipe.name);
-					//Log.d("Filling in the JSON", "Recipe name is " + recipe.name);
 					param.put(Constants.CURRENT_DATE, c.get(Calendar.MONTH) + "/" + c.get(Calendar.DATE) + "/" + c.get(Calendar.YEAR));
-					//Log.d("Filling in the JSON", "Date is " + c.get(Calendar.DATE));
 					param.put(Constants.RATING, ratingValue);
-					//Log.d("Filling in the JSON", "Rating is " + ratingValue);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -160,7 +161,6 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 				//task.dialog = new ProgressDialog(this);
 				//task.callingActivity = Constants.SEARCH_ACTIVITY;
 				task.execute(container);
-				// TODO Auto-generated method stub
 			}
 		});
 		AlertDialog alertDialog = builder.create(); 
@@ -168,31 +168,35 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 	}
 	private class DownloadTask extends AsyncTask<String, Void, Bitmap> {
 
-	
+		RecipeInstructionActivity rIA;
+		
+		public DownloadTask(RecipeInstructionActivity ctx) {
+			this.rIA = ctx;
+		}
 		
 		@Override
 		protected Bitmap doInBackground(String... urls) {
 			String urldisplay = urls[0];
-			Log.d("Inside RecInstAct doInBack", "URL is " + urldisplay);
 			Bitmap image = null;
-			//Bitmap roundedImage = null;
+			Bitmap roundedImage = null;
 			try {
 				InputStream in = new java.net.URL(urldisplay).openStream();
 				image = BitmapFactory.decodeStream(in);
-				//roundedImage = ImageRounder.getRoundedCornerBitmap(image,15);
+				roundedImage = ImageRounder.getRoundedCornerBitmap(image,15);
 			} catch (Exception e) {
 				Log.e("Error", e.getMessage());
 				e.printStackTrace();
 			}
 			
 			//map = image;
-			return image;
+			return roundedImage;
 		}
 		
 		@Override
 		protected void onPostExecute (Bitmap result) {
-			Log.d("Inside Download Task", "Fuck my life");
-			//return result
+			rIA.imgBitmap = result;
+			ImageView image = (ImageView) findViewById(R.id.recipeimage);
+			image.setImageBitmap(imgBitmap);
 			
 		}
 	}
@@ -200,7 +204,6 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 	@Override
 	public void processFinish(String output, String callingMethod) {
 		
-		Log.d("RecipeInstructionAcitivty", "Made it to process finish");
 		Intent intent = new Intent(ctx,HistoryActivity.class);
 		intent.putExtra("username", username);
 		startActivity(intent);
