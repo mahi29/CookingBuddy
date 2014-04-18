@@ -34,6 +34,9 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 	public ArrayList<Recipe> listData;
 	public transient Context ctx;
 	public SearchAdapter adapter;
+	public boolean filter;
+	public String[] filterNames;
+	String query;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) { 
@@ -90,12 +93,23 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 	@SuppressWarnings("unchecked")
 	private void handleIntent(Intent intent) {
 		
+		filter = false;
+		
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			String query = intent.getStringExtra(SearchManager.QUERY);
+			query = intent.getStringExtra(SearchManager.QUERY);
 			ArrayList<Object> container = new ArrayList<Object>();
 			JSONObject param = new JSONObject();
+			
+			//TODO Create filterNames
 			try {
-				param.put(Constants.SEARCH_KEYWORD, query);
+				if (!filter){
+					param.put(Constants.SEARCH_KEYWORD, query);
+					
+				}
+				else {
+					param.put(Constants.SEARCH_KEYWORD, query);
+					param.put("allowedCourseFilters", filterNames);
+				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -107,7 +121,26 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 			task.callingActivity = Constants.SEARCH_ACTIVITY;
 			task.execute(container);
 		}
-
+	}
+	
+	public void dairyFilter(View view){
+		ArrayList<Object> container = new ArrayList<Object>();
+		JSONObject param = new JSONObject();
+		//TODO Talk to Kevin to add more filters
+		try{
+			param.put(Constants.SEARCH_KEYWORD, query);
+			param.put("allowedAllergy", "396^Dairy-Free");
+		} catch (JSONException e){
+			e.printStackTrace();
+		}
+		container.add(param);
+		container.add(Constants.SEARCH_URL);
+		task = new HTTPTask();
+		task.caller = this;
+		task.dialog = new ProgressDialog(this);
+		task.callingActivity = Constants.SEARCH_ACTIVITY;
+		task.execute(container);
+		
 	}
 
 	@Override
@@ -118,6 +151,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 		JSONArray names = null;
 		JSONArray images = null;
 		JSONArray ids = null;
+		JSONArray urls = null;
 		listData = new ArrayList<Recipe>();
 		adapter = new SearchAdapter(this,listData);
 		searchResults.setAdapter(adapter);
@@ -129,9 +163,11 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 			ids = result.getJSONArray("recipe_id");
 			names = result.getJSONArray("recipe_name");
 			images = result.getJSONArray("smallImageUrls");
+			//urls = result.getJSONArray("url");
 			for (int i = 0; i < names.length(); i++) {
 				String name = names.getString(i);
 				String id = ids.getString(i);
+				//String url = urls.getString(i);
 				JSONArray imageArray = images.getJSONArray(i);
 				String image = imageArray.getString(0);
 				new Recipe(name, id, image, this);
@@ -141,6 +177,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 		}	
 		recipePD.dismiss();
 		final ArrayList<Recipe> data = listData;
+		
 		searchResults.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -168,6 +205,8 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 		Collections.sort(listData,new RatingSort());
 		adapter.notifyDataSetChanged();
 	}
+	
+	
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {

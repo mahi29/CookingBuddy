@@ -15,12 +15,14 @@ public class HistoryAdapter extends BaseAdapter {
 	Context context;
 	ArrayList<String> completedRecipes;
 	ArrayList<String> dates;
+	ArrayList<Integer> ratings;
 	LayoutInflater inflater;
 	
-	public HistoryAdapter(Context arg1, ArrayList<String> completedRecipes, ArrayList<String> creationDates){
+	public HistoryAdapter(Context arg1, ArrayList<String> completedRecipes, ArrayList<String> creationDates, ArrayList<Integer> ratings){
 		context = arg1;
 		this.completedRecipes = completedRecipes;
-		dates = creationDates;
+		this.dates = creationDates;
+		this.ratings = ratings;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		Log.d("HistoryAdapter", "Made it to the adapter's constructor");
 	}
@@ -54,7 +56,7 @@ public class HistoryAdapter extends BaseAdapter {
 		dateCreated.setText(dates.get(position));
 		//Log.d("INSIDE THE GETVIEW METHOD", "Date to be filled is " + dates.get(position));
 		TextView rating = (TextView) rowView.findViewById(R.id.userrating);
-		rating.setText("5");
+		rating.setText(ratings.get(position).toString());
 		return rowView;
 	}
 	

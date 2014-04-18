@@ -5,15 +5,33 @@
     android:orientation="vertical"
     android:layout_height="match_parent" >
     
-    <Spinner
-        android:id="@+id/search_sort"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/holderlinearlayout"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:spinnerMode="dropdown"
-        android:entries="@array/sort_options" />
+        android:orientation="horizontal">
+    
+	    <Spinner
+	        android:id="@+id/search_sort"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:layout_gravity="center"
+	        android:spinnerMode="dropdown"
+	        android:entries="@array/sort_options" />
+	    
+	    <Button
+	        android:id="@+id/filterbutton"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="No Dairy"
+	        android:background="@drawable/button_state"
+	        android:onClick="dairyFilter"
+	        />
+    
+    </LinearLayout>
         
 
     <ListView

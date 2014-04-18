@@ -3,6 +3,7 @@ package group.cs169.cookingbuddy;
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +18,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -26,6 +26,7 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 	HTTPTask httpTask;
 	ArrayList<String> strings;
 	ArrayList<String> creationDates;
+	ArrayList<Integer> ratings;
 	ListView listview;
 	HistoryAdapter adapter;
 	
@@ -44,11 +45,13 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 		
 		try {
 			json.put(Constants.JSON_USERNAME,username);
-			Log.d("HistoryActivity", "User is " + username);
+			//Log.d("HistoryActivity", "User is " + username);
 			ArrayList<Object> container = new ArrayList<Object>();
 			//The JSONObject and path must be added in this order! JSONObject first, path second
 			container.add(json);
 			container.add(Constants.HISTORY_URL);
+			//This call will get the ratings
+			//container.add(Constants.HISTORY_URL_TEMP);
 			//Log.d("Size of ArrayList", "The size is " + container.size() );
 			httpTask = new HTTPTask();
 			httpTask.caller = this;
@@ -105,10 +108,17 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 			int arrayLength = jsonArray.length();
 			strings = new ArrayList<String>();
 			creationDates = new ArrayList<String>();
+			ratings = new ArrayList<Integer>();
+			Random random = new Random();
 			
 			for (int i = 0; i < arrayLength; i++){
+				
 				strings.add(jsonArray.getJSONObject(i).getString("recipe_name"));
 				creationDates.add(jsonArray.getJSONObject(i).getString("date_created"));
+				ratings.add((int) Math.ceil(random.nextInt(5)+1));
+				//This code retrieve ratings from the DB
+				//ratings.add(jsonArray.getJSONObject(i).getInt("rating"));
+				
 				//Log.d("HistoryActivity", "Recipe from backend is " + jsonArray.getJSONObject(i).getString("recipe_name"));
 				//Log.d("HistoryActivity", "Creation date from backend is " + jsonArray.getJSONObject(i).getString("date_created"));
 			}
@@ -117,6 +127,9 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Log.d("Size of Recipe List", "There are " + strings.size() + " recipes");
+		Log.d("Size of Ratings List", "There are " + ratings.size() + " ratings");
 		
 		//int arrayListLength = strings.size();
 		//String stringArray[] = new String[arrayListLength];
@@ -127,7 +140,7 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 //		}
 		//Log.d("HistoryActivity", "About to call the setAdapter() method");
 		
-		adapter = new HistoryAdapter(this, strings, creationDates);
+		adapter = new HistoryAdapter(this, strings, creationDates, ratings);
 		listview.setAdapter(adapter);
 	}
 

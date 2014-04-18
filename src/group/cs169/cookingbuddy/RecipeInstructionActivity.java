@@ -45,6 +45,7 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recipeinstruction);
 		Intent intent = getIntent();
@@ -69,10 +70,21 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 		recipeName.setText(name);
 		
 		TextView estimatedPrepTime = (TextView) findViewById(R.id.estimatedpreptime);
-		estimatedPrepTime.setText(recipe.prepTime);
-		
+		int time = Integer.parseInt(recipe.prepTime);
+		int minutes = time/60;
+		int seconds = time - (60*(minutes));
+		//estimatedPrepTime.setText(recipe.prepTime);
+		if (time > 0){
+			estimatedPrepTime.setText("Estimated prep time: " + minutes + " minutes and " + seconds + " seconds");
+		}
+		else {
+			estimatedPrepTime.setText("Estimated prep time is not available");
+		}
 		TextView yield = (TextView) findViewById(R.id.yield);
-		yield.setText(recipe.yield);		
+		yield.setText("Yield: " + recipe.yield);
+		
+		//TextView url = (TextView) findViewById(R.id.instructionurl);
+		//url.setText("Recipe Instructions " + recipe.instructionUrl);
 		
 		ImageView image = (ImageView) findViewById(R.id.recipeimage);
 		image.setImageBitmap(imgBitmap);
@@ -151,6 +163,7 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 					param.put(Constants.RECIPE_NAME, recipe.name);
 					param.put(Constants.CURRENT_DATE, c.get(Calendar.MONTH) + "/" + c.get(Calendar.DATE) + "/" + c.get(Calendar.YEAR));
 					param.put(Constants.RATING, ratingValue);
+					
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

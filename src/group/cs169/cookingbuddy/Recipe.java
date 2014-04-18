@@ -27,6 +27,7 @@ public class Recipe implements AsyncResponse, Serializable {
 	transient HTTPTask task;
 	String yield;
 	String prepTime; //in seconds	
+	String instructionUrl;
 	/**
 	 * 
 	 * @param name - Recipe name
@@ -39,6 +40,7 @@ public class Recipe implements AsyncResponse, Serializable {
 		this.name = name;
 		this.context = ctx;
 		this.id = id;
+		
 		this.imgUrl = imageUrl;
 		if (imageUrl == null || imageUrl.equals("")) {
 			img  = BitmapFactory.decodeResource(context.getResources(), Constants.DEFAULT_PICTURE);

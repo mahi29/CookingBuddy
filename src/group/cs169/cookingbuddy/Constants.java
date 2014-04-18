@@ -13,6 +13,7 @@ public class Constants {
 	public static final String MAKE_RECIPE_URL = "/recipes/make";
 	public static final String INGREDIENT_LIST_URL = "/ingredients/get";
 	public static final String HISTORY_URL = "/recipes/history";
+	public static final String HISTORY_URL_TEMP = "/recipes/historyTemp";
 	public static final String CHANGE_PASSWORD = "/users/changePassword";
 	public static final String REMOVE_ALL = "/ingredients/removeAll";
 	public static final String RECIPE_DATA = "/recipes/getRecipeData";
