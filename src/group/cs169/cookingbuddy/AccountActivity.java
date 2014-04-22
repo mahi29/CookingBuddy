@@ -6,16 +6,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AccountActivity extends Activity implements AsyncResponse{
+public class AccountActivity extends BaseActivity implements AsyncResponse{
 
 	TextView msg;
 	EditText oldPass;
@@ -28,8 +28,8 @@ public class AccountActivity extends Activity implements AsyncResponse{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_account);
-		Intent i = getIntent();
-		username = i.getStringExtra(Constants.JSON_USERNAME);
+		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+		username = prefs.getString(Constants.JSON_USERNAME, "username");
 		msg = (TextView) findViewById(R.id.acctName);
 		msg.setText(username+"'s Account");
 		oldPass = (EditText) findViewById(R.id.acctOldPassText);
@@ -61,7 +61,6 @@ public class AccountActivity extends Activity implements AsyncResponse{
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
@@ -71,10 +70,8 @@ public class AccountActivity extends Activity implements AsyncResponse{
 		} else {
 			Toast.makeText(this, "Password successfully changed",Toast.LENGTH_LONG).show();
 			Intent i = new Intent(this, HomeActivity.class);
-			i.putExtra(Constants.JSON_USERNAME, username);
 			startActivity(i);
 		}
-		
 	}
 
 }

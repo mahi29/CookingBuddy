@@ -32,7 +32,7 @@ import android.widget.RatingBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-public class RecipeInstructionActivity extends Activity implements AsyncResponse {
+public class RecipeInstructionActivity extends BaseActivity implements AsyncResponse {
 	
 	String imgUrl;
 	String name;
@@ -53,7 +53,6 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 		name = intent.getStringExtra("name");
 		rating = intent.getStringExtra("rating");
 		recipe = (Recipe) intent.getSerializableExtra("recipe");
-		
 		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 		username = prefs.getString(Constants.JSON_USERNAME, "username");
 		ctx = this;
@@ -87,9 +86,7 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 		//url.setText("Recipe Instructions " + recipe.instructionUrl);
 		
 		ImageView image = (ImageView) findViewById(R.id.recipeimage);
-		image.setImageBitmap(imgBitmap);
-		
-
+		image.setImageBitmap(imgBitmap);	
 	}
 	/**
 	 * Takes in the URL and makes it a larger image URL
@@ -99,36 +96,6 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 		String tempURL = imgUrl.substring(0,imgUrl.length()-2);
 		tempURL += "9999";
 		imgUrl = tempURL;
-	}
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-				.getActionView();
-		searchView.setSearchableInfo(searchManager
-				.getSearchableInfo(getComponentName()));
-		return super.onCreateOptionsMenu(menu);
-
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Take appropriate action for each action item click
-		switch (item.getItemId()) {
-		case R.id.action_search:
-			// search action
-			onSearchRequested();
-			return true;
-		case android.R.id.home:
-			Intent intent = new Intent(this, HomeActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
 	}
 	
 	/*
@@ -216,11 +183,8 @@ public class RecipeInstructionActivity extends Activity implements AsyncResponse
 	
 	@Override
 	public void processFinish(String output, String callingMethod) {
-		
 		Intent intent = new Intent(ctx,HistoryActivity.class);
-		intent.putExtra("username", username);
-		startActivity(intent);
-				
+		startActivity(intent);		
 	}
 
 

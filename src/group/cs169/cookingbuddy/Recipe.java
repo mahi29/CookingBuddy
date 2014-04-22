@@ -100,9 +100,6 @@ public class Recipe implements AsyncResponse, Serializable {
 		}
 	}
 
-
-
-
 	@Override
 	public void processFinish(String output, String callingMethod) {
 		try {
@@ -112,7 +109,6 @@ public class Recipe implements AsyncResponse, Serializable {
 			rating = (String) result.getString("rating");
 			if (rating.equals("null")) rating = "0";
 			if (prepTime.equals("null")) prepTime = "0";
-			//Log.d("RecipeFinish","Name: "+name+"\nYield: "+yield+"\nPrep Time: "+prepTime+"\nRating: "+rating);
 			SearchResultActivity sra = (SearchResultActivity) context;
 			sra.listData.add(this);
 			sra.adapter.notifyDataSetChanged();

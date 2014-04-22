@@ -26,7 +26,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
-public class SearchResultActivity extends Activity implements AsyncResponse, OnItemSelectedListener {
+public class SearchResultActivity extends BaseActivity implements AsyncResponse, OnItemSelectedListener {
 
 	private Spinner searchSort;
 	public HTTPTask task;
@@ -50,36 +50,6 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 		ctx = this;
 		handleIntent(getIntent());
 	} 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-				.getActionView();
-		searchView.setSearchableInfo(searchManager
-				.getSearchableInfo(getComponentName()));
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	/**
-
-     * On selecting action bar icons
-     * */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Take appropriate action for each action item click
-        switch (item.getItemId()) {
-        case R.id.action_search:
-            // search action
-        	onSearchRequested();
-            return true;
-        case R.id.logout:
-        	HomeActivity.logout(this);            
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
@@ -123,6 +93,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void dairyFilter(View view){
 		ArrayList<Object> container = new ArrayList<Object>();
 		JSONObject param = new JSONObject();

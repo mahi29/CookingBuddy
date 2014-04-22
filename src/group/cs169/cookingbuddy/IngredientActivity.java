@@ -15,6 +15,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -33,7 +34,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class IngredientActivity extends Activity implements AsyncResponse {
+public class IngredientActivity extends BaseActivity implements AsyncResponse {
 
 	HTTPTask task;
 	ListView ingredientList;
@@ -51,7 +52,8 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ingredient);
 		Intent i = getIntent();
-		user = i.getStringExtra(Constants.JSON_USERNAME);
+		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+		user = prefs.getString(Constants.JSON_USERNAME, "username");
 		ingredientList = (ListView) findViewById(R.id.ingredientList);
 		ingredientData = new ArrayList<Ingredient>();
 		ArrayList<Object> container = new ArrayList<Object>();
@@ -142,35 +144,6 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 			}
 		});
 
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-				.getActionView();
-		searchView.setSearchableInfo(searchManager
-				.getSearchableInfo(getComponentName()));
-		return super.onCreateOptionsMenu(menu);
-	}
-	/**
-	 * On selecting action bar icons
-	 * */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Take appropriate action for each action item click
-		switch (item.getItemId()) {
-		case R.id.action_search:
-			// search action
-			onSearchRequested();
-			return true;
-		case R.id.logout:
-			HomeActivity.logout(this);            
-		default:
-			return super.onOptionsItemSelected(item);
-		}
 	}
 	
 	private void selectAll() {
