@@ -47,7 +47,7 @@ public class SuggestionAdapter extends BaseAdapter {
 		}
 		Recipe item = suggestions.get(position);
 		TextView name = (TextView) convertView.findViewById(R.id.recipe_name);
-		ImageView rating = (ImageView) convertView.findViewById(R.id.recipe_rating);
+		//ImageView rating = (ImageView) convertView.findViewById(R.id.recipe_rating);
 		ImageView image = (ImageView) convertView.findViewById(R.id.recipe_image);
 		name.setText(item.name);
 		//rating.setImageResource(item.rating);

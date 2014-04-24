@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -35,7 +36,6 @@ public class BaseActivity extends Activity {
         	onSearchRequested();
             return true;
         case android.R.id.home:
-        	getActionBar().setHomeButtonEnabled(true);
         	Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -74,10 +74,29 @@ public class BaseActivity extends Activity {
 	/**Called when 'Log Out' button is clicked*/
 	public void logout(Context ctx) {
 		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
-		prefs.edit().remove(Constants.JSON_USERNAME).commit();
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.remove(Constants.JSON_USERNAME);
+		editor.remove("TEST");
+		editor.commit();
+		Log.d("BaseActivity","Logout Called");
 		Intent intent = new Intent(ctx, MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		ctx.startActivity(intent);
 	}
-
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		Log.d("BaseActivity","onPause()");
+//		SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+//		prefs.edit().putString("TEST","Mahith is amazing").commit();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+//		Log.d("BaseActivity","onDestroy()");
+//		SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+//		prefs.edit().putString("TEST","Mahith is amazing").commit();
+	}
 }

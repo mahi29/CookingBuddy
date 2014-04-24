@@ -1,17 +1,13 @@
 package group.cs169.cookingbuddy;
 
 import group.cs169.cookingbuddy.IngredientActivity.Ingredient;
-import android.util.Log;
 import android.util.SparseBooleanArray;
-
 import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-//import android.widget.ImageView;
 import android.widget.TextView;
 
 public class IngredientAdapter extends BaseAdapter {
@@ -63,7 +59,6 @@ public class IngredientAdapter extends BaseAdapter {
 	public void selectView(int position, boolean value) {
         if (value){
             mSelectedItemsIds.put(position, value);
-        	Log.d("Key:"+position,"Value:"+value);
         }
         else {
             mSelectedItemsIds.delete(position);

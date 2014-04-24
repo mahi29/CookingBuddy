@@ -5,31 +5,22 @@ import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 public class RecipeInstructionActivity extends BaseActivity implements AsyncResponse {

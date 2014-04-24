@@ -9,10 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 
 public class HistoryActivity extends BaseActivity implements AsyncResponse {
@@ -24,7 +22,7 @@ public class HistoryActivity extends BaseActivity implements AsyncResponse {
 	ListView listview;
 	HistoryAdapter adapter;
 	
-	@SuppressWarnings({ "unchecked", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -79,9 +77,6 @@ public class HistoryActivity extends BaseActivity implements AsyncResponse {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		Log.d("Size of Recipe List", "There are " + strings.size() + " recipes");
-		Log.d("Size of Ratings List", "There are " + ratings.size() + " ratings");
 		
 		//int arrayListLength = strings.size();
 		//String stringArray[] = new String[arrayListLength];

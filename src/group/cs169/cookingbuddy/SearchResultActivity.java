@@ -10,20 +10,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.Spinner;
 
 public class SearchResultActivity extends BaseActivity implements AsyncResponse, OnItemSelectedListener {
@@ -122,7 +118,6 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 		JSONArray names = null;
 		JSONArray images = null;
 		JSONArray ids = null;
-		JSONArray urls = null;
 		listData = new ArrayList<Recipe>();
 		adapter = new SearchAdapter(this,listData);
 		searchResults.setAdapter(adapter);

@@ -17,6 +17,7 @@ import android.util.Log;
 
 public class Recipe implements AsyncResponse, Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	String name;
 	String imgUrl;
 	transient Bitmap img;
