@@ -12,7 +12,7 @@ import android.widget.DatePicker;
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
 	public DateDialog() {
-		// TODO Auto-generated constructor stub
+
 	}
 	String dateSelected;
 	

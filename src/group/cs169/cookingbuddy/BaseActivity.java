@@ -76,7 +76,6 @@ public class BaseActivity extends Activity {
 		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.remove(Constants.JSON_USERNAME);
-		editor.remove("TEST");
 		editor.commit();
 		Log.d("BaseActivity","Logout Called");
 		Intent intent = new Intent(ctx, MainActivity.class);

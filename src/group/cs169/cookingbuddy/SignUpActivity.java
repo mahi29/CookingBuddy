@@ -79,7 +79,6 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 
 	@Override
 	public void processFinish(String output, String callingMethod) {
-		//What is the errorCode that is being sent back from the backend? Is it output?
 		String errCode;
 		try {
 			JSONObject out = new JSONObject(output);
@@ -88,6 +87,7 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 				Intent i = new Intent(this, HomeActivity.class);
 				SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 				prefs.edit().putString(Constants.JSON_USERNAME, username).commit();
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(i);
 			} else {
 				Toast.makeText(this, "Invalid username and password", Toast.LENGTH_SHORT).show();

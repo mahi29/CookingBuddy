@@ -72,6 +72,7 @@ public class MainActivity extends Activity implements AsyncResponse {
 				SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 				prefs.edit().putString(Constants.JSON_USERNAME, username).commit();
 				Intent i = new Intent(this, HomeActivity.class);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(i);
 			} else {
 				Toast.makeText(this, "Invalid username and password", Toast.LENGTH_SHORT).show();

@@ -41,9 +41,6 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 	IngredientAdapter adapter;
 	Object mActionMode;
 	Ingredient selectedIngredient;
-	//This is set by the datePicker after a user selects a date. 
-	//This is extremely hacky and honestly a bad solution...
-	String latestExpirationDateSelected; 
 	final static Integer ADD_ING = 0;
 
 	@SuppressWarnings("unchecked")
@@ -76,14 +73,6 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 			@Override
 			public void onItemCheckedStateChanged(ActionMode mode,
 					int position, long id, boolean checked) {
-				// Capture total checked items
-				/*
-                final int checkedCount = list.getCheckedItemCount();
-                // Set the CAB title according to total checked items
-                mode.setTitle(checkedCount + " Selected");
-                // Calls toggleSelection method from ListViewAdapter Class
-                listviewadapter.toggleSelection(position);
-				 */
 				int checkedCount = ingredientList.getCheckedItemCount();
 				mode.setTitle(checkedCount + " Selected");
 				adapter.toggleSelection(position);
@@ -124,7 +113,6 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 
 			@Override
 			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-				// TODO Auto-generated method stub
 				MenuInflater inflater = mode.getMenuInflater();
 				inflater.inflate(R.menu.contextual, menu);
 				return true;
@@ -197,10 +185,7 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 
 		for (int i = (selected.size() - 1); i >= 0; i--) {
 			if (selected.valueAt(i)) {
-				selectedIngredient = (Ingredient) adapter.getItem(selected.keyAt(i));
-				//WorldPopulation selecteditem = listviewadapter.getItem(selected.keyAt(i));
-				// Remove selected items following the ids
-				//adapter.remove(selectedIngredient);                
+				selectedIngredient = (Ingredient) adapter.getItem(selected.keyAt(i));            
 				if(ingredientData.remove(selectedIngredient)) {
 					adapter.notifyDataSetChanged();	
 				}
