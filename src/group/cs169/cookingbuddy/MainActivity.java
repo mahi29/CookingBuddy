@@ -32,6 +32,9 @@ public class MainActivity extends Activity implements AsyncResponse {
 		userField = (EditText) findViewById(R.id.userText);
 		passField = (EditText) findViewById(R.id.passwordText);
 		getActionBar().hide();
+		TextView txt = (TextView) findViewById(R.id.custom_font);
+		Typeface font = Typeface.createFromAsset(getAssets(), "Chantelli_Antiqua.ttf");
+		txt.setTypeface(font);
 	}
 
 	/** Called when the 'Sign Up' button is clicked from Home Screen */
