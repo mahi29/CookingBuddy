@@ -4,5 +4,13 @@
   	    <item>Sort By</item>
         <item>Prep Time</item>
         <item>Rating</item>
-    </array>     
+    </array>  
+  	<array name="ingredient_sort_options">
+  	    <item>Sort By</item>
+  	    <item>A-Z</item>
+        <item>Date: Earliest First</item>
+        <item>Date: Latest First</item>
+        <item>Quantity: High to Low</item>
+        <item>Quantity: Low to High</item>
+    </array>        
 </resources>

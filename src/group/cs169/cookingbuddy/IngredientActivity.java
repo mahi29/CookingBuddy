@@ -1,8 +1,15 @@
 package group.cs169.cookingbuddy;
 
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
+import group.cs169.cookingbuddy.SearchResultActivity.PrepSort;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +24,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -27,12 +35,18 @@ import android.view.View;
 import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+<<<<<<< HEAD
 import android.widget.TextView;
+=======
+import android.widget.Spinner;
+>>>>>>> 718f53b8337b921d56434b03a0ab378ac93d83c0
 import android.widget.Toast;
 
-public class IngredientActivity extends BaseActivity implements AsyncResponse {
+public class IngredientActivity extends BaseActivity implements AsyncResponse, OnItemSelectedListener {
 
 	HTTPTask task;
 	ListView ingredientList;
@@ -43,6 +57,7 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 	IngredientAdapter adapter;
 	Object mActionMode;
 	Ingredient selectedIngredient;
+	Spinner ingSortSpinner;
 	final static Integer ADD_ING = 0;
 
 	@SuppressWarnings("unchecked")
@@ -54,6 +69,8 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 		user = prefs.getString(Constants.JSON_USERNAME, "username");
 		ingredientList = (ListView) findViewById(R.id.ingredientList);
 		ingredientData = new ArrayList<Ingredient>();
+		ingSortSpinner = (Spinner) findViewById(R.id.ing_sort);
+		ingSortSpinner.setOnItemSelectedListener(this);
 		ArrayList<Object> container = new ArrayList<Object>();
 		JSONObject param = new JSONObject();
 		try {
@@ -77,6 +94,7 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 		task.execute(container);	
 		//AKHIL: Setting the Adapter
 		adapter = new IngredientAdapter(this,ingredientData);
+		ingredientList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		ingredientList.setMultiChoiceModeListener(new MultiChoiceModeListener() {
 
 			@Override
@@ -85,7 +103,6 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 				int checkedCount = ingredientList.getCheckedItemCount();
 				mode.setTitle(checkedCount + " Selected");
 				adapter.toggleSelection(position);
-
 			}
 
 			@Override
@@ -106,14 +123,12 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 					if (selected.size() == 1){
 						updateItem();
 						mode.finish();
-					}
-					else{
+					} else{
 						Toast.makeText(ctx, "Can only update one ingredient at a time", Toast.LENGTH_SHORT).show();  					
 					}
 					return true;
 				case R.id.cont_selectAll:
 					selectAll();
-					return true;
 				default:
 					return false;
 
@@ -142,9 +157,8 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 	}
 
 	private void selectAll() {
-		//Trying to highlight all ingredients here...
-		for (int i =  0; i < ingredientData.size();i++) {
-
+		for (int i =  0; i < ingredientList.getChildCount();i++) {
+			ingredientList.setItemChecked(i, true);
 		}
 	}
 
@@ -368,9 +382,96 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 		}
 	}
 
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int selectedPosition,
+			long arg3) {
+		int alphabetically = 1;
+		int dateEarly = 2;
+		int dateLate = 3;		
+		int quanthl = 4;
+		int quantlh = 5;
+		if (selectedPosition == alphabetically) {
+			Collections.sort(ingredientData,new NameSort());
+			adapter.notifyDataSetChanged();
+		} else if (selectedPosition == dateEarly) {
+			Collections.sort(ingredientData,new DateSort(true));
+			adapter.notifyDataSetChanged();
+		} else if (selectedPosition == dateLate) {
+			Collections.sort(ingredientData,new DateSort(false));
+			adapter.notifyDataSetChanged();
+		} else if (selectedPosition == quanthl) {
+			Collections.sort(ingredientData,new QuantitySort(false));
+			adapter.notifyDataSetChanged();
+		} else if (selectedPosition == quantlh) {
+			Collections.sort(ingredientData,new QuantitySort(true));
+			adapter.notifyDataSetChanged();			
+		}
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		return;
+	}
 
 
-
+	public class NameSort implements Comparator<Ingredient> {
+		@Override
+		public int compare(Ingredient i1, Ingredient i2) {
+				String name1 = i1.name;
+				String name2 = i2.name;
+				return name1.compareToIgnoreCase(name2);
+		}
+	}
+	public class DateSort implements Comparator<Ingredient> {
+		
+		int ascendingModifier;
+		/**
+		 * 
+		 * @param isAscending - true if the dates are ordered increasingly (Early first)
+		 */
+		public DateSort (boolean isAscending) {
+			ascendingModifier = (isAscending) ? 1 : -1;
+		}
+		@Override
+		public int compare(Ingredient i1, Ingredient i2) {
+				String date1 = i1.expDate;
+				String date2 = i2.expDate;
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy",Locale.US);
+				try {
+					Date d1 = sdf.parse(date1);
+					Date d2 = sdf.parse(date2);
+					int output =  d1.compareTo(d2);
+					return output * ascendingModifier;
+				} catch (ParseException e) {
+					Log.d("IngredientActivity","DateSort broke");					
+					e.printStackTrace();
+					return 0;
+				}
+		}
+	}
+	public class QuantitySort implements Comparator<Ingredient> {
+		
+		int asc;
+		/**
+		 * 
+		 * @param ascending true if sort is to be in ascending order - 1,2,3...
+		 */
+		public QuantitySort (boolean ascending) {
+			asc = (ascending) ? 1 : -1;
+		}
+		
+		@Override
+		public int compare(Ingredient i1, Ingredient i2) {
+				double q1 = i1.quantity;
+				double q2 = i2.quantity;
+				double diff = q1 - q2;
+				int output = 0;
+				if (diff < 0) output = -1;
+				if (diff > 0) output = 1;
+				return output * asc;
+		}
+	}
+	
 	protected class Ingredient {
 		String name;
 		String unit;
@@ -398,5 +499,6 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 			t.setTypeface(font);
 		}
 	}
+
 
 }

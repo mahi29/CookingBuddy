@@ -25,6 +25,7 @@
     </ListView>
     
     <LinearLayout
+<<<<<<< HEAD
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -51,6 +52,33 @@
                         android:layout_marginLeft="10sp"
                         android:textColor="#FFFFFF"
                         />
+=======
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="10dp">
+    
+        <Spinner
+            android:id="@+id/ing_sort"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:entries="@array/ingredient_sort_options"
+            android:spinnerMode="dropdown" />        
+    	
+    	<Button
+            android:id="@+id/btn_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/button_state"
+            android:onClick="addIngredient"
+            android:text="Add Ingredient" />
+
+
+>>>>>>> 718f53b8337b921d56434b03a0ab378ac93d83c0
     </LinearLayout>
     
 
