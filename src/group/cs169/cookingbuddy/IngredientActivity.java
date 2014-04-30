@@ -11,12 +11,11 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -29,11 +28,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-public class IngredientActivity extends Activity implements AsyncResponse {
+public class IngredientActivity extends BaseActivity implements AsyncResponse {
 
 	HTTPTask task;
 	ListView ingredientList;
@@ -44,14 +41,15 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 	IngredientAdapter adapter;
 	Object mActionMode;
 	Ingredient selectedIngredient;
+	final static Integer ADD_ING = 0;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ingredient);
-		Intent i = getIntent();
-		user = i.getStringExtra(Constants.JSON_USERNAME);
+		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+		user = prefs.getString(Constants.JSON_USERNAME, "username");
 		ingredientList = (ListView) findViewById(R.id.ingredientList);
 		ingredientData = new ArrayList<Ingredient>();
 		ArrayList<Object> container = new ArrayList<Object>();
@@ -75,17 +73,8 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 			@Override
 			public void onItemCheckedStateChanged(ActionMode mode,
 					int position, long id, boolean checked) {
-				// Capture total checked items
-				/*
-                final int checkedCount = list.getCheckedItemCount();
-                // Set the CAB title according to total checked items
-                mode.setTitle(checkedCount + " Selected");
-                // Calls toggleSelection method from ListViewAdapter Class
-                listviewadapter.toggleSelection(position);
-				 */
 				int checkedCount = ingredientList.getCheckedItemCount();
 				mode.setTitle(checkedCount + " Selected");
-				Log.d("position passed in:","is"+position);
 				adapter.toggleSelection(position);
 
 			}
@@ -124,7 +113,6 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 
 			@Override
 			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-				// TODO Auto-generated method stub
 				MenuInflater inflater = mode.getMenuInflater();
 				inflater.inflate(R.menu.contextual, menu);
 				return true;
@@ -144,39 +132,10 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-				.getActionView();
-		searchView.setSearchableInfo(searchManager
-				.getSearchableInfo(getComponentName()));
-		return super.onCreateOptionsMenu(menu);
-	}
-	/**
-	 * On selecting action bar icons
-	 * */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Take appropriate action for each action item click
-		switch (item.getItemId()) {
-		case R.id.action_search:
-			// search action
-			onSearchRequested();
-			return true;
-		case R.id.logout:
-			HomeActivity.logout(this);            
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-	
 	private void selectAll() {
 		//Trying to highlight all ingredients here...
 		for (int i =  0; i < ingredientData.size();i++) {
-			
+
 		}
 	}
 
@@ -210,7 +169,6 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 					long id) {
 				//adapter.resetBooleanArray();
 				selectedIngredient = ingredientData.get(position);
-				Log.d("IngredientActivity","Name: " + selectedIngredient.name);
 				if (mActionMode != null) return false;
 				//mActionMode = act.startActionMode(mActionModeCallback);
 				return true;
@@ -221,20 +179,13 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 	@SuppressWarnings("unchecked")
 	private void deleteItems() {
 		//selectedIngredient = ingredientData.get(position);
-		Log.d("IngredientActivity","Delete Items Clicked");
 		SparseBooleanArray selected = adapter.getSelectedIds();
 		selectedIngredient = null;
 		// Captures all selected ids with a loop
 
 		for (int i = (selected.size() - 1); i >= 0; i--) {
-			Log.d("How many items are selected","i:"+i);
 			if (selected.valueAt(i)) {
-				Log.d("Value at "+i,"Boolean :"+selected.valueAt(i));
-				Log.d("The position of the item","Position :"+selected.keyAt(i));
-				selectedIngredient = (Ingredient) adapter.getItem(selected.keyAt(i));
-				//WorldPopulation selecteditem = listviewadapter.getItem(selected.keyAt(i));
-				// Remove selected items following the ids
-				//adapter.remove(selectedIngredient);                
+				selectedIngredient = (Ingredient) adapter.getItem(selected.keyAt(i));            
 				if(ingredientData.remove(selectedIngredient)) {
 					adapter.notifyDataSetChanged();	
 				}
@@ -258,31 +209,6 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 
 	}
 
-
-
-	/** Deletes an item from the Ingredient List and updates the database appropriately*/
-	@SuppressWarnings("unchecked")
-	private void deleteItem() {
-		Log.d("IngredientActivity","Delete clicked");
-		if(ingredientData.remove(selectedIngredient)) {
-			adapter.notifyDataSetChanged();	
-		}
-		try {
-			JSONObject param = new JSONObject();
-			param.put(Constants.JSON_USERNAME,user);
-			param.put(Constants.INGREDIENT_NAME,selectedIngredient.name);
-			param.put(Constants.EXPIRATION,selectedIngredient.expDate);
-			ArrayList<Object> container = new ArrayList<Object>();
-			container.add(param);
-			container.add(Constants.REMOVE_INGREDIENT_URL);
-			task = new HTTPTask();
-			task.caller = (AsyncResponse) ctx;
-			task.execute(container);
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
 	/** Updates an the quantity of an ingredient and updates the database appropriately*/
 	private void updateItem() {
 		//AKHIL: New part added so that we can have multiple items
@@ -290,7 +216,6 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		selectedIngredient = null;
 		int i = selected.size() - 1;
 		selectedIngredient = (Ingredient) adapter.getItem(selected.keyAt(i));
-		Log.d("IngredientActivity","Update clicked");
 		LayoutInflater li = LayoutInflater.from(this);
 		View ingredientPrompt = li.inflate(R.layout.update_prompt, null);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -329,49 +254,7 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 		AlertDialog alertDialog = builder.create(); 
 		alertDialog.show();
 	}
-	/*
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-    	//AKHIL:
-    	//here we will handle the case where the item is selectded
-
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			switch (item.getItemId()) {
-				case R.id.cont_delete:
-					deleteItem();
-					mode.finish();
-					return true;
-				case R.id.cont_update:
-					updateItem();
-					mode.finish();
-					return true;
-				default:
-					return false;
-			}
-		}
-
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			// TODO Auto-generated method stub
-			MenuInflater inflater = mode.getMenuInflater();
-	        inflater.inflate(R.menu.contextual, menu);
-	        return true;
-		}
-
-		@Override
-		public void onDestroyActionMode(ActionMode mode) {
-			mActionMode = null;
-		}
-
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return false;
-		}
-
-    };
-	 */
-
+	
 	@Override
 	public void processFinish(String output, String callingMethod) { 
 		String errCode = Constants.ERROR_CODE;
@@ -382,7 +265,6 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 			e.printStackTrace();
 		}
 		if (callingMethod.equals(Constants.INGREDIENT_LIST_URL)) {
-			Log.d("IngredientActivity","Return from Ingredient Population");
 			populateList(output);
 			return;
 		}
@@ -418,80 +300,53 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 	}
 
 	public void addIngredient(View v) {
-		LayoutInflater li = LayoutInflater.from(this);
-		View ingredientPrompt = li.inflate(R.layout.ingredient_prompt, null);
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setView(ingredientPrompt);
-		final EditText nameField = (EditText) ingredientPrompt.findViewById(R.id.prompt_name);
-		final Spinner amtField = (Spinner) ingredientPrompt.findViewById(R.id.prompt_amt);
-		final EditText unitField = (EditText) ingredientPrompt.findViewById(R.id.prompt_unit);
-		final EditText expField = (EditText) ingredientPrompt.findViewById(R.id.prompt_exp);
-
-		builder.setCancelable(true);
-		builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				String ingName = nameField.getText().toString().trim();
-				String amt = String.valueOf(amtField.getSelectedItem());
-				String unit = unitField.getText().toString().trim();
-				String exp = expField.getText().toString().trim();
-				Ingredient tmp = new Ingredient(ingName,Double.parseDouble(amt),unit,exp);
-				ingredientData.add(tmp);
-				adapter.notifyDataSetChanged();
-
-				try {
-					JSONObject param = new JSONObject();
-					param.put(Constants.JSON_USERNAME,user);
-					param.put(Constants.INGREDIENT_NAME,ingName);
-					param.put(Constants.QUANTITY, amt);
-					param.put(Constants.UNIT,unit);
-					param.put(Constants.EXPIRATION,exp);
-					ArrayList<Object> container = new ArrayList<Object>();
-					container.add(param);
-					container.add(Constants.ADD_INGREDIENT_URL);
-					task = new HTTPTask();
-					task.caller = (AsyncResponse) ctx;
-					task.execute(container);
-
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-
-			}
-		});
-		AlertDialog alertDialog = builder.create(); 
-		alertDialog.show();
-
-
+		Intent i = new Intent(this, AddIngredientActivity.class);
+		startActivityForResult(i,ADD_ING);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ADD_ING) {
+			if (resultCode == RESULT_CANCELED) return;
+			String name = data.getStringExtra(Constants.INGREDIENT_NAME);
+			String quantity = data.getStringExtra(Constants.QUANTITY);
+			String unit = data.getStringExtra(Constants.UNIT);
+			String expDate = data.getStringExtra(Constants.EXPIRATION);
+			Ingredient tmp = new Ingredient(name,Double.parseDouble(quantity),unit,expDate);
+			ingredientData.add(tmp);
+			adapter.notifyDataSetChanged();
+
+			try {
+				JSONObject param = new JSONObject();
+				param.put(Constants.JSON_USERNAME,user);
+				param.put(Constants.INGREDIENT_NAME,name);
+				param.put(Constants.QUANTITY, quantity);
+				param.put(Constants.UNIT,unit);
+				param.put(Constants.EXPIRATION,expDate);
+				ArrayList<Object> container = new ArrayList<Object>();
+				container.add(param);
+				container.add(Constants.ADD_INGREDIENT_URL);
+				task = new HTTPTask();
+				task.caller = (AsyncResponse) ctx;
+				task.execute(container);
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}			
+		}
+	}
+	
 	//this is the remove all view
 	//AKHIL:
+	@SuppressWarnings("unchecked")
 	public void removeAll(View v) {
-		//LayoutInflater li = LayoutInflater.from(this);
-		//View ingredientPrompt = li.inflate(R.layout.ingredient_prompt, null);
-		//AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		//builder.setView(ingredientPrompt);
-		/*
-		final EditText nameField = (EditText) ingredientPrompt.findViewById(R.id.prompt_name);
-		final EditText amtField = (EditText) ingredientPrompt.findViewById(R.id.prompt_amt);
-		final EditText unitField = (EditText) ingredientPrompt.findViewById(R.id.prompt_unit);
-		final EditText expField = (EditText) ingredientPrompt.findViewById(R.id.prompt_exp);
-		 */
 		ingredientData.clear();
 		adapter.notifyDataSetChanged();
 
 		try {
 			JSONObject param = new JSONObject();
 			param.put(Constants.JSON_USERNAME,user);
-			/*
-					param.put(Constants.INGREDIENT_NAME,ingName);
-					param.put(Constants.QUANTITY, amt);
-					param.put(Constants.UNIT,unit);
-					param.put(Constants.EXPIRATION,exp);
-			 */
 			ArrayList<Object> container = new ArrayList<Object>();
 			container.add(param);
 			container.add(Constants.REMOVE_ALL);
@@ -527,4 +382,5 @@ public class IngredientActivity extends Activity implements AsyncResponse {
 			this.amountUnit = amount + " " + unit;
 		}
 	}
+
 }

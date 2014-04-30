@@ -17,15 +17,17 @@
         <activity
             android:name="group.cs169.cookingbuddy.MainActivity"
             android:label="@string/app_name" >
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchResultActivity" />
+        </activity>
+        
+        <!-- Splash Activity -->
+        <activity
+            android:name="group.cs169.cookingbuddy.SplashActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        
+            </intent-filter>            
+        </activity>          
         <!-- Home Activity -->
         <activity
             android:name="group.cs169.cookingbuddy.HomeActivity"
@@ -53,6 +55,12 @@
                 android:value=".SearchResultActivity" />            
         </activity>
         
+        <!-- Add Ingredient Activity -->
+        <activity
+            android:name="group.cs169.cookingbuddy.AddIngredientActivity"
+            android:label="@string/app_name" >
+        </activity>        
+        
         <!-- Sign Up Activity -->
         <activity
             android:name="group.cs169.cookingbuddy.SignUpActivity"
@@ -64,6 +72,9 @@
         <activity
             android:name="group.cs169.cookingbuddy.AccountActivity"
             android:label="@string/app_name" >
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchResultActivity" />
         </activity>   
 
         <!-- Recipe Instruction Activity -->

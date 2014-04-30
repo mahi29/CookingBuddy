@@ -8,7 +8,9 @@ import org.json.JSONObject;
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -77,14 +79,15 @@ public class SignUpActivity extends Activity implements AsyncResponse{
 
 	@Override
 	public void processFinish(String output, String callingMethod) {
-		//What is the errorCode that is being sent back from the backend? Is it output?
 		String errCode;
 		try {
 			JSONObject out = new JSONObject(output);
 			errCode = out.getString(Constants.JSON_STANDARD_RESPONSE);
 			if (errCode.equals(Constants.SUCCESS)) {
 				Intent i = new Intent(this, HomeActivity.class);
-				i.putExtra(Constants.JSON_USERNAME, username);
+				SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+				prefs.edit().putString(Constants.JSON_USERNAME, username).commit();
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(i);
 			} else {
 				Toast.makeText(this, "Invalid username and password", Toast.LENGTH_SHORT).show();

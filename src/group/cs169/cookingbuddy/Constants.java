@@ -1,5 +1,8 @@
 package group.cs169.cookingbuddy;
 
+import android.content.Context;
+import android.content.Intent;
+
 public class Constants {
 	
 	//URLS
@@ -17,17 +20,22 @@ public class Constants {
 	public static final String CHANGE_PASSWORD = "/users/changePassword";
 	public static final String REMOVE_ALL = "/ingredients/removeAll";
 	public static final String RECIPE_DATA = "/recipes/getRecipeData";
+	public static final String VERIFY_URL =  "/users/verify";
 	
-	//Standard codes
+	//Standard codes		
 	public static final String JSON_USERNAME = "user";
 	public static final String JSON_PASSWORD = "password";
 	public static final String JSON_NEW_PASSWORD = "newPassword";
 	public static final String JSON_STANDARD_RESPONSE = "errCode";
+	public static final String JSON_COOKIE = "cookie";
 	public static final String SUCCESS = "SUCCESS";
 	public static final int DEFAULT_RATING = 3;
 	public static final int DEFAULT_PICTURE = R.drawable.stockimage;
 	public static final String ERROR_CODE = "-100";
-	public static final String SHARED_PREFS_USERNAME = "blah";
+	public static final String SHARED_PREFS_USERNAME = "sharedPrefs";
+	public static final String COOKIE_PREFS = "cookiesPref";
+	public static final String SIGNED_IN = "SIGNED_IN";
+	public static final String NOT_SIGNED_IN = "NOT_SIGNED_IN";
 	
 	//Ingredient List
 	public static final String INGREDIENT_KEY = "items"; 
@@ -56,6 +64,19 @@ public class Constants {
 	
 	public Constants() {
 		
+	}
+	
+	/** Called when 'Account' button is clicked in the menu*/
+	public static  void goToAccount(Context ctx) {
+		Intent intent = new Intent(ctx, AccountActivity.class);
+		ctx.startActivity(intent);
+	}
+	
+	/**Called when 'Log Out' button is clicked*/
+	public static void logout(Context ctx) {
+		Intent intent = new Intent(ctx, MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		ctx.startActivity(intent);
 	}
 
 }

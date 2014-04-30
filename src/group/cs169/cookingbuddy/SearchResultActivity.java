@@ -10,23 +10,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.Spinner;
 
-public class SearchResultActivity extends Activity implements AsyncResponse, OnItemSelectedListener {
+public class SearchResultActivity extends BaseActivity implements AsyncResponse, OnItemSelectedListener {
 
 	private Spinner searchSort;
 	public HTTPTask task;
@@ -50,36 +46,6 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 		ctx = this;
 		handleIntent(getIntent());
 	} 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-				.getActionView();
-		searchView.setSearchableInfo(searchManager
-				.getSearchableInfo(getComponentName()));
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	/**
-
-     * On selecting action bar icons
-     * */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Take appropriate action for each action item click
-        switch (item.getItemId()) {
-        case R.id.action_search:
-            // search action
-        	onSearchRequested();
-            return true;
-        case R.id.logout:
-        	HomeActivity.logout(this);            
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
@@ -123,6 +89,7 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void dairyFilter(View view){
 		ArrayList<Object> container = new ArrayList<Object>();
 		JSONObject param = new JSONObject();
@@ -151,7 +118,6 @@ public class SearchResultActivity extends Activity implements AsyncResponse, OnI
 		JSONArray names = null;
 		JSONArray images = null;
 		JSONArray ids = null;
-		JSONArray urls = null;
 		listData = new ArrayList<Recipe>();
 		adapter = new SearchAdapter(this,listData);
 		searchResults.setAdapter(adapter);

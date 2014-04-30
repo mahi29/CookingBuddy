@@ -8,10 +8,14 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -22,6 +26,7 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 	public String method;
 	public ProgressDialog dialog;
 	public String callingActivity;
+	public Context context;
 	
 	@Override
 	protected String doInBackground(ArrayList<Object>... container) {
@@ -31,7 +36,6 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 		 *The JSONObject MUST be inserted BEFORE the path name. 
 		 */
 		ArrayList<Object> holder = container[0];
-		//Log.d("JSON is", "Size of the ArrayList is " + container[0].size());
 		JSONObject param = (JSONObject) holder.get(0);
 		String path = (String) holder.get(1);
 		method = path;
@@ -46,17 +50,28 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 			urlConn.setUseCaches (false);
 			urlConn.setRequestMethod("POST");
 			urlConn.setChunkedStreamingMode(0);
-			urlConn.setRequestProperty("Content-Type","application/json");   
+			urlConn.setRequestProperty("Content-Type","application/json");  
+			if (path.equals(Constants.VERIFY_URL)) {
+				urlConn.setRequestProperty("Accept", "application/json");
+				SharedPreferences prefs = context.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+				String cookie = prefs.getString(Constants.COOKIE_PREFS, "defCookie");
+				Log.d("HTTPTask",cookie);
+				urlConn.setRequestProperty("Cookie",cookie);
+			}
 			urlConn.connect();  
-			
 			//Send the POST request to the back-end
-			//Log.d("HTTPTask","The POST request being sent to the backend is " + param.toString());
 			byte[] outputBytes = param.toString().getBytes("UTF-8");
 			OutputStream os = urlConn.getOutputStream();
 			os.write(outputBytes);
 			os.flush();
 			os.close();
-			
+			if (path.equals(Constants.LOGIN_USER_URL) || path.equals(Constants.ADD_USER_URL)) {
+				context = (Context) caller;
+				String cookie = urlConn.getHeaderField("Set-Cookie");
+				Log.d("HTTPTask",cookie);
+				SharedPreferences prefs = context.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+				prefs.edit().putString(Constants.COOKIE_PREFS, cookie).commit();
+			}
 			//Read the incoming JSON from the back-end
 			StringBuilder builder = new StringBuilder();
 			InputStream is = urlConn.getInputStream();
@@ -72,8 +87,6 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 		}  finally {
 			if(urlConn !=null)  urlConn.disconnect(); 
 		}
-		//Log.d("HTTPTask","Result: " + result.toString());
-		
 		return result;	
 	}
 

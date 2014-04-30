@@ -9,19 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.SearchView;
 
-public class HistoryActivity extends Activity implements AsyncResponse {
+public class HistoryActivity extends BaseActivity implements AsyncResponse {
 	
 	HTTPTask httpTask;
 	ArrayList<String> strings;
@@ -30,14 +22,13 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 	ListView listview;
 	HistoryAdapter adapter;
 	
-	@SuppressWarnings({ "unchecked", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_history);
 		strings = new ArrayList<String>();
-		//Intent i = getIntent();
 		SharedPreferences userDetails = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, MODE_PRIVATE);
 		String username = userDetails.getString(Constants.JSON_USERNAME, "ERROR");
 		listview = (ListView) findViewById(R.id.history_list);
@@ -45,14 +36,12 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 		
 		try {
 			json.put(Constants.JSON_USERNAME,username);
-			//Log.d("HistoryActivity", "User is " + username);
 			ArrayList<Object> container = new ArrayList<Object>();
 			//The JSONObject and path must be added in this order! JSONObject first, path second
 			container.add(json);
 			container.add(Constants.HISTORY_URL);
 			//This call will get the ratings
 			//container.add(Constants.HISTORY_URL_TEMP);
-			//Log.d("Size of ArrayList", "The size is " + container.size() );
 			httpTask = new HTTPTask();
 			httpTask.caller = this;
 			httpTask.execute(container);
@@ -62,43 +51,8 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 		//Call the DB with the username as a key to get the completed list of recipes
 		//This array needs to be populated with strings from the JSON
 		
-		
 	}
-	
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-                .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
-        return super.onCreateOptionsMenu(menu);
-	}
-	/**
-     * On selecting action bar icons
-     * */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Take appropriate action for each action item click
-        switch (item.getItemId()) {
-        case R.id.action_search:
-            // search action
-        	onSearchRequested();
-            return true;
-        case android.R.id.home:
-        	Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            return true;
-        case R.id.logout:
-        	HomeActivity.logout(this);            
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
 	@Override
 	public void processFinish(String output, String callingMethod) {
 		// TODO Parse the incoming JSON object that represents the recipes the user has made
@@ -118,27 +72,18 @@ public class HistoryActivity extends Activity implements AsyncResponse {
 				ratings.add((int) Math.ceil(random.nextInt(5)+1));
 				//This code retrieve ratings from the DB
 				//ratings.add(jsonArray.getJSONObject(i).getInt("rating"));
-				
-				//Log.d("HistoryActivity", "Recipe from backend is " + jsonArray.getJSONObject(i).getString("recipe_name"));
-				//Log.d("HistoryActivity", "Creation date from backend is " + jsonArray.getJSONObject(i).getString("date_created"));
 			}
 			
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		Log.d("Size of Recipe List", "There are " + strings.size() + " recipes");
-		Log.d("Size of Ratings List", "There are " + ratings.size() + " ratings");
 		
 		//int arrayListLength = strings.size();
 		//String stringArray[] = new String[arrayListLength];
 		
 //		for (int k = 0; k < arrayListLength; k++){
 //			stringArray[k] = strings.get(k);
-//			Log.d("The content of the string is ", stringArray[k]);
 //		}
-		//Log.d("HistoryActivity", "About to call the setAdapter() method");
 		
 		adapter = new HistoryAdapter(this, strings, creationDates, ratings);
 		listview.setAdapter(adapter);

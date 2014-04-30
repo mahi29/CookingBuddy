@@ -3,21 +3,16 @@ package group.cs169.cookingbuddy;
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 
 import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements AsyncResponse {
@@ -37,43 +32,9 @@ public class MainActivity extends Activity implements AsyncResponse {
 		userField = (EditText) findViewById(R.id.userText);
 		passField = (EditText) findViewById(R.id.passwordText);
 		getActionBar().hide();
-		
-		
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-                .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
-        return super.onCreateOptionsMenu(menu);
-	}
-	/**
-     * On selecting action bar icons
-     * */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Take appropriate action for each action item click
-        switch (item.getItemId()) {
-        case R.id.action_search:
-            // search action
-        	onSearchRequested();
-            return true;
-        case android.R.id.home:
-        	Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
 	/** Called when the 'Sign Up' button is clicked from Home Screen */
-	@SuppressWarnings("unchecked")
 	public void signUp(View v) {
          Intent i = new Intent(this,SignUpActivity.class);
          startActivity(i);
@@ -108,8 +69,10 @@ public class MainActivity extends Activity implements AsyncResponse {
 			out = new JSONObject(output);
 			String errCode = out.getString(Constants.JSON_STANDARD_RESPONSE);
 			if (errCode.equals(Constants.SUCCESS)) {
+				SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+				prefs.edit().putString(Constants.JSON_USERNAME, username).commit();
 				Intent i = new Intent(this, HomeActivity.class);
-				i.putExtra(USERNAME, username);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(i);
 			} else {
 				Toast.makeText(this, "Invalid username and password", Toast.LENGTH_SHORT).show();
