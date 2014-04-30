@@ -78,7 +78,6 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse, O
 		//THIS PART CHANGES TO CUSTOM FONT
 		ArrayList<TextView> allItems = new ArrayList();
 		allItems.add((TextView) findViewById(R.id.btn_1));
-		allItems.add((TextView) findViewById(R.id.btn_2));
 		allItems.add((TextView) findViewById(R.id.kitchenwelcome));
 		updateText(allItems);
 		//END CHANGING TO CUSTOM FONT
