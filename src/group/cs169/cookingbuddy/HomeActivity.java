@@ -40,4 +40,6 @@ public class HomeActivity extends BaseActivity{
 		startActivity(intent);
 		
 	}
+	
+
 }
