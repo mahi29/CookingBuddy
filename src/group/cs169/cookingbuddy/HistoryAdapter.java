@@ -60,7 +60,7 @@ public class HistoryAdapter extends BaseAdapter {
 	}
 	
 	private void updateText(ArrayList<TextView> allItems){
-		Typeface font = Typeface.createFromAsset(context.getAssets(), "VintageOne.ttf");
+		Typeface font = Typeface.createFromAsset(context.getAssets(), "song.ttf");
 		for (TextView t:allItems){
 			t.setTypeface(font);
 		}
