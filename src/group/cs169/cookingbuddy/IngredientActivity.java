@@ -39,11 +39,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-<<<<<<< HEAD
 import android.widget.TextView;
-=======
 import android.widget.Spinner;
->>>>>>> 718f53b8337b921d56434b03a0ab378ac93d83c0
 import android.widget.Toast;
 
 public class IngredientActivity extends BaseActivity implements AsyncResponse, OnItemSelectedListener {
