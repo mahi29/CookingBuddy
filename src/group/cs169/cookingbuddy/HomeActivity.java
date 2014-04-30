@@ -47,9 +47,11 @@ public class HomeActivity extends Activity implements AsyncResponse {
                 .getSearchableInfo(getComponentName()));
         return super.onCreateOptionsMenu(menu);
 	}
+	
 	/**
      * On selecting action bar icons
      * */
+	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Take appropriate action for each action item click
