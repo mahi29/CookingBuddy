@@ -10,8 +10,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class HistoryActivity extends BaseActivity implements AsyncResponse {
 	
@@ -51,6 +53,16 @@ public class HistoryActivity extends BaseActivity implements AsyncResponse {
 		//Call the DB with the username as a key to get the completed list of recipes
 		//This array needs to be populated with strings from the JSON
 		
+		
+		//ADDING CUSTOM TEXT
+		ArrayList<TextView> allItems = new ArrayList<TextView>();
+		allItems.add((TextView) findViewById(R.id.recipelabel));
+		allItems.add((TextView) findViewById(R.id.textView1));
+		allItems.add((TextView) findViewById(R.id.datelabel));
+		allItems.add((TextView) findViewById(R.id.ratinglabel));
+		updateText(allItems);
+		//END ADDING CUSTOM TEXT
+		
 	}
 
 	@Override
@@ -87,6 +99,12 @@ public class HistoryActivity extends BaseActivity implements AsyncResponse {
 		
 		adapter = new HistoryAdapter(this, strings, creationDates, ratings);
 		listview.setAdapter(adapter);
+	}
+	private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(getAssets(), "VintageOne.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
 	}
 
 }
