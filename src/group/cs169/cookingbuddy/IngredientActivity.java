@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -28,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class IngredientActivity extends BaseActivity implements AsyncResponse {
@@ -59,6 +61,13 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		//THIS PART CHANGES TO CUSTOM FONT
+		ArrayList<TextView> allItems = new ArrayList();
+		allItems.add((TextView) findViewById(R.id.btn_1));
+		allItems.add((TextView) findViewById(R.id.btn_2));
+		allItems.add((TextView) findViewById(R.id.kitchenwelcome));
+		updateText(allItems);
+		//END CHANGING TO CUSTOM FONT
 		container.add(param);
 		container.add(Constants.INGREDIENT_LIST_URL);
 		task = new HTTPTask();
@@ -380,6 +389,13 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse {
 		public void setQuantity(double amount) {
 			this.quantity = amount;
 			this.amountUnit = amount + " " + unit;
+		}
+	}
+	
+	private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(getAssets(), "VintageOne.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
 		}
 	}
 

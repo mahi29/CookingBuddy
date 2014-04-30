@@ -37,6 +37,7 @@
                         android:text="Add Ingredient"
                         android:onClick="addIngredient"
                         android:background="@drawable/button_state"
+                        android:textColor="#FFFFFF"
                          />
 
                     <Button
@@ -48,6 +49,7 @@
                         android:onClick="removeAll"
                         android:background="@drawable/button_state"
                         android:layout_marginLeft="10sp"
+                        android:textColor="#FFFFFF"
                         />
     </LinearLayout>
     

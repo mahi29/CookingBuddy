@@ -1,3 +1,4 @@
+<!-- 
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -16,7 +17,7 @@
         style="?android:textAppearanceLarge"        
         android:textSize="20sp" />
 
-	<ImageView
+    <ImageView
         android:id="@+id/suggestionGrid"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -52,8 +53,7 @@
         
 </LinearLayout>
 
-
- <!-- 
+ -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:orientation="horizontal"
     android:layout_width="fill_parent" 
@@ -70,11 +70,10 @@
     <ImageView android:src="@drawable/homescreenright" 
         android:layout_height="fill_parent" 
         android:layout_width="wrap_content"
-		android:scaleType="fitXY"
+        android:scaleType="fitXY"
         android:layout_weight="1"
         android:clickable="true"
         android:onClick="recipeButton"
         android:contentDescription="@string/imageViewDescription"
         android:id="@+id/viewrecipe"></ImageView>
 </LinearLayout>
- -->
