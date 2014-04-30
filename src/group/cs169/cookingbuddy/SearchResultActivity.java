@@ -174,12 +174,12 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 	
 	
 	@Override
-	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int selectedPosition,
 			long arg3) {
 		//Prep
-		if (arg2 == 1) {
+		if (selectedPosition == 1) {
 			sortByPrep();
-		} else if (arg2 == 2) { //Rating
+		} else if (selectedPosition == 2) { //Rating
 			sortByTime();
 		}
 	}
