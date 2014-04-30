@@ -1,3 +1,4 @@
+<!-- 
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -50,4 +51,27 @@
         android:onClick="recipeButton"
         android:text="Completed Recipes" />
         
+</LinearLayout>
+
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="horizontal"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content"
+    android:paddingTop="15dip"
+    android:paddingBottom="15dip">
+    <ImageView android:id="@+id/viewingredient"  
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:scaleType="fitStart"
+        android:layout_weight="1"
+        android:contentDescription="@string/imageViewDescription"
+        android:src="@drawable/homescreenleft" />
+    <ImageView android:src="@drawable/homescreenright" 
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:scaleType="fitStart" 
+        android:layout_weight="1"
+        android:contentDescription="@string/imageViewDescription"
+        android:id="@+id/viewrecipe"></ImageView>
 </LinearLayout>

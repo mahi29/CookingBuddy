@@ -20,8 +20,8 @@ public class HomeActivity extends BaseActivity{
 		setContentView(R.layout.activity_home);
 		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 		username = prefs.getString(Constants.JSON_USERNAME, "username");
-		TextView welcome = (TextView) findViewById(R.id.welcomeText);
-		welcome.setText("Welcome " + username);
+		//TextView welcome = (TextView) findViewById(R.id.welcomeText);
+		//welcome.setText("Welcome " + username);
 	}
 
 
