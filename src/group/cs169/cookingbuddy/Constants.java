@@ -21,6 +21,7 @@ public class Constants {
 	public static final String REMOVE_ALL = "/ingredients/removeAll";
 	public static final String RECIPE_DATA = "/recipes/getRecipeData";
 	public static final String VERIFY_URL =  "/users/verify";
+	public static final String ADD_REG_ID_URL = "/addID";
 	
 	//Standard codes		
 	public static final String JSON_USERNAME = "user";
@@ -62,21 +63,11 @@ public class Constants {
 	public static final String RECIPE_CLASS = "recipe";
 	public static final String INGREDIENT_ACTIVITY = "IngredientActivity";
 	
+	//GCM
+	public static final String GCM_SENDER_ID = "162879340555";
+	public static final String GCM_REG_ID = "registration_id";
 	public Constants() {
-		
-	}
-	
-	/** Called when 'Account' button is clicked in the menu*/
-	public static  void goToAccount(Context ctx) {
-		Intent intent = new Intent(ctx, AccountActivity.class);
-		ctx.startActivity(intent);
-	}
-	
-	/**Called when 'Log Out' button is clicked*/
-	public static void logout(Context ctx) {
-		Intent intent = new Intent(ctx, MainActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		ctx.startActivity(intent);
-	}
 
+	}
+	
 }

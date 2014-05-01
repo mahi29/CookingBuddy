@@ -1,16 +1,23 @@
 package group.cs169.cookingbuddy;
 
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
+import group.cs169.cookingbuddy.HomeActivity.RegisterTask;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,7 +30,11 @@ public class MainActivity extends Activity implements AsyncResponse {
 	public EditText passField;
 	protected final static String USERNAME = "user";
 	protected final static String PASSWORD = "password";
+	public ProgressDialog dialog;
 	HTTPTask httpTask;
+	public GoogleCloudMessaging gcm;
+	public String regID;
+	SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +60,18 @@ public class MainActivity extends Activity implements AsyncResponse {
 		try {
 			json.put(Constants.JSON_USERNAME,username);
 			json.put(Constants.JSON_PASSWORD,password);
+			json.put(Constants.GCM_REG_ID, regID);
 			ArrayList<Object> container = new ArrayList<Object>();
 			//The JSONObject and path must be added in this order! JSONObject first, path second
 			container.add(json);
 			container.add(Constants.LOGIN_USER_URL);
+			dialog = new ProgressDialog(this);
+			String msg = "Granting permission. Please wait...";
+			dialog.setMessage(msg);
+			dialog.show();
 			httpTask = new HTTPTask();
 			httpTask.caller = this;
 			httpTask.callingActivity = Constants.MAIN_ACTIVITY;
-			httpTask.dialog = new ProgressDialog(this);
 			httpTask.execute(container);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -69,27 +84,95 @@ public class MainActivity extends Activity implements AsyncResponse {
 			out = new JSONObject(output);
 			String errCode = out.getString(Constants.JSON_STANDARD_RESPONSE);
 			if (errCode.equals(Constants.SUCCESS)) {
-				SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+				prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 				prefs.edit().putString(Constants.JSON_USERNAME, username).commit();
-				Intent i = new Intent(this, HomeActivity.class);
-				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-				startActivity(i);
+				gcmStuff();
 			} else {
+				if (dialog != null && dialog.isShowing()) dialog.dismiss();
 				Toast.makeText(this, "Invalid username and password", Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 				e.printStackTrace();
 		} 
 	}
-
+	
+	private void gcmStuff() {
+		gcm = GoogleCloudMessaging.getInstance(this);
+		regID = getGCMRegId(this);
+		if (regID.isEmpty()) {
+			RegisterTask task = new RegisterTask(this);
+			task.execute();
+		} else {
+			sendIdToBackend();
+		}
+	}
+	
+	private String getGCMRegId(Context context) {
+		String reg = prefs.getString(Constants.GCM_REG_ID, "");
+		return reg;
+	}
 	@Override
 	public void processFinish(String output, String callingMethod) {
-		if (output.equals(Constants.ERROR_CODE)){
+		if (callingMethod.equals(Constants.ADD_REG_ID_URL)) {
+			if (dialog != null && dialog.isShowing()) dialog.dismiss();
+			Intent i = new Intent(this, HomeActivity.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			startActivity(i);
+		} else if (output.equals(Constants.ERROR_CODE)){
+			if (dialog != null && dialog.isShowing()) dialog.dismiss();
 			String iomsg = "Could not connect to the Internet";
 			Toast.makeText(this,iomsg,Toast.LENGTH_SHORT).show();
 		} else {
 			logInCallback(output);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	private void sendIdToBackend() {
+    	JSONObject json = new JSONObject ();
+    	ArrayList<Object> container = new ArrayList<Object>();
+    	Log.d("MainActivity","GCM Registration ID: " + regID);
+		try {
+			json.put(Constants.JSON_USERNAME, prefs.getString(Constants.JSON_USERNAME, ""));
+			json.put(Constants.GCM_REG_ID, regID);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		container.add(json);
+		container.add(Constants.ADD_REG_ID_URL);
+    	HTTPTask task = new HTTPTask();
+    	task.caller = this;
+    	task.execute(container);   
+	}
+ 	
+public class RegisterTask extends AsyncTask<Void, Void, String> {
+		
+		Context context;
+		boolean failed = false;
+		
+		public RegisterTask (Context context) {
+			this.context = context;
+		}
+        @Override
+        protected String doInBackground(Void... params) {
+            String msg = "";
+            try {
+                if (gcm == null) gcm = GoogleCloudMessaging.getInstance(context);
+                regID = gcm.register(Constants.GCM_SENDER_ID);
+                prefs.edit().putString(Constants.GCM_REG_ID, regID);
+            } catch (IOException ex) {
+                msg = "Error :" + ex.getMessage();
+                failed = true;
+            }
+            return msg;
+        }
+
+        @SuppressWarnings("unchecked")
+		@Override
+        protected void onPostExecute(String msg) {
+        	if (failed) return;
+        	sendIdToBackend();
+        }
+	}	
 
 }
