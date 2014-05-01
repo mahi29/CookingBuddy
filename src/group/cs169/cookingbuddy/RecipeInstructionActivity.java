@@ -5,8 +5,10 @@ import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +21,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -61,20 +65,43 @@ public class RecipeInstructionActivity extends BaseActivity implements AsyncResp
 		
 		TextView estimatedPrepTime = (TextView) findViewById(R.id.estimatedpreptime);
 		int time = Integer.parseInt(recipe.prepTime);
-		int minutes = time/60;
-		int seconds = time - (60*(minutes));
+		int hours = time/3600;
+		int minutes = (time - (3600*(hours)))/60;
+		//int seconds = time - (60*(minutes));
 		//estimatedPrepTime.setText(recipe.prepTime);
-		if (time > 0){
-			estimatedPrepTime.setText("Estimated prep time: " + minutes + " minutes and " + seconds + " seconds");
+		if (time > 0 && time < 3600 && minutes != 0){
+			estimatedPrepTime.setText("Estimated prep time: " + minutes + " minutes");
+		}
+		else if (time > 3600 && hours > 1 && minutes != 0){
+			estimatedPrepTime.setText("Estimated prep time: " + hours + " hours and " + minutes + " minutes");
+		}
+		else if (time > 3600 && hours == 1){
+			estimatedPrepTime.setText("Estimated prep time: " + hours + " hour and " + minutes + " minutes");
+		}
+		else if (time > 3600 && hours > 1 && minutes == 0){
+			estimatedPrepTime.setText("Estimated prep time: " + hours + " hours");
+		}
+		else if (time > 3600 && hours == 1 && minutes == 0){
+			estimatedPrepTime.setText("Estimated prep time: " + hours + " hour");
 		}
 		else {
 			estimatedPrepTime.setText("Estimated prep time is not available");
 		}
 		TextView yield = (TextView) findViewById(R.id.yield);
+		String recipeYield = recipe.yield;
+		if (recipeYield == null) {
+			recipeYield = "Not Available";
+		}
 		yield.setText("Yield: " + recipe.yield);
 		
 		//TextView url = (TextView) findViewById(R.id.instructionurl);
 		//url.setText("Recipe Instructions " + recipe.instructionUrl);
+		
+		WebView webview = (WebView) findViewById(R.id.recipewebview);
+		webview.setWebViewClient(new Callback());
+		webview.getSettings().setJavaScriptEnabled(true);
+		webview.loadUrl(recipe.instructionUrl);
+		Log.d("Inside RecipeInstructionActivity", "URL is " + recipe.instructionUrl);
 		
 		ImageView image = (ImageView) findViewById(R.id.recipeimage);
 		image.setImageBitmap(imgBitmap);	
@@ -177,6 +204,15 @@ public class RecipeInstructionActivity extends BaseActivity implements AsyncResp
 		Intent intent = new Intent(ctx,HistoryActivity.class);
 		startActivity(intent);		
 	}
+	
+private class Callback extends WebViewClient {
+	
+		@Override
+		public boolean shouldOverrideUrlLoading(WebView view, String url){
+			view.loadUrl(url);
+			return true;
+		}
+}
 
 
 

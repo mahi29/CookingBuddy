@@ -25,9 +25,6 @@ public class HomeActivity extends BaseActivity{
 	}
 
 
-
-
-
 	/**Called when 'My Kitchen' button is pressed*/
 	public void kitchenButton(View view) {
 		Intent intent = new Intent(this, IngredientActivity.class);

@@ -107,7 +107,6 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 		task.dialog = new ProgressDialog(this);
 		task.callingActivity = Constants.SEARCH_ACTIVITY;
 		task.execute(container);
-		
 	}
 
 	@Override
