@@ -66,8 +66,8 @@
         android:clickable="true"
         android:onClick="kitchenButton"
         android:contentDescription="@string/imageViewDescription"
-        android:src="@drawable/homescreenleft" />
-    <ImageView android:src="@drawable/homescreenright" 
+        android:src="@drawable/homepagepictureleft_state" />
+    <ImageView android:src="@drawable/homepagepictureright_state" 
         android:layout_height="fill_parent" 
         android:layout_width="wrap_content"
         android:scaleType="fitXY"
