@@ -13,6 +13,7 @@
         android:layout_marginLeft="7dp"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center"
+        android:textSize="24sp"
         android:text="Recipe Name"
         android:textStyle="bold" />
 
@@ -21,7 +22,7 @@
         android:layout_toRightOf="@id/ingredientName"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:layout_centerInParent="true"
         android:gravity="center"
         android:text="5 pieces"
@@ -36,7 +37,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:layout_alignParentRight="true"
-        android:textSize="12sp" />
+        android:textSize="16sp" />
 
 
 

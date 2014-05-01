@@ -3,6 +3,7 @@ package group.cs169.cookingbuddy;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,17 @@ public class SearchAdapter extends BaseAdapter {
 		float rate = Float.parseFloat(recipe.rating);
 		rating.setRating(rate);
 		//rating.setImageResource(recipe.rating);
+		ArrayList<TextView> allItems = new ArrayList<TextView>();
+		allItems.add((TextView) convertView.findViewById(R.id.search_name));
+		updateText(allItems);
 		return convertView;
+	}
+	
+	private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(context.getAssets(), "Arctik.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
 	}
 
 }

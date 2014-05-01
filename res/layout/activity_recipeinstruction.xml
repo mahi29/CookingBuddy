@@ -16,6 +16,7 @@
             style="?android:textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:textSize="28dp"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:text="Recipe Name"
@@ -35,6 +36,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
+            android:textSize="18dp"
             android:layout_marginLeft="5dp"
             android:text="Estimated Prep Time" />
         
@@ -44,9 +46,9 @@
             android:layout_width="match_parent"
             android:layout_marginTop="5dp"
             android:text="Yield"
+            android:textSize="18dp"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"/>
-               	
     
         <Button
             android:id="@+id/makerecipe"
@@ -56,6 +58,7 @@
        			android:background="@drawable/button_state"
             android:text="Make Recipe!"
             android:layout_weight="1"
+            android:textColor="#FFFFFF"
             android:onClick="makeRecipe"/>
         
         <WebView

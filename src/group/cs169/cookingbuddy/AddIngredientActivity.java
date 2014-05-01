@@ -1,9 +1,12 @@
 package group.cs169.cookingbuddy;
 
+import java.util.ArrayList;
+
 import group.cs169.cookingbuddy.DateDialog.DatePickerListener;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +32,13 @@ public class AddIngredientActivity extends Activity implements DatePickerListene
 		amtField = (EditText) findViewById(R.id.prompt_amt);
 		unitField = (Spinner) findViewById(R.id.prompt_unit);
 		expField = (TextView) findViewById(R.id.prompt_expirationDate);
+		ArrayList<TextView> allItems = new ArrayList();
+		allItems.add((TextView) findViewById(R.id.prompt_message));
+		allItems.add((TextView) findViewById(R.id.prompt_expirationDate));
+		allItems.add((TextView) findViewById(R.id.prompt_cancel));
+		allItems.add((TextView) findViewById(R.id.prompt_finish));
+		updateText(allItems);
+		
 
 	}
 
@@ -74,5 +84,11 @@ public class AddIngredientActivity extends Activity implements DatePickerListene
 		setResult(RESULT_OK,i);
 		finish();
 		
+	}
+	private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(getAssets(), "VintageOne.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
 	}
 }

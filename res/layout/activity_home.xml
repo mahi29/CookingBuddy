@@ -17,7 +17,7 @@
         style="?android:textAppearanceLarge"        
         android:textSize="20sp" />
 
-	<ImageView
+    <ImageView
         android:id="@+id/suggestionGrid"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -66,11 +66,11 @@
         android:clickable="true"
         android:onClick="kitchenButton"
         android:contentDescription="@string/imageViewDescription"
-        android:src="@drawable/homescreenleft" />
-    <ImageView android:src="@drawable/homescreenright" 
+        android:src="@drawable/homepagepictureleft_state" />
+    <ImageView android:src="@drawable/homepagepictureright_state" 
         android:layout_height="fill_parent" 
         android:layout_width="wrap_content"
-		android:scaleType="fitXY"
+        android:scaleType="fitXY"
         android:layout_weight="1"
         android:clickable="true"
         android:onClick="recipeButton"

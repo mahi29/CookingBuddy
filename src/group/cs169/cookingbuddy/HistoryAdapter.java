@@ -3,6 +3,7 @@ package group.cs169.cookingbuddy;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +51,19 @@ public class HistoryAdapter extends BaseAdapter {
 		dateCreated.setText(dates.get(position));
 		TextView rating = (TextView) rowView.findViewById(R.id.userrating);
 		rating.setText(ratings.get(position).toString());
+		ArrayList<TextView> allItems = new ArrayList();
+		allItems.add((TextView) rowView.findViewById(R.id.recipenamefield));
+		allItems.add((TextView) rowView.findViewById(R.id.creationdate));
+		allItems.add((TextView) rowView.findViewById(R.id.userrating));
+		updateText(allItems);
 		return rowView;
 	}
 	
-	
+	private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(context.getAssets(), "Arctik.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
+	}
 
 }

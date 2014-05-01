@@ -66,6 +66,7 @@
 	    android:layout_alignLeft="@id/passwordString"
 	    android:layout_alignRight="@id/passwordText"
 	    android:onClick="logIn"
+	    android:textColor="#FFFFFF"
 	    android:background="@drawable/button_state"
 	    android:layout_below="@id/passwordString"
 	    style="?android:textAppearanceLarge" 
@@ -90,6 +91,7 @@
 	    android:layout_centerHorizontal="true"
 	    android:layout_marginTop="12dp"
 	    android:background="@drawable/button_state"
+	    android:textColor="#FFFFFF"
 	    android:onClick="signUp"
 	    android:text="Sign Up"
 	    android:textSize="15sp" />

@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,7 +105,20 @@ public class RecipeInstructionActivity extends BaseActivity implements AsyncResp
 		Log.d("Inside RecipeInstructionActivity", "URL is " + recipe.instructionUrl);
 		
 		ImageView image = (ImageView) findViewById(R.id.recipeimage);
-		image.setImageBitmap(imgBitmap);	
+		image.setImageBitmap(imgBitmap);
+		
+		//THIS PART CHANGES TO CUSTOM FONT
+		ArrayList<TextView> allItems = new ArrayList<TextView>();
+		allItems.add((TextView) findViewById(R.id.estimatedpreptime));
+		allItems.add((TextView) findViewById(R.id.yield));
+		//allItems.add((TextView) findViewById(R.id.instructionurl));
+		updateText(allItems);
+		ArrayList<TextView> allItems2 = new ArrayList<TextView>();
+		allItems2.add((TextView) findViewById(R.id.recipename));
+		allItems2.add((TextView) findViewById(R.id.makerecipe));
+		updateTextLarge(allItems2);
+		//END CHANGING TO CUSTOM FONT
+		
 	}
 	/**
 	 * Takes in the URL and makes it a larger image URL
@@ -214,6 +228,19 @@ private class Callback extends WebViewClient {
 		}
 }
 
+	private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(getAssets(), "Arctik.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
+	}
+	
+	private void updateTextLarge(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(getAssets(), "VintageOne.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
+	}
 
 
 }
