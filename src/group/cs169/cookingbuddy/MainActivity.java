@@ -20,6 +20,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.graphics.Typeface;
+
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements AsyncResponse {
@@ -43,6 +46,15 @@ public class MainActivity extends Activity implements AsyncResponse {
 		userField = (EditText) findViewById(R.id.userText);
 		passField = (EditText) findViewById(R.id.passwordText);
 		getActionBar().hide();
+		//changing text
+		ArrayList<TextView> allItems = new ArrayList();
+		allItems.add((TextView) findViewById(R.id.title));
+		allItems.add((TextView) findViewById(R.id.userString));
+		allItems.add((TextView) findViewById(R.id.passwordString));
+		allItems.add((TextView) findViewById(R.id.loginButton));
+		allItems.add((TextView) findViewById(R.id.newUserString));
+		allItems.add((TextView) findViewById(R.id.newUserButton));
+		updateText(allItems);
 	}
 
 	/** Called when the 'Sign Up' button is clicked from Home Screen */
@@ -174,5 +186,11 @@ public class RegisterTask extends AsyncTask<Void, Void, String> {
         	sendIdToBackend();
         }
 	}	
+	private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(getAssets(), "VintageOne.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
+	}
 
 }

@@ -9,6 +9,7 @@ import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -35,6 +36,14 @@ public class AccountActivity extends BaseActivity implements AsyncResponse{
 		oldPass = (EditText) findViewById(R.id.acctOldPassText);
 		newPass = (EditText) findViewById(R.id.acctNewPassText);
 		confNewPass = (EditText) findViewById(R.id.acctconfirmPassText);
+		//changing to custom font
+		ArrayList<TextView> allItems = new ArrayList();
+		allItems.add((TextView) findViewById(R.id.acctName));
+		allItems.add((TextView) findViewById(R.id.acctOldPass));
+		allItems.add((TextView) findViewById(R.id.acctNewPass));
+		allItems.add((TextView) findViewById(R.id.acctconfirmPass));
+		allItems.add((TextView) findViewById(R.id.acctButton));
+		updateText(allItems);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -71,6 +80,13 @@ public class AccountActivity extends BaseActivity implements AsyncResponse{
 			Toast.makeText(this, "Password successfully changed",Toast.LENGTH_LONG).show();
 			Intent i = new Intent(this, HomeActivity.class);
 			startActivity(i);
+		}
+	}
+	
+	private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(getAssets(), "VintageOne.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
 		}
 	}
 

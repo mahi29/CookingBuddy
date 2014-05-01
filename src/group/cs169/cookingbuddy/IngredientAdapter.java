@@ -4,11 +4,16 @@ import group.cs169.cookingbuddy.IngredientActivity.Ingredient;
 import android.util.SparseBooleanArray;
 import java.util.ArrayList;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import java.util.ArrayList;
 
 public class IngredientAdapter extends BaseAdapter {
 
@@ -49,6 +54,11 @@ public class IngredientAdapter extends BaseAdapter {
 		name.setText(item.name);
 		amount.setText(amtText);
 		exp.setText(item.expDate);
+		ArrayList<TextView> allItems = new ArrayList();
+		allItems.add((TextView) convertView.findViewById(R.id.ingredientName));
+		allItems.add((TextView) convertView.findViewById(R.id.ingredientAmount));
+		allItems.add((TextView) convertView.findViewById(R.id.expirationDate));
+		updateText(allItems);
 		return convertView;
 	}
 	
@@ -82,5 +92,12 @@ public class IngredientAdapter extends BaseAdapter {
         mSelectedItemsIds = new SparseBooleanArray();
         notifyDataSetChanged();
     }
+    
+    private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(context.getAssets(), "Arctik.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
+	}
 
 }

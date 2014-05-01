@@ -108,6 +108,10 @@ public class Recipe implements AsyncResponse, Serializable {
 			yield = (String) result.getString("yield");
 			prepTime = (String) result.getString("totalTimeInSeconds");
 			rating = (String) result.getString("rating");
+			
+			instructionUrl = (String) result.getJSONObject("source").getString("sourceRecipeUrl");
+			Log.d("CHECKPOINT", "The URL is " + instructionUrl);
+			
 			if (rating.equals("null")) rating = "0";
 			if (prepTime.equals("null")) prepTime = "0";
 			SearchResultActivity sra = (SearchResultActivity) context;

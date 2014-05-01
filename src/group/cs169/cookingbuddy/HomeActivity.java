@@ -4,14 +4,13 @@ import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -102,6 +101,7 @@ public class HomeActivity extends BaseActivity implements AsyncResponse {
         	task.execute(container);
         }
 	}
+
 
 
 }

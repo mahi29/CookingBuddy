@@ -14,6 +14,7 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SearchResultActivity extends BaseActivity implements AsyncResponse, OnItemSelectedListener {
 
@@ -45,6 +47,11 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 		searchResults = (ListView) findViewById(R.id.searchList);
 		ctx = this;
 		handleIntent(getIntent());
+		//THIS PART CHANGES TO CUSTOM FONT
+		ArrayList<TextView> allItems = new ArrayList();
+		allItems.add((TextView) findViewById(R.id.filterbutton));
+		updateText(allItems);
+		//END CHANGING TO CUSTOM FONT
 	} 
 	
 	@Override
@@ -107,7 +114,6 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 		task.dialog = new ProgressDialog(this);
 		task.callingActivity = Constants.SEARCH_ACTIVITY;
 		task.execute(container);
-		
 	}
 
 	@Override
@@ -208,5 +214,11 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 			int time2 = Integer.parseInt(r2.prepTime);
 			return time1 - time2;
 		}
-	}		
+	}
+	private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(getAssets(), "VintageOne.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
+	}
 }

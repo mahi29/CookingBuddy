@@ -5,8 +5,10 @@ import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,11 +16,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -61,23 +66,59 @@ public class RecipeInstructionActivity extends BaseActivity implements AsyncResp
 		
 		TextView estimatedPrepTime = (TextView) findViewById(R.id.estimatedpreptime);
 		int time = Integer.parseInt(recipe.prepTime);
-		int minutes = time/60;
-		int seconds = time - (60*(minutes));
+		int hours = time/3600;
+		int minutes = (time - (3600*(hours)))/60;
+		//int seconds = time - (60*(minutes));
 		//estimatedPrepTime.setText(recipe.prepTime);
-		if (time > 0){
-			estimatedPrepTime.setText("Estimated prep time: " + minutes + " minutes and " + seconds + " seconds");
+		if (time > 0 && time < 3600 && minutes != 0){
+			estimatedPrepTime.setText("Estimated prep time: " + minutes + " minutes");
+		}
+		else if (time > 3600 && hours > 1 && minutes != 0){
+			estimatedPrepTime.setText("Estimated prep time: " + hours + " hours and " + minutes + " minutes");
+		}
+		else if (time > 3600 && hours == 1){
+			estimatedPrepTime.setText("Estimated prep time: " + hours + " hour and " + minutes + " minutes");
+		}
+		else if (time > 3600 && hours > 1 && minutes == 0){
+			estimatedPrepTime.setText("Estimated prep time: " + hours + " hours");
+		}
+		else if (time > 3600 && hours == 1 && minutes == 0){
+			estimatedPrepTime.setText("Estimated prep time: " + hours + " hour");
 		}
 		else {
 			estimatedPrepTime.setText("Estimated prep time is not available");
 		}
 		TextView yield = (TextView) findViewById(R.id.yield);
+		String recipeYield = recipe.yield;
+		if (recipeYield == null) {
+			recipeYield = "Not Available";
+		}
 		yield.setText("Yield: " + recipe.yield);
 		
 		//TextView url = (TextView) findViewById(R.id.instructionurl);
 		//url.setText("Recipe Instructions " + recipe.instructionUrl);
 		
+		WebView webview = (WebView) findViewById(R.id.recipewebview);
+		webview.setWebViewClient(new Callback());
+		webview.getSettings().setJavaScriptEnabled(true);
+		webview.loadUrl(recipe.instructionUrl);
+		Log.d("Inside RecipeInstructionActivity", "URL is " + recipe.instructionUrl);
+		
 		ImageView image = (ImageView) findViewById(R.id.recipeimage);
-		image.setImageBitmap(imgBitmap);	
+		image.setImageBitmap(imgBitmap);
+		
+		//THIS PART CHANGES TO CUSTOM FONT
+		ArrayList<TextView> allItems = new ArrayList<TextView>();
+		allItems.add((TextView) findViewById(R.id.estimatedpreptime));
+		allItems.add((TextView) findViewById(R.id.yield));
+		//allItems.add((TextView) findViewById(R.id.instructionurl));
+		updateText(allItems);
+		ArrayList<TextView> allItems2 = new ArrayList<TextView>();
+		allItems2.add((TextView) findViewById(R.id.recipename));
+		allItems2.add((TextView) findViewById(R.id.makerecipe));
+		updateTextLarge(allItems2);
+		//END CHANGING TO CUSTOM FONT
+		
 	}
 	/**
 	 * Takes in the URL and makes it a larger image URL
@@ -177,7 +218,29 @@ public class RecipeInstructionActivity extends BaseActivity implements AsyncResp
 		Intent intent = new Intent(ctx,HistoryActivity.class);
 		startActivity(intent);		
 	}
+	
+private class Callback extends WebViewClient {
+	
+		@Override
+		public boolean shouldOverrideUrlLoading(WebView view, String url){
+			view.loadUrl(url);
+			return true;
+		}
+}
 
+	private void updateText(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(getAssets(), "Arctik.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
+	}
+	
+	private void updateTextLarge(ArrayList<TextView> allItems){
+		Typeface font = Typeface.createFromAsset(getAssets(), "VintageOne.ttf");
+		for (TextView t:allItems){
+			t.setTypeface(font);
+		}
+	}
 
 
 }

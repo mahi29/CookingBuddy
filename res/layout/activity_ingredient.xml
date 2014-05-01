@@ -47,6 +47,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_state"
             android:onClick="addIngredient"
+            android:textColor="#FFFFFF"
             android:text="Add Ingredient" />
 
 
