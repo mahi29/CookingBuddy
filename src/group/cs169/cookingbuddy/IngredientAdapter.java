@@ -94,7 +94,7 @@ public class IngredientAdapter extends BaseAdapter {
     }
     
     private void updateText(ArrayList<TextView> allItems){
-		Typeface font = Typeface.createFromAsset(context.getAssets(), "song.ttf");
+		Typeface font = Typeface.createFromAsset(context.getAssets(), "Arctik.ttf");
 		for (TextView t:allItems){
 			t.setTypeface(font);
 		}
