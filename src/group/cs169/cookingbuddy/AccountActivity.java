@@ -1,11 +1,12 @@
 package group.cs169.cookingbuddy;
 
+import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
+
 import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;

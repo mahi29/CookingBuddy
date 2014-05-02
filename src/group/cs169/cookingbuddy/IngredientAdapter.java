@@ -1,19 +1,17 @@
 package group.cs169.cookingbuddy;
 
 import group.cs169.cookingbuddy.IngredientActivity.Ingredient;
-import android.util.SparseBooleanArray;
+
 import java.util.ArrayList;
+
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Typeface;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
-import java.util.ArrayList;
 
 public class IngredientAdapter extends BaseAdapter {
 

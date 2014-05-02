@@ -1,7 +1,6 @@
 package group.cs169.cookingbuddy;
 
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
-import group.cs169.cookingbuddy.SearchResultActivity.PrepSort;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,10 +36,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class IngredientActivity extends BaseActivity implements AsyncResponse, OnItemSelectedListener {

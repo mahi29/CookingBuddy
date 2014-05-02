@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import group.cs169.cookingbuddy.Constants;
 
 public class BaseActivity extends Activity {
 

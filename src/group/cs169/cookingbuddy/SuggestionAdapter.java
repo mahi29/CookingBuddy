@@ -1,7 +1,5 @@
 package group.cs169.cookingbuddy;
 
-import group.cs169.cookingbuddy.Recipe;
-
 import java.util.ArrayList;
 
 import android.content.Context;

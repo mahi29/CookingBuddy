@@ -1,7 +1,5 @@
 package group.cs169.cookingbuddy;
 
-import android.content.Context;
-import android.content.Intent;
 
 public class Constants {
 	

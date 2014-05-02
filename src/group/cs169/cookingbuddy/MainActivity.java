@@ -1,10 +1,10 @@
 package group.cs169.cookingbuddy;
 
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
-import group.cs169.cookingbuddy.HomeActivity.RegisterTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,14 +15,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.graphics.Typeface;
-
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements AsyncResponse {
