@@ -1,7 +1,5 @@
 package group.cs169.cookingbuddy;
 
-import android.content.Context;
-import android.content.Intent;
 
 public class Constants {
 	
@@ -21,7 +19,7 @@ public class Constants {
 	public static final String REMOVE_ALL = "/ingredients/removeAll";
 	public static final String RECIPE_DATA = "/recipes/getRecipeData";
 	public static final String VERIFY_URL =  "/users/verify";
-	public static final String ADD_REG_ID_URL = "/addID";
+	public static final String ADD_REG_ID_URL = "/push";
 	
 	//Standard codes		
 	public static final String JSON_USERNAME = "user";
@@ -65,7 +63,7 @@ public class Constants {
 	
 	//GCM
 	public static final String GCM_SENDER_ID = "162879340555";
-	public static final String GCM_REG_ID = "registration_id";
+	public static final String GCM_REG_ID = "reg_id";
 	public Constants() {
 
 	}

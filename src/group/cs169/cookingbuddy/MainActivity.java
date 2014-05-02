@@ -1,10 +1,10 @@
 package group.cs169.cookingbuddy;
 
 import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
-import group.cs169.cookingbuddy.HomeActivity.RegisterTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,14 +15,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.graphics.Typeface;
-
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements AsyncResponse {
@@ -72,7 +71,6 @@ public class MainActivity extends Activity implements AsyncResponse {
 		try {
 			json.put(Constants.JSON_USERNAME,username);
 			json.put(Constants.JSON_PASSWORD,password);
-			json.put(Constants.GCM_REG_ID, regID);
 			ArrayList<Object> container = new ArrayList<Object>();
 			//The JSONObject and path must be added in this order! JSONObject first, path second
 			container.add(json);
@@ -126,6 +124,7 @@ public class MainActivity extends Activity implements AsyncResponse {
 	@Override
 	public void processFinish(String output, String callingMethod) {
 		if (callingMethod.equals(Constants.ADD_REG_ID_URL)) {
+			Log.d("MainActivity",output);
 			if (dialog != null && dialog.isShowing()) dialog.dismiss();
 			Intent i = new Intent(this, HomeActivity.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

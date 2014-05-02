@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import group.cs169.cookingbuddy.Constants;
 
 public class BaseActivity extends Activity {
 
@@ -89,15 +88,10 @@ public class BaseActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		Log.d("BaseActivity","onPause()");
-//		SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
-//		prefs.edit().putString("TEST","Mahith is amazing").commit();
 	}
 	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-//		Log.d("BaseActivity","onDestroy()");
-//		SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
-//		prefs.edit().putString("TEST","Mahith is amazing").commit();
 	}
 }
