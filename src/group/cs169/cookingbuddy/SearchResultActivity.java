@@ -34,6 +34,7 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 	public SearchAdapter adapter;
 	public boolean filter;
 	public String[] filterNames;
+	ProgressDialog dialog;
 	String query;
 
 	@Override
@@ -76,8 +77,7 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 			//TODO Create filterNames
 			try {
 				if (!filter){
-					param.put(Constants.SEARCH_KEYWORD, query);
-					
+					param.put(Constants.SEARCH_KEYWORD, query);	
 				}
 				else {
 					param.put(Constants.SEARCH_KEYWORD, query);
@@ -88,10 +88,12 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 			}
 			container.add(param);
 			container.add(Constants.SEARCH_URL);
+			dialog = new ProgressDialog(this);
+			String msg = "Searching the world for you. Please wait...";
+			dialog.setMessage(msg);
+			dialog.show();
 			task = new HTTPTask();
 			task.caller = this;
-			task.dialog = new ProgressDialog(this);
-			task.callingActivity = Constants.SEARCH_ACTIVITY;
 			task.execute(container);
 		}
 	}
@@ -127,9 +129,6 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 		listData = new ArrayList<Recipe>();
 		adapter = new SearchAdapter(this,listData);
 		searchResults.setAdapter(adapter);
-		ProgressDialog recipePD = new ProgressDialog(this);
-		recipePD.setMessage("Showing the Recipes. Please Wait...");
-		recipePD.show();
 		try {
 			result = new JSONObject(output);
 			ids = result.getJSONArray("recipe_id");
@@ -147,9 +146,8 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}	
-		recipePD.dismiss();
+		if (dialog != null && dialog.isShowing()) dialog.dismiss();
 		final ArrayList<Recipe> data = listData;
-		
 		searchResults.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -167,12 +165,10 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 
 		});
 	}
-	
 	private void sortByPrep() {
 		Collections.sort(listData,new PrepSort());
 		adapter.notifyDataSetChanged();
 	}
-	
 	private void sortByTime() {
 		Collections.sort(listData,new RatingSort());
 		adapter.notifyDataSetChanged();

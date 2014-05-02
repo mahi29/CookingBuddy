@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 public class SplashActivity extends Activity implements AsyncResponse {
 
@@ -44,8 +45,6 @@ public class SplashActivity extends Activity implements AsyncResponse {
 			httpTask = new HTTPTask();
 			httpTask.caller = this;
 			httpTask.context = this;
-	//		httpTask.callingActivity = Constants.MAIN_ACTIVITY;
-	//		httpTask.dialog = new ProgressDialog(this);
 			httpTask.execute(container);
 		} catch(JSONException e) {
 			e.printStackTrace();
@@ -62,6 +61,9 @@ public class SplashActivity extends Activity implements AsyncResponse {
 	public void processFinish(String output, String callingMethod) {
 		JSONObject out;
 		try {
+			if (output.equals(Constants.ERROR_CODE)){
+				goToPage(MainActivity.class);
+			}
 			out = new JSONObject(output);
 			String verification = out.getString(Constants.JSON_STANDARD_RESPONSE);
 			if (verification.equals(Constants.SIGNED_IN)){

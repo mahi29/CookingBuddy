@@ -89,15 +89,10 @@ public class BaseActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		Log.d("BaseActivity","onPause()");
-//		SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
-//		prefs.edit().putString("TEST","Mahith is amazing").commit();
 	}
 	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-//		Log.d("BaseActivity","onDestroy()");
-//		SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
-//		prefs.edit().putString("TEST","Mahith is amazing").commit();
 	}
 }
