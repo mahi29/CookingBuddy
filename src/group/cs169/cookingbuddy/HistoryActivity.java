@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -83,7 +84,10 @@ public class HistoryActivity extends BaseActivity implements AsyncResponse {
 				creationDates.add(jsonArray.getJSONObject(i).getString("date_created"));
 				ratings.add((int) Math.ceil(random.nextInt(5)+1));
 				//This code retrieve ratings from the DB
+				//Log.d("INSIDE HISTORY ACTIVITY", "Rating is " + jsonArray.toString());
 				//ratings.add(jsonArray.getJSONObject(i).getInt("rating"));
+				//Log.d("INSIDE HISTORY ACTIVITY", "Rating is " + jsonArray.getJSONObject(i).getInt("rating"));
+				
 			}
 			
 		} catch (JSONException e) {
