@@ -79,7 +79,7 @@ public class MainActivity extends Activity implements AsyncResponse {
 			dialog = new ProgressDialog(this);
 			String msg = "Granting permission. Please wait...";
 			dialog.setMessage(msg);
-			dialog.show();
+			//dialog.show();
 			httpTask = new HTTPTask();
 			httpTask.caller = this;
 			httpTask.callingActivity = Constants.MAIN_ACTIVITY;
