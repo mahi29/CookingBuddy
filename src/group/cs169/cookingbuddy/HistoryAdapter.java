@@ -11,13 +11,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class HistoryAdapter extends BaseAdapter {
-	
+
 	Context context;
 	ArrayList<String> completedRecipes;
 	ArrayList<String> dates;
 	ArrayList<Integer> ratings;
 	LayoutInflater inflater;
-	
+
 	public HistoryAdapter(Context arg1, ArrayList<String> completedRecipes, ArrayList<String> creationDates, ArrayList<Integer> ratings){
 		context = arg1;
 		this.completedRecipes = completedRecipes;
@@ -58,7 +58,7 @@ public class HistoryAdapter extends BaseAdapter {
 		updateText(allItems);
 		return rowView;
 	}
-	
+
 	private void updateText(ArrayList<TextView> allItems){
 		Typeface font = Typeface.createFromAsset(context.getAssets(), "Arctik.ttf");
 		for (TextView t:allItems){

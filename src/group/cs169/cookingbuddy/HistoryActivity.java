@@ -9,10 +9,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar.LayoutParams;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 public class HistoryActivity extends BaseActivity implements AsyncResponse {
@@ -62,6 +74,47 @@ public class HistoryActivity extends BaseActivity implements AsyncResponse {
 		allItems.add((TextView) findViewById(R.id.ratinglabel));
 		updateText(allItems);
 		//END ADDING CUSTOM TEXT
+		
+		//DROPDOWN LIST SUPPORT
+		ArrayList<String> filters = new ArrayList<String>();
+		filters.add("Dairy-Free");
+		filters.add("Gluten-Free");
+		//Add more filters here
+		
+		boolean[] bools = new boolean[filters.size()];
+		for (int i = 0; i < bools.length ; i++){
+			bools[i] = false;
+		}
+		
+		findViewById(R.id.filterbutton).setOnClickListener(new View.OnClickListener() {
+			
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onClick(View v) {
+				LayoutInflater inflater = (LayoutInflater) HistoryActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.filter_pop_up, (ViewGroup) findViewById(R.id.filterlinearlayout));
+				final PopupWindow pop = new PopupWindow(layout, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true);
+				pop.setBackgroundDrawable(new BitmapDrawable());
+				pop.setTouchable(true);
+				pop.setOutsideTouchable(true);
+				pop.setTouchInterceptor(new OnTouchListener(){
+					public boolean onTouch(View v, MotionEvent event){
+						if (event.getAction() == MotionEvent.ACTION_OUTSIDE){
+							pop.dismiss();
+							return true;
+						}
+						return false;
+					}
+					
+				});
+				pop.setContentView(layout);
+				LinearLayout ingredientLayout = (LinearLayout) findViewById(R.id.youngmoneycashmoney);
+				pop.showAsDropDown(ingredientLayout);
+				
+				final ListView list = (ListView) layout.findViewById(R.id.filters);
+				//DropDownListAdapter Goes here
+			}
+		});
 		
 	}
 

@@ -31,9 +31,7 @@
 	        android:background="@drawable/button_state"
 	        android:onClick="dairyFilter"
 	        />
-	    
-	    
-    
+	
     </LinearLayout>
         
 
