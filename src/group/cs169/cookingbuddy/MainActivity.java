@@ -131,7 +131,7 @@ public class MainActivity extends Activity implements AsyncResponse {
 			startActivity(i);
 		} else if (output.equals(Constants.ERROR_CODE)){
 			if (dialog != null && dialog.isShowing()) dialog.dismiss();
-			String iomsg = "Could not connect to the Internet";
+			String iomsg = "Sorry. Something just broke...";
 			Toast.makeText(this,iomsg,Toast.LENGTH_SHORT).show();
 		} else {
 			logInCallback(output);
