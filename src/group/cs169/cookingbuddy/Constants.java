@@ -19,7 +19,8 @@ public class Constants {
 	public static final String REMOVE_ALL = "/ingredients/removeAll";
 	public static final String RECIPE_DATA = "/recipes/getRecipeData";
 	public static final String VERIFY_URL =  "/users/verify";
-	public static final String ADD_REG_ID_URL = "/push";
+	public static final String ADD_REG_ID_URL = "/setRegistrationId";
+	public static final String LOGOUT_URL = "/logout";
 	
 	//Standard codes		
 	public static final String JSON_USERNAME = "user";

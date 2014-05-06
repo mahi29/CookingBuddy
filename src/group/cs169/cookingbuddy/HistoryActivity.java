@@ -75,7 +75,7 @@ public class HistoryActivity extends BaseActivity implements AsyncResponse {
 		updateText(allItems);
 		//END ADDING CUSTOM TEXT
 		
-		//DROPDOWN LIST SUPPORT
+
 //		ArrayList<String> filters = new ArrayList<String>();
 //		filters.add("Dairy-Free");
 //		filters.add("Gluten-Free");

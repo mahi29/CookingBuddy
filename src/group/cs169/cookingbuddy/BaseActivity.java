@@ -1,5 +1,12 @@
 package group.cs169.cookingbuddy;
 
+import group.cs169.cookingbuddy.HTTPTask.AsyncResponse;
+
+import java.util.ArrayList;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.SearchManager;
@@ -12,7 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity implements AsyncResponse {
 
 	
 	public BaseActivity() {
@@ -73,15 +80,16 @@ public class BaseActivity extends Activity {
 	}
 	
 	/**Called when 'Log Out' button is clicked*/
+	@SuppressWarnings("unchecked")
 	public void logout(Context ctx) {
-		SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(Constants.JSON_USERNAME);
-		editor.commit();
-		Log.d("BaseActivity","Logout Called");
-		Intent intent = new Intent(ctx, MainActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		ctx.startActivity(intent);
+		JSONObject json = new JSONObject();
+		ArrayList<Object> container = new ArrayList<Object>();
+		container.add(json);
+		container.add(Constants.LOGOUT_URL);
+		HTTPTask httpTask = new HTTPTask();
+		httpTask.caller = (AsyncResponse) this;
+		httpTask.context = this;
+		httpTask.execute(container);
 	}
 	
 	@Override
@@ -93,5 +101,26 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+	}
+
+	@Override
+	public void processFinish(String output, String callingMethod) {
+		String errCode = Constants.ERROR_CODE;
+		try {
+			JSONObject out = new JSONObject(output);
+			errCode = out.getString(Constants.JSON_STANDARD_RESPONSE);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		if (errCode.equals(Constants.SUCCESS)) {
+			SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.remove(Constants.JSON_USERNAME);
+			editor.commit();
+			Log.d("BaseActivity","Logout Called");
+			Intent intent = new Intent(this, MainActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			this.startActivity(intent);
+		}
 	}
 }

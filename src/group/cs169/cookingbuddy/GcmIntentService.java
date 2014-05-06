@@ -46,10 +46,11 @@ public class GcmIntentService extends IntentService {
 				this.getSystemService(Context.NOTIFICATION_SERVICE);
 		String msg = (String) bundle.get("message");
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				new Intent(this, IngredientActivity.class), 0);
+				new Intent(this, HomeActivity.class), 0);
 		NotificationCompat.Builder mBuilder =
 				new NotificationCompat.Builder(this)
 		.setSmallIcon(R.drawable.logo)
+		.setAutoCancel(true)
 		.setContentTitle("Cooking Buddy")
 		.setStyle(new NotificationCompat.BigTextStyle()
 		.bigText(msg))
