@@ -75,46 +75,46 @@ public class HistoryActivity extends BaseActivity implements AsyncResponse {
 		updateText(allItems);
 		//END ADDING CUSTOM TEXT
 		
-		//DROPDOWN LIST SUPPORT
-		ArrayList<String> filters = new ArrayList<String>();
-		filters.add("Dairy-Free");
-		filters.add("Gluten-Free");
-		//Add more filters here
-		
-		boolean[] bools = new boolean[filters.size()];
-		for (int i = 0; i < bools.length ; i++){
-			bools[i] = false;
-		}
-		
-		findViewById(R.id.filterbutton).setOnClickListener(new View.OnClickListener() {
-			
-			@SuppressWarnings("deprecation")
-			@Override
-			public void onClick(View v) {
-				LayoutInflater inflater = (LayoutInflater) HistoryActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.filter_pop_up, (ViewGroup) findViewById(R.id.filterlinearlayout));
-				final PopupWindow pop = new PopupWindow(layout, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true);
-				pop.setBackgroundDrawable(new BitmapDrawable());
-				pop.setTouchable(true);
-				pop.setOutsideTouchable(true);
-				pop.setTouchInterceptor(new OnTouchListener(){
-					public boolean onTouch(View v, MotionEvent event){
-						if (event.getAction() == MotionEvent.ACTION_OUTSIDE){
-							pop.dismiss();
-							return true;
-						}
-						return false;
-					}
-					
-				});
-				pop.setContentView(layout);
-				LinearLayout ingredientLayout = (LinearLayout) findViewById(R.id.youngmoneycashmoney);
-				pop.showAsDropDown(ingredientLayout);
-				
-				final ListView list = (ListView) layout.findViewById(R.id.filters);
-				//DropDownListAdapter Goes here
-			}
-		});
+//		//DROPDOWN LIST SUPPORT
+//		ArrayList<String> filters = new ArrayList<String>();
+//		filters.add("Dairy-Free");
+//		filters.add("Gluten-Free");
+//		//Add more filters here
+//		
+//		boolean[] bools = new boolean[filters.size()];
+//		for (int i = 0; i < bools.length ; i++){
+//			bools[i] = false;
+//		}
+//		
+//		findViewById(R.id.filterbutton).setOnClickListener(new View.OnClickListener() {
+//			
+//			@SuppressWarnings("deprecation")
+//			@Override
+//			public void onClick(View v) {
+//				LayoutInflater inflater = (LayoutInflater) HistoryActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//				LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.filter_pop_up, (ViewGroup) findViewById(R.id.filterlinearlayout));
+//				final PopupWindow pop = new PopupWindow(layout, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true);
+//				pop.setBackgroundDrawable(new BitmapDrawable());
+//				pop.setTouchable(true);
+//				pop.setOutsideTouchable(true);
+//				pop.setTouchInterceptor(new OnTouchListener(){
+//					public boolean onTouch(View v, MotionEvent event){
+//						if (event.getAction() == MotionEvent.ACTION_OUTSIDE){
+//							pop.dismiss();
+//							return true;
+//						}
+//						return false;
+//					}
+//					
+//				});
+//				pop.setContentView(layout);
+//				LinearLayout ingredientLayout = (LinearLayout) findViewById(R.id.youngmoneycashmoney);
+//				pop.showAsDropDown(ingredientLayout);
+//				
+//				final ListView list = (ListView) layout.findViewById(R.id.filters);
+//				//DropDownListAdapter Goes here
+//			}
+//		});
 		
 	}
 

@@ -106,6 +106,7 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse, O
 				 * have more than one update item selected at a time, we 
 				 * must limit it so that we can only update one at a time.
 				 */
+				SparseBooleanArray selected = adapter.getSelectedIds();
 				switch (item.getItemId()) {
 
 				case R.id.cont_delete:
@@ -113,7 +114,6 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse, O
 					mode.finish();
 					return true;
 				case R.id.cont_update:
-					SparseBooleanArray selected = adapter.getSelectedIds();
 					if (selected.size() == 1){
 						updateItem();
 						mode.finish();
@@ -123,6 +123,13 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse, O
 					return true;
 				case R.id.cont_selectAll:
 					selectAll();
+				case R.id.cont_search:
+					if (selected.size() == 1) {
+						Ingredient ing = (Ingredient) adapter.getItem(selected.keyAt(0));
+						startSearch(ing.name, false, null, false);
+					} else {
+						Toast.makeText(ctx, "Can only search one ingredient at a time", Toast.LENGTH_SHORT).show();
+					}	
 				default:
 					return false;
 
@@ -472,18 +479,36 @@ public class IngredientActivity extends BaseActivity implements AsyncResponse, O
 		String amountUnit;
 		double quantity;
 		String expDate;
+		Date date;
 
 		public Ingredient(String name, double amount, String unit, String date) {
 			this.name = name;
-			this.amountUnit = amount + " " + unit;
 			this.unit = unit;
-			this.quantity = amount;
-			this.expDate = date;
+			setDate(date);
+			setQuantity(amount);
 		}
 
 		public void setQuantity(double amount) {
 			this.quantity = amount;
-			this.amountUnit = amount + " " + unit;
+			String temp = new java.text.DecimalFormat("#").format(amount);
+			this.amountUnit = temp + " " + unit;
+		}
+		
+		@SuppressWarnings("deprecation")
+		public void setDate(String eDate) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.US);
+			try {
+				date = sdf.parse(eDate);
+				expDate = String.format("%d/%d/%d",date.getMonth()+1,date.getDate(),date.getYear()-100);
+			} catch (ParseException e) {
+				SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd/yyyy",Locale.US);
+				try {
+					date = sdf2.parse(eDate);
+					expDate = String.format("%d/%d/%d",date.getMonth()+1,date.getDate(),date.getYear()-100);
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 	

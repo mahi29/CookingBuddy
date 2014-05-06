@@ -49,11 +49,10 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 			urlConn.setRequestMethod("POST");
 			urlConn.setChunkedStreamingMode(0);
 			urlConn.setRequestProperty("Content-Type","application/json");  
-			if (path.equals(Constants.VERIFY_URL)) {
+			if (path.equals(Constants.VERIFY_URL)  || path.equals(Constants.LOGOUT_URL)) {
 				urlConn.setRequestProperty("Accept", "application/json");
 				SharedPreferences prefs = context.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 				String cookie = prefs.getString(Constants.COOKIE_PREFS, "defCookie");
-				Log.d("HTTPTask",cookie);
 				urlConn.setRequestProperty("Cookie",cookie);
 			}
 			urlConn.connect();  
