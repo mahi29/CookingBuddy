@@ -105,14 +105,14 @@ public class BaseActivity extends Activity implements AsyncResponse {
 
 	@Override
 	public void processFinish(String output, String callingMethod) {
-		String errCode = Constants.ERROR_CODE;
-		try {
-			JSONObject out = new JSONObject(output);
-			errCode = out.getString(Constants.JSON_STANDARD_RESPONSE);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		if (errCode.equals(Constants.SUCCESS)) {
+//		String errCode = Constants.ERROR_CODE;
+//		try {
+//			JSONObject out = new JSONObject(output);
+//			errCode = out.getString(Constants.JSON_STANDARD_RESPONSE);
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
+//		if (errCode.equals(Constants.SUCCESS)) {
 			SharedPreferences prefs = this.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.remove(Constants.JSON_USERNAME);
@@ -121,6 +121,6 @@ public class BaseActivity extends Activity implements AsyncResponse {
 			Intent intent = new Intent(this, MainActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			this.startActivity(intent);
-		}
+//		}
 	}
 }
