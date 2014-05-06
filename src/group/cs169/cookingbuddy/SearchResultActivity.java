@@ -27,6 +27,7 @@ import android.widget.TextView;
 public class SearchResultActivity extends BaseActivity implements AsyncResponse, OnItemSelectedListener {
 
 	private Spinner searchSort;
+	private Spinner filterSort;
 	public HTTPTask task;
 	ListView searchResults;
 	public ArrayList<Recipe> listData;
@@ -43,15 +44,21 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 		setContentView(R.layout.activity_search_results);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		searchSort = (Spinner) findViewById(R.id.search_sort);
 		searchSort.setOnItemSelectedListener(this);
+		
+		//Filter Dropdown
+		filterSort = (Spinner) findViewById(R.id.filter_sort);
+		filterSort.setOnItemSelectedListener(this);
+		
 		searchResults = (ListView) findViewById(R.id.searchList);
 		ctx = this;
 		handleIntent(getIntent());
 		//THIS PART CHANGES TO CUSTOM FONT
-		ArrayList<TextView> allItems = new ArrayList();
-		allItems.add((TextView) findViewById(R.id.filterbutton));
-		updateText(allItems);
+		//ArrayList<TextView> allItems = new ArrayList();
+		//allItems.add((TextView) findViewById(R.id.filter_sort));
+		//updateText(allItems);
 		//END CHANGING TO CUSTOM FONT
 	} 
 	
@@ -99,13 +106,14 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void dairyFilter(View view){
+	
+	public void filter(String filterParam){
 		ArrayList<Object> container = new ArrayList<Object>();
 		JSONObject param = new JSONObject();
 		//TODO Talk to Kevin to add more filters
 		try{
 			param.put(Constants.SEARCH_KEYWORD, query);
-			param.put("allowedAllergy", "396^Dairy-Free");
+			param.put("allowedAllergy", filterParam);
 		} catch (JSONException e){
 			e.printStackTrace();
 		}
@@ -117,6 +125,8 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 		task.callingActivity = Constants.SEARCH_ACTIVITY;
 		task.execute(container);
 	}
+	
+	
 
 	@Override
 	public void processFinish(String output, String callingMethod) {
@@ -176,13 +186,33 @@ public class SearchResultActivity extends BaseActivity implements AsyncResponse,
 	
 	
 	@Override
-	public void onItemSelected(AdapterView<?> arg0, View arg1, int selectedPosition,
+	public void onItemSelected(AdapterView<?> parent, View arg1, int selectedPosition,
 			long arg3) {
 		//Prep
-		if (selectedPosition == 1) {
-			sortByPrep();
-		} else if (selectedPosition == 2) { //Rating
-			sortByTime();
+		
+		switch (parent.getId()){
+		case R.id.search_sort:
+			if (selectedPosition == 1) {
+				sortByPrep();
+			} else if (selectedPosition == 2) { //Rating
+				sortByTime();
+			}
+		case R.id.filter_sort:
+			if (selectedPosition == 1){
+				filter("392^Wheat-Free");
+			} else if (selectedPosition == 2){
+				//Sort by Gluten Free
+				filter("393^Gluten-Free");
+			} else if (selectedPosition == 3){
+				//Sort by Peanut Free
+				filter("394^Peanut-Free");
+			} else if (selectedPosition == 4){
+				//Sort by Dairy Free
+				filter("396^Dairy-Free");
+			} else if (selectedPosition == 5){
+				//Sort by Soy Free
+				filter("400^Soy-Free");
+			}
 		}
 	}
 	@Override

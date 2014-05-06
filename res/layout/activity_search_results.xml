@@ -21,15 +21,14 @@
 	        android:spinnerMode="dropdown"
 	        android:entries="@array/sort_options" />
 	    
-	    <Button
-	        android:id="@+id/filterbutton"
+	    <Spinner
+	        android:id="@+id/filter_sort"
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:text="No Dairy"
-	        android:textColor="#FFFFFF"
-	        android:background="@drawable/button_state"
-	        android:onClick="dairyFilter"
+	        android:layout_gravity="center"
+	        android:spinnerMode="dropdown"
+	        android:entries="@array/filter_options"
 	        />
 	
     </LinearLayout>

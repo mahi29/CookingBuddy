@@ -5,6 +5,7 @@
         <item>Prep Time</item>
         <item>Rating</item>
     </array>  
+    
   	<array name="ingredient_sort_options">
   	    <item>Sort By</item>
   	    <item>A-Z</item>
@@ -12,5 +13,15 @@
         <item>Date: Latest First</item>
         <item>Quantity: High to Low</item>
         <item>Quantity: Low to High</item>
-    </array>        
+    </array>  
+     
+    <array name = "filter_options">
+    	<item>Filter By</item>
+    	<item>Wheat Free</item>
+    	<item>Gluten Free</item>
+    	<item>Peanut Free</item>
+    	<item>Dairy Free</item>
+    	<item>Soy Free</item>
+    </array>     
+    
 </resources>

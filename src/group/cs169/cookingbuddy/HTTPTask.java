@@ -53,7 +53,7 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 				urlConn.setRequestProperty("Accept", "application/json");
 				SharedPreferences prefs = context.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 				String cookie = prefs.getString(Constants.COOKIE_PREFS, "defCookie");
-				Log.d("HTTPTask",cookie);
+				//Log.d("HTTPTask",cookie);
 				urlConn.setRequestProperty("Cookie",cookie);
 			}
 			urlConn.connect();  
@@ -66,7 +66,7 @@ public class HTTPTask extends AsyncTask<ArrayList<Object>, Void, String> {
 			if (path.equals(Constants.LOGIN_USER_URL) || path.equals(Constants.ADD_USER_URL)) {
 				context = (Context) caller;
 				String cookie = urlConn.getHeaderField("Set-Cookie");
-				Log.d("HTTPTask",cookie);
+				//Log.d("HTTPTask",cookie);
 				SharedPreferences prefs = context.getSharedPreferences(Constants.SHARED_PREFS_USERNAME, Context.MODE_PRIVATE);
 				prefs.edit().putString(Constants.COOKIE_PREFS, cookie).commit();
 			}
